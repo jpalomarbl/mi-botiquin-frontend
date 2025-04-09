@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class="loginContainer">
+  <h1>Login</h1>
+  <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email: </mat-label>
+      <input
+        type="text"
+        [formControl]="email"
+        matInput
+        placeholder="email@email.com"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password: </mat-label>
+      <input
+        type="password"
+        [formControl]="password"
+        matInput
+        placeholder="*********"
+      />
+    </mat-form-field>
+
+    <button mat-button>Login</button>
+  </form>
+</div>
