@@ -88,7 +88,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
-        tap(() => this.router.navigate(['/home']))
+        tap(() => this.router.navigate(['/']))
       ),
     { dispatch: false }
   );
