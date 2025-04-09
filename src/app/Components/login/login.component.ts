@@ -23,7 +23,7 @@ export class LoginComponent {
   error$: Observable<string | null>;
 
   constructor(private store: Store) {
-    this.credentials = { email: '', password: '' };
+    this.credentials = { email: 'patient4@mail.com', password: 'password1234' };
 
     this.email = new FormControl(this.credentials.email);
     this.password = new FormControl(this.credentials.password);
@@ -37,16 +37,11 @@ export class LoginComponent {
   }
 
   submitLogin(): void {
-    this.credentials.email = this.email.value;
-    this.credentials.password = this.password.value;
+    this.credentials = {
+      email: this.email.value,
+      password: this.password.value
+    };
 
     this.store.dispatch(login({ credentials: this.credentials }));
-
-    console.log(
-      'User: ',
-      this.credentials.email,
-      '\nPassword: ',
-      this.credentials.password
-    );
   }
 }
