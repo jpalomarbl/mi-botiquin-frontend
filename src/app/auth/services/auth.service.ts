@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -16,8 +16,18 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: LoginDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/login`, credentials, {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('email', credentials.email);
+    body.set('password', credentials.password);
+
+    return this.http.post<UserDTO>(`${this.apiUrl}/login`, body.toString(), {
       withCredentials: true,
+      headers: headers,
     });
   }
 
