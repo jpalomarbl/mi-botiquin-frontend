@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { login } from '../../auth/actions/auth.actions';
 import { LoginDTO } from '../../auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
-import { Observable } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
+import { environment } from 'src/app/environment/environment';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   credentials: LoginDTO;
@@ -22,14 +24,14 @@ export class LoginComponent {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private router: Router) {
     this.credentials = { email: 'patient4@mail.com', password: 'password1234' };
 
     this.email = new FormControl(this.credentials.email);
     this.password = new FormControl(this.credentials.password);
     this.loginForm = new FormGroup({
       email: this.email,
-      password: this.password
+      password: this.password,
     });
 
     this.loading$ = this.store.select(selectors.selectAuthLoading);
@@ -39,9 +41,15 @@ export class LoginComponent {
   submitLogin(): void {
     this.credentials = {
       email: this.email.value,
-      password: this.password.value
+      password: this.password.value,
     };
 
     this.store.dispatch(login({ credentials: this.credentials }));
+  }
+
+  submitLoginGoogle(): void {
+    console.log('Google login clicked');
+    // this.router.navigate([environment.api_url + '/auth/google']);
+    window.location.href = environment.api_url + '/auth/google';
   }
 }
