@@ -53,6 +53,14 @@ export class AuthService {
     });
   }
 
+  getUserById(id: number): Observable<UserDTO> {
+    console.log('ID: ', id);
+    return this.http.get<UserDTO>(`${this.apiUrl}/email`, {
+      withCredentials: true,
+      params: { id: id.toString() },
+    });
+  }
+
   // getCurrentUser(): UserDTO | null {
   //   const user = localStorage.getItem('user'); //Change for selector
   //   return user ? JSON.parse(user) : null;
