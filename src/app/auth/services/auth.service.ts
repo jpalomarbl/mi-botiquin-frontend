@@ -54,7 +54,6 @@ export class AuthService {
   }
 
   getUserById(id: number): Observable<UserDTO> {
-    console.log('ID: ', id);
     return this.http.get<UserDTO>(`${this.apiUrl}/email`, {
       withCredentials: true,
       params: { id: id.toString() },
