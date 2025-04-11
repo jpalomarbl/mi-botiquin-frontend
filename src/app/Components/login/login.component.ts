@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { login } from '../../auth/actions/auth.actions';
+import { login, loginOAuth } from '../../auth/actions/auth.actions';
 import { LoginDTO } from '../../auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
@@ -48,8 +48,9 @@ export class LoginComponent {
   }
 
   submitLoginGoogle(): void {
-    console.log('Google login clicked');
-    // this.router.navigate([environment.api_url + '/auth/google']);
+    
+    this.store.dispatch(loginOAuth());
+
     window.location.href = environment.api_url + '/auth/google';
   }
 }
