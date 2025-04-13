@@ -15,4 +15,5 @@ export interface LoginDTO {
 export interface RegisterDTO extends LoginDTO {
   firstName: string;
   lastName: string | null;
+  role: string;
 }
