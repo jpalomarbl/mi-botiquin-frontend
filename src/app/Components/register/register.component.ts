@@ -9,6 +9,7 @@ import { RegisterDTO } from 'src/app/auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
 import { register } from 'src/app/auth/actions/auth.actions';
+import { loginOAuth } from 'src/app/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -68,9 +69,9 @@ export class RegisterComponent {
     this.store.dispatch(register({ userData: this.userData }));
   }
 
-  // submitLoginGoogle(): void {
-  //   this.store.dispatch(loginOAuth());
+  submitRegisterGoogle(): void {
+    this.store.dispatch(loginOAuth());
 
-  //   window.location.href = environment.api_url + '/auth/google';
-  // }
+    window.location.href = environment.api_url + '/auth/google';
+  }
 }
