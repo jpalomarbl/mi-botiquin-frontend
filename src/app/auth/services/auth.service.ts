@@ -32,8 +32,25 @@ export class AuthService {
   }
 
   register(userData: RegisterDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/register`, userData, {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+
+    body.set('email', userData.email);
+    body.set('firstName', userData.firstName);
+    body.set('role', userData.role);
+    body.set('password', userData.password);
+
+    if (userData.lastName) {
+      body.set('lastName', userData.lastName);
+    }
+
+    return this.http.post<UserDTO>(`${this.apiUrl}/register`, body.toString(), {
       withCredentials: true,
+      headers: headers,
     });
   }
 
