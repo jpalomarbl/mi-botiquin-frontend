@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
@@ -12,7 +13,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 
   login$ = createEffect(() =>
@@ -30,29 +32,6 @@ export class AuthEffects {
             of(
               AuthActions.loginError({
                 error: error.error.error || 'Login failed',
-              })
-            )
-          )
-        )
-      )
-    )
-  );
-
-  register$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.register),
-      mergeMap(({ userData }) =>
-        this.authService.register(userData).pipe(
-          map((response: any) => {
-            localStorage.setItem('user', JSON.stringify(response));
-            return AuthActions.registerSuccess({
-              user: response,
-            });
-          }),
-          catchError((error) =>
-            of(
-              AuthActions.registerError({
-                error: error.error.error || 'Registration failed',
               })
             )
           )
@@ -115,4 +94,36 @@ export class AuthEffects {
       )
     )
   );
+
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.register),
+      mergeMap(({ userData }) =>
+        this.authService.register(userData).pipe(
+          map((response: any) => {
+            localStorage.setItem('user', JSON.stringify(response));
+            return AuthActions.registerSuccess({
+              user: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              AuthActions.registerError({
+                error: error.error.error || 'Registration failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  // registerSuccess$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
+  //       tap(() => this.router.navigate(['/']))
+  //     ),
+  //   { dispatch: false }
+  // );
 }
