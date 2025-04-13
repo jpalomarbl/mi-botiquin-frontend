@@ -8,6 +8,13 @@ export const login = createAction(
   props<{ credentials: LoginDTO }>()
 );
 
+export const loginOAuth = createAction('[Auth] Login OAuth');
+
+export const loginOAuthGetUserInfo = createAction(
+  '[Auth] Login OAuth Get User Info',
+  props<{ id: number }>()
+);
+
 export const loginSuccess = createAction(
   '[Auth] Login Success',
   props<{ user: UserDTO }>()

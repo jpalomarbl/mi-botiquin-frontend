@@ -92,4 +92,27 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
+  loginOAuthGetUserInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginOAuthGetUserInfo),
+      mergeMap(({ id }) =>
+        this.authService.getUserById(id).pipe(
+          map((response: any) => {
+            localStorage.setItem('user', JSON.stringify(response));
+            return AuthActions.loginSuccess({
+              user: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              AuthActions.loginError({
+                error: error.error.error || 'Login failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }
