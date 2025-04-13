@@ -6,8 +6,13 @@ import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.
 import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
 import { OauthErrorComponent } from './Components/oauth-error/oauth-error.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { HomeComponent } from './Components/home/home.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -26,8 +31,8 @@ const routes: Routes = [
     component: OauthErrorComponent,
   },
   {
-    path: '',
-    redirectTo: 'login',
+    path: '**',
+    redirectTo: '',
     pathMatch: 'full',
   },
 ];
