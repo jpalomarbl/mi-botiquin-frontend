@@ -13,13 +13,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './auth/reducers/auth.reducer';
 import { AuthEffects } from './auth/effects/auth.effects';
-import { LoginComponent } from './Components/login/login.component';
 import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
 import { OauthErrorComponent } from './Components/oauth-error/oauth-error.component';
-import { RegisterComponent } from './Components/register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, OAuthSuccessComponent, OauthErrorComponent, RegisterComponent],
+  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
