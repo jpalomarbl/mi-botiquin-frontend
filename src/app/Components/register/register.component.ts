@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
+import { FormsModule } from 'src/app/Modules/forms/forms.module';
 import { RegisterDTO } from 'src/app/auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
@@ -11,6 +12,8 @@ import { register } from 'src/app/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
@@ -53,7 +56,7 @@ export class RegisterComponent {
     this.error$ = this.store.select(selectors.selectAuthError);
   }
 
-  submitLogin(): void {
+  submitRegister(): void {
     this.userData = {
       email: this.email.value,
       password: this.password.value,
