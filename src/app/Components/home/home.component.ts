@@ -5,7 +5,7 @@ import { filter } from 'rxjs';
 
 import { AuthStateDTO } from 'src/app/auth/models/auth.dto';
 import { selectAuthLoading } from 'src/app/auth/selectors/auth.selectors';
-import { selectUser } from 'src/app/data/selectors/auth.selectors';
+import { selectUser } from 'src/app/auth/selectors/auth.selectors';
 import { ReminderService } from 'src/app/data/services/reminder.service';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
