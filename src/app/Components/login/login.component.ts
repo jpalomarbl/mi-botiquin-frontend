@@ -9,6 +9,7 @@ import { login, loginOAuth } from '../../auth/actions/auth.actions';
 import { LoginDTO } from '../../auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
+import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -24,8 +25,8 @@ export class LoginComponent {
   password: FormControl;
   loginForm: FormGroup;
 
-  loading$: Observable<boolean>;
-  error$: Observable<string | null>;
+  // loading$: Observable<boolean>;
+  // error$: Observable<string | null>;
 
   constructor(private store: Store, private router: Router) {
     this.credentials = { email: 'patient4@mail.com', password: 'password1234' };
@@ -37,8 +38,8 @@ export class LoginComponent {
       password: this.password,
     });
 
-    this.loading$ = this.store.select(selectors.selectAuthLoading);
-    this.error$ = this.store.select(selectors.selectAuthError);
+    // this.loading$ = this.store.select(selectAuthLoading);
+    // this.error$ = this.store.select(selectors.selectAuthError);
   }
 
   submitLogin(): void {
