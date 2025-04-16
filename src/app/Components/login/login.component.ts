@@ -9,7 +9,7 @@ import { login, loginOAuth } from '../../auth/actions/auth.actions';
 import { LoginDTO } from '../../auth/models/auth.dto';
 import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
-import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
+// import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
 
 @Component({
   selector: 'app-login',

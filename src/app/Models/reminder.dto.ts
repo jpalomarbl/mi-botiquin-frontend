@@ -8,5 +8,5 @@ export interface ReminderDTO {
   medicineId: number;
   medicineUnit: string;
   medicineName: string;
-  medicinKitName: string;
+  medicineKitName: string;
 }
