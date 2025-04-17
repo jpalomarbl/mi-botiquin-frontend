@@ -18,11 +18,11 @@ export class MedicineEffects {
     private store: Store
   ) {}
 
-  getUserRemindersForToday$ = createEffect(() =>
+  fetchUserRemindersForToday$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(MedicineActions.getUserRemindersForToday),
+      ofType(MedicineActions.fetchUserRemindersForToday),
       mergeMap(({ userId }) =>
-        this.reminderService.getUserRemindersForToday(userId).pipe(
+        this.reminderService.fetchUserRemindersForToday(userId).pipe(
           map((response: any) => {
             const reminders = response.map((row: ReminderDTO) => ({
               id: row.id,
@@ -37,14 +37,15 @@ export class MedicineEffects {
               medicinKitName: row.medicineKitName,
             }));
 
-            return MedicineActions.getUserRemindersForTodaySuccess({
+            return MedicineActions.fetchUserRemindersForTodaySuccess({
               reminders: reminders,
             });
           }),
           catchError((error) =>
             of(
-              MedicineActions.getUserRemindersForTodayError({
-                error: error.error.error || 'Get user reminders for today failed',
+              MedicineActions.fetchUserRemindersForTodayError({
+                error:
+                  error.error.error || 'Get user reminders for today failed',
               })
             )
           )
@@ -53,12 +54,12 @@ export class MedicineEffects {
     )
   );
 
-  getUserRemindersForTodaySuccess$ = createEffect(
-      () =>
-        this.actions$.pipe(
-          ofType(MedicineActions.getUserRemindersForTodaySuccess),
-          tap(({ reminders }) => console.log(reminders))
-        ),
-      { dispatch: false }
-    )
+  fetchUserRemindersForTodaySuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(MedicineActions.fetchUserRemindersForTodaySuccess),
+        tap(({ reminders }) => console.log(reminders))
+      ),
+    { dispatch: false }
+  );
 }

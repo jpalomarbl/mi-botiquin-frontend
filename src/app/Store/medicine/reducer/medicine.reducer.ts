@@ -15,23 +15,26 @@ export const medicineReducer = createReducer(
   initialState,
 
   // Get all reminders for today
-  on(MedicineActions.getUserRemindersForToday, (state) => ({
+  on(MedicineActions.fetchUserRemindersForToday, (state) => ({
     ...state,
     loading: true,
     loaded: false,
     error: null,
   })),
-  on(MedicineActions.getUserRemindersForTodaySuccess, (state, { reminders }) => ({
-    ...state,
-    reminders: reminders,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(MedicineActions.getUserRemindersForTodayError, (state, { error }) => ({
+  on(
+    MedicineActions.fetchUserRemindersForTodaySuccess,
+    (state, { reminders }) => ({
+      ...state,
+      reminders: reminders,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(MedicineActions.fetchUserRemindersForTodayError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
     error: error,
-  })),
+  }))
 );

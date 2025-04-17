@@ -35,7 +35,7 @@ export class HomeComponent {
       .pipe(filter((user) => user !== null))
       .subscribe((user) => {
         this.store.dispatch(
-          medicineActions.getUserRemindersForToday({
+          medicineActions.fetchUserRemindersForToday({
             userId: (user! as UserDTO).id,
           })
         );
