@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { skipWhile, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
+import { AuthStateDTO } from '../../auth/models/auth.dto';
 import { environment } from 'src/app/environment/environment';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-import { selectUser } from 'src/app/auth/selectors/auth.selectors';
-import { AuthStateDTO } from 'src/app/auth/models/auth.dto';
+import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +22,6 @@ export class ReminderService {
       withCredentials: true,
       params: { userId: userId.toString() },
     });
-
-    // console.log(response)
 
     return response;
   }

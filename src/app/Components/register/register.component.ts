@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { FormsModule } from 'src/app/Modules/forms/forms.module';
-import { RegisterDTO } from 'src/app/auth/models/auth.dto';
-import * as selectors from '../../auth/selectors/auth.selectors';
+import { loginOAuth, register } from 'src/app/Store/auth/actions/auth.actions';
+import { RegisterDTO } from 'src/app/Store/auth/models/auth.dto';
 import { environment } from 'src/app/environment/environment';
-import { register } from 'src/app/auth/actions/auth.actions';
-import { loginOAuth } from 'src/app/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -50,7 +47,7 @@ export class RegisterComponent {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      role: this.role
+      role: this.role,
     });
 
     // this.loading$ = this.store.select(selectors.selectAuthLoading);
@@ -63,7 +60,7 @@ export class RegisterComponent {
       password: this.password.value,
       firstName: this.firstName.value,
       lastName: this.lastName.value,
-      role: this.role.value
+      role: this.role.value,
     };
 
     this.store.dispatch(register({ userData: this.userData }));

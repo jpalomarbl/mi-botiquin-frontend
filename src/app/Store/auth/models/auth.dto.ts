@@ -1,4 +1,4 @@
-import { UserDTO } from '../../Models/user.dto';
+import { UserDTO } from '../../../Models/user.dto';
 
 export interface AuthStateDTO {
   user: UserDTO | null;

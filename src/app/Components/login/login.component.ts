@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
 
-import { FormsModule } from 'src/app/Modules/forms/forms.module';
-import { login, loginOAuth } from '../../auth/actions/auth.actions';
-import { LoginDTO } from '../../auth/models/auth.dto';
-import * as selectors from '../../auth/selectors/auth.selectors';
 import { environment } from 'src/app/environment/environment';
+import { FormsModule } from 'src/app/Modules/forms/forms.module';
+import { login, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
+import { LoginDTO } from 'src/app/Store/auth/models/auth.dto';
 // import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
 
 @Component({
@@ -52,7 +50,6 @@ export class LoginComponent {
   }
 
   submitLoginGoogle(): void {
-
     this.store.dispatch(loginOAuth());
 
     window.location.href = environment.api_url + '/auth/google';

@@ -6,15 +6,15 @@ import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HttpClientModule } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
-import { HttpClientModule } from '@angular/common/http';
 
-import { authReducer } from './auth/reducers/auth.reducer';
-import { AuthEffects } from './auth/effects/auth.effects';
-import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
 import { OauthErrorComponent } from './Components/oauth-error/oauth-error.component';
+import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
+import { AuthEffects } from './Store/auth/effects/auth.effects';
+import { authReducer } from './Store/auth/reducers/auth.reducer';
 
 @NgModule({
   declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],

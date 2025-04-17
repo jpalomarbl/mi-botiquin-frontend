@@ -9,7 +9,10 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { loginError, loginOAuthGetUserInfo } from '../auth/actions/auth.actions';
+import {
+  loginError,
+  loginOAuthGetUserInfo,
+} from '../Store/auth/actions/auth.actions';
 
 @Injectable({
   providedIn: 'root',

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'src/app/environment/environment';
 
-import { UserDTO } from '../../Models/user.dto';
+import { UserDTO } from '../../../Models/user.dto';
 import { LoginDTO, RegisterDTO } from '../models/auth.dto';
 
 @Injectable({
