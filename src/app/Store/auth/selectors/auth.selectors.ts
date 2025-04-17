@@ -16,7 +16,6 @@ export const selectAuthLoaded = createSelector(
 
 export const selectUser = createSelector(
   selectAuthState,
-  selectAuthLoaded,
   (state: AuthStateDTO) => state.user
 );
 
