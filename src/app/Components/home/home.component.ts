@@ -31,14 +31,12 @@ export class HomeComponent {
     private store: Store<GlobalStateDTO>
   ) {}
   ngOnInit() {
-    this.user$
-      .pipe(filter((user) => user !== null))
-      .subscribe((user) => {
-        this.store.dispatch(
-          medicineActions.fetchUserRemindersForToday({
-            userId: (user! as UserDTO).id,
-          })
-        );
-      });
+    this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
+      this.store.dispatch(
+        medicineActions.fetchUserRemindersForToday({
+          userId: (user! as UserDTO).id,
+        })
+      );
+    });
   }
 }
