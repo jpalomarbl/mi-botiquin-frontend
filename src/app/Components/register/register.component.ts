@@ -3,9 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import { RegisterDTO } from 'src/app/Models/auth.dto';
 import { FormsModule } from 'src/app/Modules/forms/forms.module';
 import { loginOAuth, register } from 'src/app/Store/auth/actions/auth.actions';
-import { RegisterDTO } from 'src/app/Store/auth/models/auth.dto';
 import { environment } from 'src/app/environment/environment';
 
 @Component({

@@ -1,6 +1,5 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AuthStateDTO } from '../models/auth.dto';
-import { UserDTO } from 'src/app/Models/user.dto';
+import { createSelector } from '@ngrx/store';
+import { AuthStateDTO } from '../../../Models/auth.dto';
 
 export const selectAuthState = (state: AuthStateDTO) => state;
 
@@ -17,7 +16,7 @@ export const selectAuthLoaded = createSelector(
 export const selectUser = createSelector(
   selectAuthState,
   selectAuthLoaded,
-  (state: AuthStateDTO) => state.loaded ? state.user : null
+  (state: AuthStateDTO) => (state.loaded ? state.user : null)
 );
 
 export const selectAuthError = createSelector(

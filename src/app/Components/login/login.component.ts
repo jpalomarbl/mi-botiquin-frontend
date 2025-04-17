@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { environment } from 'src/app/environment/environment';
+import { LoginDTO } from 'src/app/Models/auth.dto';
 import { FormsModule } from 'src/app/Modules/forms/forms.module';
 import { login, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
-import { LoginDTO } from 'src/app/Store/auth/models/auth.dto';
 // import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
 
 @Component({

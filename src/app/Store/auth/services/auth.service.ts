@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'src/app/environment/environment';
 
+import { LoginDTO, RegisterDTO } from '../../../Models/auth.dto';
 import { UserDTO } from '../../../Models/user.dto';
-import { LoginDTO, RegisterDTO } from '../models/auth.dto';
 
 @Injectable({
   providedIn: 'root',
