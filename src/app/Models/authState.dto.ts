@@ -5,4 +5,4 @@ export interface AuthStateDTO {
   loading: boolean;
   loaded: boolean;
   error: string | null;
-}
+};
