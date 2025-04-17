@@ -36,7 +36,7 @@ export const authReducer = createReducer(
     ...state,
     loading: false,
     loaded: true,
-    error,
+    error: error,
   })),
 
   // Register
