@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { AuthStateDTO } from '../../../Models/auth.dto';
+import { AuthStateDTO } from 'src/app/Models/authState.dto';
 
 export const selectAuthState = (state: AuthStateDTO) => state;
 

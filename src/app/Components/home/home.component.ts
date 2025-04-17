@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
-import { AuthStateDTO } from 'src/app/Models/auth.dto';
+import { AuthStateDTO } from 'src/app/Models/authState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import {
   selectAuthLoading,
