@@ -3,12 +3,14 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
-import { AuthStateDTO } from 'src/app/Models/authState.dto';
+import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
 import {
-  selectAuthLoading,
+  selectAuthLoaded,
   selectUser,
 } from 'src/app/Store/auth/selectors/auth.selectors';
+import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
 import { ReminderService } from 'src/app/Store/medicine/services/reminder.service';
 
 @Component({
@@ -21,32 +23,22 @@ import { ReminderService } from 'src/app/Store/medicine/services/reminder.servic
 export class HomeComponent {
   reminders: ReminderDTO[] = [];
   user$ = this.store.select(selectUser);
-  loading$ = this.store.select(selectAuthLoading);
+  loaded$ = this.store.select(selectAuthLoaded);
   userId: number = 0;
 
   constructor(
     private reminderService: ReminderService,
-    private store: Store<AuthStateDTO>
+    private store: Store<GlobalStateDTO>
   ) {}
   ngOnInit() {
-    this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
-      this.reminderService
-        .getRemindersForToday(user!.id)
-        .subscribe((response) => {
-          console.log(response);
-          this.reminders = response.map((row: ReminderDTO) => ({
-            id: row.id,
-            frequency: row.frequency,
-            frequencyUnit: row.frequencyUnit,
-            start: new Date(row.start),
-            finish: new Date(row.finish),
-            amount: row.amount,
-            medicineId: row.medicineId,
-            medicineUnit: row.medicineUnit,
-            medicineName: row.medicineName,
-            medicinKitName: row.medicineKitName,
-          }));
-        });
-    });
+    this.user$
+      .pipe(filter((user) => user !== null))
+      .subscribe((user) => {
+        this.store.dispatch(
+          medicineActions.getUserRemindersForToday({
+            userId: (user! as UserDTO).id,
+          })
+        );
+      });
   }
 }
