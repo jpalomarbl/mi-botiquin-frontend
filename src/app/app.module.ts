@@ -15,6 +15,8 @@ import { OauthErrorComponent } from './Components/oauth-error/oauth-error.compon
 import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
 import { AuthEffects } from './Store/auth/effects/auth.effects';
 import { authReducer } from './Store/auth/reducers/auth.reducer';
+import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
+import { MedicineEffects } from './Store/medicine/effects/medicine.effects';
 
 @NgModule({
   declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
@@ -23,7 +25,8 @@ import { authReducer } from './Store/auth/reducers/auth.reducer';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot({ auth: authReducer }),
-    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forFeature('medicine', medicineReducer),
+    EffectsModule.forRoot([AuthEffects, MedicineEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
