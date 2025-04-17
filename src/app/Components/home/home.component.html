@@ -1,7 +1,7 @@
 <p>home works!</p>
 
-<ng-container *ngFor="let reminder of reminders">
-  <ul *ngIf="reminders !== undefined">
-    <li>{{ reminder.medicineName }}</li>
-  </ul>
-</ng-container>
+<ul>
+  <li *ngFor="let reminder of todaysReminders$ | async; index as i">
+    {{ reminder.medicineName }}
+  </li>
+</ul>
