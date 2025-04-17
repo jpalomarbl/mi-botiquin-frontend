@@ -2,16 +2,16 @@ import { createAction, props } from '@ngrx/store';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
 export const fetchUserRemindersForToday = createAction(
-  '[Medicine] Get User Reminders For Today',
+  '[Medicine] Fetch User Reminders For Today From API',
   props<{ userId: number }>()
 );
 
 export const fetchUserRemindersForTodaySuccess = createAction(
-  '[Medicine] Get User Reminders For Today Success',
+  '[Medicine] Fetch User Reminders For Today From API Success',
   props<{ reminders: ReminderDTO[] }>()
 );
 
 export const fetchUserRemindersForTodayError = createAction(
-  '[Medicine] Get User Reminders For Today Error',
+  '[Medicine] Fetch User Reminders For Today From API Error',
   props<{ error: string }>()
 );
