@@ -7,13 +7,13 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as MedicineActions from '../actions/medicine.actions';
-import { MedicineService } from '../services/medicine.service';
+import { ReminderService } from '../services/reminder.service';
 
 @Injectable()
 export class MedicineEffects {
   constructor(
     private actions$: Actions,
-    private MedicineService: MedicineService,
+    private reminderService: ReminderService,
     private router: Router,
     private store: Store
   ) {}
@@ -22,7 +22,7 @@ export class MedicineEffects {
     this.actions$.pipe(
       ofType(MedicineActions.fetchUserRemindersForToday),
       mergeMap(({ userId }) =>
-        this.MedicineService.fetchUserRemindersForToday(userId).pipe(
+        this.reminderService.fetchUserRemindersForToday(userId).pipe(
           map((response: any) => {
             const reminders = response.map((row: ReminderDTO) => ({
               id: row.id,
@@ -67,7 +67,7 @@ export class MedicineEffects {
     this.actions$.pipe(
       ofType(MedicineActions.fetchUserMedicineKits),
       mergeMap(({ userId }) =>
-        this.MedicineService.fetchUserRemindersForToday(userId).pipe(
+        this.reminderService.fetchUserRemindersForToday(userId).pipe(
           map((response: any) => {
             const reminders = response.map((row: ReminderDTO) => ({
               id: row.id,
