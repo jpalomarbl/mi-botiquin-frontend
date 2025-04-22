@@ -9,17 +9,17 @@ export const selectReminders = createSelector(
   (state: MedicineStateDTO) => state.reminders
 );
 
-export const selectRemindersLoading = createSelector(
+export const selectMedicineLoading = createSelector(
   selectMedicineState,
   (state: MedicineStateDTO) => state.loading
 );
 
-export const selectRemindersLoaded = createSelector(
+export const selectMedicineLoaded = createSelector(
   selectMedicineState,
   (state: MedicineStateDTO) => state.loaded
 );
 
-export const selectRemindersError = createSelector(
+export const selectMedicineError = createSelector(
   selectMedicineState,
   (state: MedicineStateDTO) => state.error
 );
