@@ -5,7 +5,7 @@ import { LoginComponent } from './Components/Auth/login/login.component';
 import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
 import { OAuthSuccessComponent } from './Components/Auth/oauth-success/oauth-success.component';
 import { RegisterComponent } from './Components/Auth/register/register.component';
-import { HomeComponent } from './Components/home/home.component';
+import { HomeComponent } from './Components/Pages/home/home.component';
 import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
 
 const routes: Routes = [
