@@ -19,7 +19,7 @@ export const fetchUserRemindersForTodayError = createAction(
 
 export const fetchUserMedicineKits = createAction(
   '[Medicine] Fetch User Medicine Kits From API',
-  props<{ userId: number }>()
+  props<{ userId: number, role: string }>()
 );
 
 export const fetchUserMedicineKitsSuccess = createAction(
