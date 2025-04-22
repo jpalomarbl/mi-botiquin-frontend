@@ -6,6 +6,7 @@ export interface MedicineDTO {
   reminder: ReminderDTO;
   unit: string;
   amount: number;
+  dose: number;
   expirationDate: Date;
   nregistro: number;
 };
