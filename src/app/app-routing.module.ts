@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './Components/login/login.component';
-import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
-import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
-import { OauthErrorComponent } from './Components/oauth-error/oauth-error.component';
-import { RegisterComponent } from './Components/register/register.component';
+import { LoginComponent } from './Components/Auth/login/login.component';
+import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
+import { OAuthSuccessComponent } from './Components/Auth/oauth-success/oauth-success.component';
+import { RegisterComponent } from './Components/Auth/register/register.component';
 import { HomeComponent } from './Components/home/home.component';
+import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
 
 const routes: Routes = [
   {

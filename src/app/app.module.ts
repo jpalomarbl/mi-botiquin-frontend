@@ -11,13 +11,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { OauthErrorComponent } from './Components/oauth-error/oauth-error.component';
-import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.component';
+import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
+import { OAuthSuccessComponent } from './Components/Auth/oauth-success/oauth-success.component';
 import { AuthEffects } from './Store/auth/effects/auth.effects';
 import { authReducer } from './Store/auth/reducers/auth.reducer';
-import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
-import { ReminderEffects } from './Store/medicine/effects/reminder.effects';
 import { MedicineKitEffects } from './Store/medicine/effects/medicineKit.effects';
+import { ReminderEffects } from './Store/medicine/effects/reminder.effects';
+import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
 
 @NgModule({
   declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
