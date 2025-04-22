@@ -27,7 +27,7 @@ export class LoginComponent {
   // error$: Observable<string | null>;
 
   constructor(private store: Store, private router: Router) {
-    this.credentials = { email: 'patient4@mail.com', password: 'password1234' };
+    this.credentials = { email: 'john.doe@example.com', password: 'password1234' };
 
     this.email = new FormControl(this.credentials.email);
     this.password = new FormControl(this.credentials.password);
