@@ -7,7 +7,7 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
-import * as medicineSelectors from 'src/app/Store/medicine/selectors/reminder.selectors';
+import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
 import { ReminderService } from 'src/app/Store/medicine/services/reminder.service';
