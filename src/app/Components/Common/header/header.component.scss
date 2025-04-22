@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+  position: relative; /* Necesario para el posicionamiento absoluto opcional */
+
+  padding: 10px 20px;
+
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+
+  &__title {
+    position: absolute; /* Opcional: Centrado exacto */
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0; /* Elimina márgenes por defecto del h1 */
+  }
+
+  &__back {
+    margin-right: auto;
+  }
+}
