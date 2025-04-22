@@ -12,10 +12,12 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
 import { MedicineKitService } from 'src/app/Store/medicine/services/medicineKit.service';
 
+import { HeaderComponent } from '../../Common/header/header.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, AsyncPipe],
+  imports: [CommonModule, AsyncPipe, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
