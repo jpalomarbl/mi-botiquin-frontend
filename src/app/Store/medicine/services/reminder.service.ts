@@ -17,8 +17,8 @@ export class ReminderService {
 
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {}
 
-  fetchUserRemindersForToday(userId: number): Observable<any> {
-    const response = this.http.get<ReminderDTO>(`${this.apiUrl}/user/today`, {
+  fetchUserRemindersForToday(userId: number): Observable<ReminderDTO[]> {
+    const response = this.http.get<ReminderDTO[]>(`${this.apiUrl}/user/today`, {
       withCredentials: true,
       params: { userId: userId.toString() },
     });
