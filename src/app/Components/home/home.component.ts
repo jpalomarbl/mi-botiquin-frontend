@@ -10,6 +10,7 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
+import { MedicineKitService } from 'src/app/Store/medicine/services/medicineKit.service';
 
 @Component({
   selector: 'app-home',
@@ -22,12 +23,19 @@ export class HomeComponent {
   todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
   user$ = this.store.select(selectUser);
 
-  constructor(private store: Store<GlobalStateDTO>) {}
+  constructor(private store: Store<GlobalStateDTO>, private medicineKitService: MedicineKitService) {}
   ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
         medicineActions.fetchUserRemindersForToday({
           userId: (user! as UserDTO).id,
+        })
+      );
+
+      this.store.dispatch(
+        medicineActions.fetchUserMedicineKits({
+          userId: (user! as UserDTO).id,
+          role: (user! as UserDTO).role,
         })
       );
     });
