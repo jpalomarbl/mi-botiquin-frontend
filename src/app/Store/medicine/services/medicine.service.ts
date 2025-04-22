@@ -11,7 +11,7 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 @Injectable({
   providedIn: 'root',
 })
-export class ReminderService {
+export class MedicineService {
   private apiUrl = environment.api_url + '/reminder';
   user$ = this.store.select(selectUser);
 
