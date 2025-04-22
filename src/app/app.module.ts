@@ -16,7 +16,7 @@ import { OAuthSuccessComponent } from './Components/oauth-success/oauth-success.
 import { AuthEffects } from './Store/auth/effects/auth.effects';
 import { authReducer } from './Store/auth/reducers/auth.reducer';
 import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
-import { MedicineEffects } from './Store/medicine/effects/medicine.effects';
+import { MedicineEffects } from './Store/medicine/effects/reminder.effects';
 
 @NgModule({
   declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
