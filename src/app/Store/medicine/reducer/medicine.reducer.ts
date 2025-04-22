@@ -36,5 +36,28 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  }))
+  })),
+  
+  on(MedicineActions.fetchUserMedicineKits, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(
+    MedicineActions.fetchUserMedicineKitsSuccess,
+    (state, { medicineKits }) => ({
+      ...state,
+      medicineKits: medicineKits,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(MedicineActions.fetchUserMedicineKitsError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
 );
