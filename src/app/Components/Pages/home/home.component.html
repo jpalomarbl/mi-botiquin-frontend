@@ -1,7 +1,27 @@
 <custom-header></custom-header>
 
-<ul>
-  <li *ngFor="let reminder of todaysReminders$ | async; index as i">
-    {{ reminder.medicineName }}
-  </li>
-</ul>
+<div class="home">
+  <section class="reminders">
+    <h2 class="reminders__title">
+      Para hoy
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Recordatorios para hoy"
+        fontIcon="calendar_month"
+      ></mat-icon>
+    </h2>
+
+    <mat-list class="reminders__list">
+      <mat-list-item
+        class="reminders__list-item"
+        *ngFor="let reminder of todaysReminders$ | async; index as i"
+      >
+        <span matListItemTitle>{{ reminder.medicineName }}</span>
+        <span matListItemLine>{{ reminder.amount }} {{ reminder.medicineUnit }}</span>
+        <span matListItemLine>
+          {{ reminder.start| nextDose: reminder.finish: reminder.frequency: reminder.frequencyUnit| date:'shortTime' }}
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </section>
+</div>
