@@ -1,3 +1,4 @@
+// Global container and spinner
 .home {
   &__spinner {
     display: none;
@@ -8,6 +9,7 @@
   }
 }
 
+// Container for reminder list
 .reminders {
   display: flex;
   flex-direction: column;
@@ -21,7 +23,8 @@
     justify-content: center;
     align-items: center;
 
-    margin-block: 5vh;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
   }
 
   &__title-text {
@@ -29,4 +32,12 @@
     margin-inline: 2vw;
     text-align: center;
   }
+
+  &__list {
+    padding-inline: 5vw;
+    margin-inline: 5vw;
+  }
+
+  &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
+  &__list-item:last-child { text-align: center; }
 }
