@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { MedicineKitService } from '../../../Services/medicineKit.service';
 import * as MedicineActions from '../actions/medicine.actions';
-import { MedicineKitService } from '../services/medicineKit.service';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -29,7 +29,7 @@ export class MedicineKitEffects {
               owner: row.owner,
               name: row.name,
               note: row.note,
-              medicines: row.medicines
+              medicines: row.medicines,
             }));
 
             return MedicineActions.fetchUserMedicineKitsSuccess({
@@ -39,8 +39,7 @@ export class MedicineKitEffects {
           catchError((error) =>
             of(
               MedicineActions.fetchUserMedicineKitsError({
-                error:
-                  error.error.error || 'Fetch user medicine kits failed',
+                error: error.error.error || 'Fetch user medicine kits failed',
               })
             )
           )
