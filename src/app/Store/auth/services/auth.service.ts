@@ -76,9 +76,4 @@ export class AuthService {
       params: { id: id.toString() },
     });
   }
-
-  // getCurrentUser(): UserDTO | null {
-  //   const user = localStorage.getItem('user'); //Change for selector
-  //   return user ? JSON.parse(user) : null;
-  // }
 }

@@ -48,3 +48,15 @@ export const logoutError = createAction(
   '[Auth] Logout Error',
   props<{ error: string }>()
 );
+
+export const checkSession = createAction('[Auth] Check Session');
+
+export const checkSessionSuccess = createAction(
+  '[Auth] Check Session Success',
+  props<{ user: UserDTO }>()
+);
+
+export const checkSessionError = createAction(
+  '[Auth] Check Session Error',
+  props<{ error: string }>()
+);
