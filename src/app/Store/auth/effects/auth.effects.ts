@@ -7,6 +7,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import * as AuthActions from '../actions/auth.actions';
 import { AuthService } from '../services/auth.service';
+import { UserDTO } from 'src/app/Models/user.dto';
 
 @Injectable()
 export class AuthEffects {
@@ -126,4 +127,24 @@ export class AuthEffects {
   //     ),
   //   { dispatch: false }
   // );
+
+  checkSession$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkSession),
+      mergeMap(() =>
+        this.authService.checkSession().pipe(
+          map((user: UserDTO) =>
+            AuthActions.checkSessionSuccess({ user })
+          ),
+          catchError((error) =>
+            of(
+              AuthActions.checkSessionError({
+                error: error.error || 'Session check failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }
