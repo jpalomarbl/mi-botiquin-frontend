@@ -73,5 +73,25 @@ export const authReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
+  })),
+
+  on(AuthActions.checkSession, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(AuthActions.checkSessionSuccess, (state, { user }) => ({
+    ...state,
+    user: user,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(AuthActions.checkSessionError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
   }))
 );
