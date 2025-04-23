@@ -17,6 +17,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
     HeaderComponent,
     MatListModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     NextDosePipe,
   ],
   templateUrl: './home.component.html',
@@ -35,6 +37,7 @@ import { MatListModule } from '@angular/material/list';
 export class HomeComponent {
   todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
   user$ = this.store.select(selectUser);
+  loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
 
   constructor(
     private store: Store<GlobalStateDTO>,

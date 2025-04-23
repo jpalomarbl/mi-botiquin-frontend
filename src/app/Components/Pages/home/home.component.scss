@@ -1,0 +1,32 @@
+.home {
+  &__spinner {
+    display: none;
+
+    &--hidden {
+      display: block;
+    }
+  }
+}
+
+.reminders {
+  display: flex;
+  flex-direction: column;
+
+  &--hidden {
+    display: none;
+  }
+
+  &__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-block: 5vh;
+  }
+
+  &__title-text {
+    margin-block: 0;
+    margin-inline: 2vw;
+    text-align: center;
+  }
+}

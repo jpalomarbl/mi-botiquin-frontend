@@ -37,7 +37,7 @@ export const medicineReducer = createReducer(
     loaded: true,
     error: error,
   })),
-  
+
   on(MedicineActions.fetchUserMedicineKits, (state) => ({
     ...state,
     loading: true,

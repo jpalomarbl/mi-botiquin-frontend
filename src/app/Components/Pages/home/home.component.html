@@ -1,15 +1,24 @@
 <custom-header></custom-header>
 
 <div class="home">
-  <section class="reminders">
-    <h2 class="reminders__title">
-      Para hoy
+  <mat-progress-spinner
+    class="home__spinner"
+    [ngClass]="{ 'home__spinner--hidden': loading$ | async }"
+    color="primary"
+    mode="indeterminate"
+    value="50"
+  >
+  </mat-progress-spinner>
+  <section class="reminders" [ngClass]="{ 'reminders--hidden': loading$ | async }">
+    <div class="reminders__title">
+      <h2 class="reminders__title-text">Para hoy</h2>
       <mat-icon
+        class="reminders__title-icon"
         aria-hidden="false"
         aria-label="Recordatorios para hoy"
         fontIcon="calendar_month"
       ></mat-icon>
-    </h2>
+    </div>
 
     <mat-list class="reminders__list">
       <mat-list-item
@@ -17,10 +26,23 @@
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
         <span matListItemTitle>{{ reminder.medicineName }}</span>
-        <span matListItemLine>{{ reminder.amount }} {{ reminder.medicineUnit }}</span>
+        <span matListItemLine
+          >{{ reminder.amount }} {{ reminder.medicineUnit }}</span
+        >
         <span matListItemLine>
-          {{ reminder.start| nextDose: reminder.finish: reminder.frequency: reminder.frequencyUnit| date:'shortTime' }}
+          {{
+            reminder.start
+              | nextDose
+                : reminder.finish
+                : reminder.frequency
+                : reminder.frequencyUnit
+              | date : "shortTime"
+          }}
         </span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <span matListItemTitle><a routerLink="">Ver más</a></span>
       </mat-list-item>
     </mat-list>
   </section>
