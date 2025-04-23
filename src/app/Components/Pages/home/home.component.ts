@@ -9,15 +9,26 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
+import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
-import { MedicineKitService } from 'src/app/Store/medicine/services/medicineKit.service';
 
+import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 import { HeaderComponent } from '../../Common/header/header.component';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, AsyncPipe, HeaderComponent],
+  imports: [
+    CommonModule,
+    AsyncPipe,
+    HeaderComponent,
+    MatListModule,
+    MatIconModule,
+    NextDosePipe,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -25,7 +36,10 @@ export class HomeComponent {
   todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
   user$ = this.store.select(selectUser);
 
-  constructor(private store: Store<GlobalStateDTO>, private medicineKitService: MedicineKitService) {}
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private medicineKitService: MedicineKitService
+  ) {}
   ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
