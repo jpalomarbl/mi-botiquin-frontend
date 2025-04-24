@@ -10,11 +10,11 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
 
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 import { HeaderComponent } from '../../Common/header/header.component';
+import { FooterComponent } from '../../Common/footer/footer.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     AsyncPipe,
     HeaderComponent,
+    FooterComponent,
     MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,
