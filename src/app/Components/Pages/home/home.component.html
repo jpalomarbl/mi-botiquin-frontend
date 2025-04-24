@@ -26,16 +26,17 @@
       ></mat-icon>
     </div>
 
-    <mat-list class="reminders__list">
+    <mat-list
+      class="reminders__list"
+      *ngIf="todaysReminders$ | async; else noReminders"
+    >
       <mat-list-item
         class="reminders__list-item"
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
         <span matListItemTitle>{{ reminder.medicineName }}</span>
         <span matListItemLine
-          >{{ reminder.amount }} {{ reminder.medicineUnit }}</span
-        >
-        <span matListItemLine>
+          >{{ reminder.amount }} {{ reminder.medicineUnit }} -
           {{
             reminder.start
               | nextDose
@@ -43,8 +44,8 @@
                 : reminder.frequency
                 : reminder.frequencyUnit
               | date : "shortTime"
-          }}
-        </span>
+          }}</span
+        >
       </mat-list-item>
 
       <button
@@ -56,6 +57,14 @@
         Ver más
       </button>
     </mat-list>
+
+    <ng-template #noReminders>
+      <div class="reminders__no-reminders-container">
+        <p class="reminders__no-reminders-message">
+          No tienes recordatorios para hoy.
+        </p>
+      </div>
+    </ng-template>
   </section>
 
   <section class="medicine-kits">
@@ -69,7 +78,7 @@
       ></mat-icon>
     </div>
 
-    <mat-list class="medicine-kits__list">
+    <mat-list class="medicine-kits__list" *ngIf="medicineKits$ | async;else noMedicineKits">
       <mat-list-item
         class="medicine-kits__list-item"
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
@@ -95,6 +104,16 @@
         Ver más
       </button>
     </mat-list>
+
+    <ng-template #noMedicineKits>
+      <div class="reminders__no-reminders-container">
+        <p class="reminders__no-reminders-message">
+          No tienes ningún botiquín.
+        </p>
+
+        <a href="" routerLink="">Crea uno</a>
+      </div>
+    </ng-template>
   </section>
 
   <section class="caretakers">

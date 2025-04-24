@@ -24,8 +24,8 @@
     justify-content: center;
     align-items: center;
 
-    margin-top: 5vh;
-    margin-bottom: 2vh;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
   }
 
   &__title-text {
@@ -42,6 +42,7 @@
 
     padding-inline: 5vw;
     margin-inline: 5vw;
+    max-height: 30dvh;
   }
 
   &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
@@ -51,6 +52,25 @@
 
     cursor: pointer;
   }
+
+  &__no-reminders-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 5vw;
+    margin-inline: 10vw;
+    height: 25dvh;
+
+    background-color: rgb(185, 185, 185);
+  }
+
+  &__no-reminders-message {
+    margin: 0;
+
+    text-align: center;
+  }
 }
 
 .caretakers {
@@ -59,5 +79,5 @@
   justify-content: center;
   align-items: center;
 
-  margin-top: 5vh;
+  margin-top: 3vh;
 }
