@@ -7,6 +7,7 @@ import { OAuthSuccessComponent } from './Components/Auth/oauth-success/oauth-suc
 import { RegisterComponent } from './Components/Auth/register/register.component';
 import { HomeComponent } from './Components/Pages/home/home.component';
 import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
+import { RemindersListComponent } from './Components/Pages/reminders-list/reminders-list.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'oauth-error',
     component: OauthErrorComponent,
+  },
+  {
+    path: 'remindersList',
+    component: RemindersListComponent
   },
   {
     path: '**',
