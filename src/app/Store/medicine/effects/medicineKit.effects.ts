@@ -24,16 +24,28 @@ export class MedicineKitEffects {
       mergeMap(({ userId, role }) =>
         this.medicineKitService.fetchUserMedicineKits(userId, role).pipe(
           map((response: any) => {
-            const medicineKits = response.map((row: MedicineKitDTO) => ({
-              id: row.id,
-              owner: row.owner,
-              name: row.name,
-              note: row.note,
-              medicines: row.medicines,
-            }));
+            const medicineKits = response.map(
+              (row: MedicineKitDTO, index: number) => {
+                if (index > 2) return null; // Limit to 3 medicine kits
+                else {
+                  return {
+                    id: row.id,
+                    owner: row.owner,
+                    name: row.name,
+                    note: row.note,
+                    medicines: row.medicines,
+                  };
+                }
+              }
+            );
 
             return MedicineActions.fetchUserMedicineKitsSuccess({
-              medicineKits: medicineKits,
+              medicineKits:
+                medicineKits[0] !== null
+                  ? medicineKits.filter(
+                      (medicineKit: MedicineKitDTO) => medicineKit !== null
+                    )
+                  : null,
             });
           }),
           catchError((error) =>
