@@ -69,7 +69,7 @@ export class HomeComponent {
   }
 
   navigateRemindersList(): void {
-    this.router.navigate([]);
+    this.router.navigate(['/remindersList']);
   }
 
   navigateMedicineKitsList(): void {
