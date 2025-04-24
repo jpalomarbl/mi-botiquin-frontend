@@ -1,6 +1,7 @@
 <custom-header></custom-header>
 
 <div class="home">
+  <!-- Spinner shows only when data is loading to store -->
   <mat-progress-spinner
     class="home__spinner"
     [ngClass]="{ 'home__spinner--hidden': loading$ | async }"
@@ -9,6 +10,8 @@
     value="50"
   >
   </mat-progress-spinner>
+
+  <!-- Reminders section disapears when page is loading info to store -->
   <section
     class="reminders"
     [ngClass]="{ 'reminders--hidden': loading$ | async }"
@@ -44,9 +47,60 @@
         </span>
       </mat-list-item>
 
-      <button class="reminders__button" (click)="navigateReminders()" mat-raised-button color="primary">
+      <button
+        class="reminders__button"
+        (click)="navigateReminders()"
+        mat-raised-button
+        color="primary"
+      >
         Ver más
       </button>
     </mat-list>
+  </section>
+
+  <section class="medicine-kits">
+    <div class="medicine-kits__title">
+      <h2 class="medicine-kits__title-text">Tus botiquines</h2>
+      <mat-icon
+        class="medicine-kits__title-icon"
+        aria-hidden="false"
+        aria-label="Tus botiquines"
+        fontIcon="medical_services"
+      ></mat-icon>
+    </div>
+
+    <mat-list class="medicine-kits__list">
+      <mat-list-item
+        class="medicine-kits__list-item"
+        *ngFor="let medicineKit of medicineKits$ | async; index as i"
+      >
+        <span matListItemTitle>{{ medicineKit.name }}</span>
+        <span matListItemLine>{{ medicineKit.note }}</span>
+        <span
+          matListItemLine
+          *ngIf="
+            user !== null &&
+            (user.role === 'caretaker' || user.role === 'family member')
+          "
+          >Botiquín de {{ medicineKit.owner.firstName }}</span
+        >
+      </mat-list-item>
+
+      <button
+        class="medicine-kits__button"
+        (click)="navigateMedicineKits()"
+        mat-raised-button
+        color="primary"
+      >
+        Ver más
+      </button>
+    </mat-list>
+  </section>
+
+  <section class="caretakers">
+    <button class="caretakers__button" mat-fab extended color="primary">
+      <mat-icon>diversity_3</mat-icon>
+      Tus cuidadores o familiares
+    </button>
   </section>
 </div>

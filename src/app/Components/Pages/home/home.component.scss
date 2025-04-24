@@ -9,8 +9,9 @@
   }
 }
 
-// Container for reminder list
-.reminders {
+// Container for reminder/medicine-kits list
+.reminders,
+.medicine-kits {
   display: flex;
   flex-direction: column;
 
@@ -50,4 +51,13 @@
 
     cursor: pointer;
   }
+}
+
+.caretakers {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 5vh;
 }

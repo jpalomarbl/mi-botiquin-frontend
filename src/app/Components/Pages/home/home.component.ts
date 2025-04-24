@@ -38,9 +38,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
   user$ = this.store.select(selectUser);
   loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+
+  todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
+  medicineKits$ = this.store.select(medicineSelectors.selectMedicineKits);
+
+  user: UserDTO | null = null;
 
   constructor(
     private store: Store<GlobalStateDTO>,
@@ -60,10 +64,16 @@ export class HomeComponent {
           role: (user! as UserDTO).role,
         })
       );
+
+      this.user = user! as UserDTO;
     });
   }
 
   navigateReminders(): void {
+    this.router.navigate([]);
+  }
+
+  navigateMedicineKits(): void {
     this.router.navigate([]);
   }
 }
