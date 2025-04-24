@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, concat } from 'rxjs';
+import { Observable, forkJoin, map, of } from 'rxjs';
 
 import { environment } from 'src/app/environment/environment';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -18,13 +18,23 @@ export class MedicineKitService {
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {}
 
   fetchUserMedicineKits(userId: number, role: string): Observable<MedicineKitDTO[]> {
-    let response: Observable<MedicineKitDTO[]> = this.fetchPatientMedicineKits(userId);
+    const patientKits$ = this.fetchPatientMedicineKits(userId);
 
-    if (role === 'caretaker') {
-      return concat(response, this.fetchCaretakerMedicineKits(userId));
-    } else if (role === 'family member') {
-      return concat(response, this.fetchFamilyMemberMedicineKits(userId));
-    } else return response;
+    const caretakerKits$ = (role === 'caretaker')
+      ? this.fetchCaretakerMedicineKits(userId)
+      : of([]);
+      
+    const familyMemberKits$ = (role === 'family member')
+      ? this.fetchFamilyMemberMedicineKits(userId)
+      : of([]);
+
+    return forkJoin([patientKits$, caretakerKits$, familyMemberKits$]).pipe(
+      map(([patientKits, caretakerKits, familyMemberKits]) => [
+        ...patientKits,
+        ...caretakerKits,
+        ...familyMemberKits,
+      ])
+    );
   }
 
   fetchPatientMedicineKits(userId: number): Observable<MedicineKitDTO[]> {
