@@ -80,6 +80,5 @@ export class HomeComponent {
 
   navigateMedicineKitDetails(medicineKitId: number): void {
     this.router.navigate([]);
-    console.log("HOLA")
   }
 }

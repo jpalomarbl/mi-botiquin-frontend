@@ -66,8 +66,8 @@
 
     <!-- Message shown when there are no reminders for today -->
     <ng-template #noReminders>
-      <div class="reminders__no-reminders-container">
-        <p class="reminders__no-reminders-message">
+      <div class="reminders__no-items-container">
+        <p class="reminders__no-items-message">
           No tienes recordatorios para hoy.
         </p>
       </div>
@@ -79,8 +79,12 @@
     class="medicine-kits"
     [ngClass]="{ 'medicine-kits--hidden': loading$ | async }"
   >
+    <!-- Title has heading and icon -->
     <div class="medicine-kits__title">
+      <!-- Heading -->
       <h2 class="medicine-kits__title-text">Tus botiquines</h2>
+
+      <!-- Icon -->
       <mat-icon
         class="medicine-kits__title-icon"
         aria-hidden="false"
@@ -93,12 +97,13 @@
       class="medicine-kits__list"
       *ngIf="medicineKits$ | async; else noMedicineKits"
     >
+      <!-- Every medicine kit is shown in a list item with a title, a note and an arrow button -->
       <div
         class="medicine-kits__list-item-container"
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
-        (click)="
-          navigateMedicineKitDetails(medicineKit.id)"
+        (click)="navigateMedicineKitDetails(medicineKit.id)"
       >
+        <!-- Information -->
         <mat-list-item class="medicine-kits__list-item">
           <span matListItemTitle>{{ medicineKit.name }}</span>
           <span matListItemLine>{{ medicineKit.note }}</span>
@@ -123,7 +128,12 @@
           >
         </mat-list-item>
 
-        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+        <!-- Button -->
+        <button
+          mat-icon-button
+          color="primary"
+          aria-label="Example icon button with a home icon"
+        >
           <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
@@ -138,9 +148,10 @@
       </button>
     </mat-list>
 
+    <!-- Message shown when there are no medicine kits -->
     <ng-template #noMedicineKits>
-      <div class="reminders__no-reminders-container">
-        <p class="reminders__no-reminders-message">
+      <div class="reminders__no-items-container">
+        <p class="reminders__no-items-message">
           No tienes ningún botiquín.
         </p>
 
