@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-import { ReminderService } from '../../../Services/reminder.service';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import { ReminderService } from '../../../Services/reminder.service';
 
 @Injectable()
 export class ReminderEffects {
@@ -99,7 +99,49 @@ export class ReminderEffects {
   fetchUserRemindersForTodaySuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(reminderActions.fetchUserRemindersForTodaySuccess),
+        ofType(reminderActions.fetchUserRemindersForTodaySuccess)
+        // tap(({ reminders }) => console.log(reminders))
+      ),
+    { dispatch: false }
+  );
+
+  fetchAllUserReminders$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reminderActions.fetchAllUserReminders),
+      mergeMap(({ userId }) =>
+        this.reminderService.fetchAllUserReminders(userId).pipe(
+          map((response: any) => {
+            return reminderActions.fetchAllUserRemindersSuccess({
+              reminders: response.map((row: ReminderDTO) => ({
+                id: row.id,
+                frequency: row.frequency,
+                frequencyUnit: row.frequencyUnit,
+                start: new Date(row.start),
+                finish: new Date(row.finish),
+                amount: row.amount,
+                medicineId: row.medicineId,
+                medicineUnit: row.medicineUnit,
+                medicineName: row.medicineName,
+                medicinKitName: row.medicineKitName,
+              })),
+            });
+          }),
+          catchError((error) =>
+            of(
+              reminderActions.fetchAllUserRemindersError({
+                error: error.error.error || 'Get all user reminders failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  fetchAllUserRemindersSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(reminderActions.fetchAllUserRemindersSuccess),
         tap(({ reminders }) => console.log(reminders))
       ),
     { dispatch: false }
