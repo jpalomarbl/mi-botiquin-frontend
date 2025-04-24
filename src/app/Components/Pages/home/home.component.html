@@ -56,7 +56,7 @@
 
       <button
         class="reminders__button"
-        (click)="navigateReminders()"
+        (click)="navigateRemindersList()"
         mat-raised-button
         color="primary"
       >
@@ -93,35 +93,44 @@
       class="medicine-kits__list"
       *ngIf="medicineKits$ | async; else noMedicineKits"
     >
-      <mat-list-item
-        class="medicine-kits__list-item"
+      <div
+        class="medicine-kits__list-item-container"
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
+        (click)="
+          navigateMedicineKitDetails(medicineKit.id)"
       >
-        <span matListItemTitle>{{ medicineKit.name }}</span>
-        <span matListItemLine>{{ medicineKit.note }}</span>
-        <span
-          matListItemLine
-          *ngIf="
-            user !== null &&
-            (user.role === 'caretaker' || user.role === 'family member') &&
-            medicineKit.owner.id !== user.id
-          "
-          >Botiquín de {{ medicineKit.owner.firstName }} {{ medicineKit.owner.lastName }}</span
-        >
-        <span
-          matListItemLine
-          *ngIf="
-            user !== null &&
-            (user.role === 'caretaker' || user.role === 'family member') &&
-            medicineKit.owner.id === user.id
-          "
-          >Este botiquín es tuyo</span
-        >
-      </mat-list-item>
+        <mat-list-item class="medicine-kits__list-item">
+          <span matListItemTitle>{{ medicineKit.name }}</span>
+          <span matListItemLine>{{ medicineKit.note }}</span>
+          <span
+            matListItemLine
+            *ngIf="
+              user !== null &&
+              (user.role === 'caretaker' || user.role === 'family member') &&
+              medicineKit.owner.id !== user.id
+            "
+            >Botiquín de {{ medicineKit.owner.firstName }}
+            {{ medicineKit.owner.lastName }}</span
+          >
+          <span
+            matListItemLine
+            *ngIf="
+              user !== null &&
+              (user.role === 'caretaker' || user.role === 'family member') &&
+              medicineKit.owner.id === user.id
+            "
+            >Este botiquín es tuyo</span
+          >
+        </mat-list-item>
+
+        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
 
       <button
         class="medicine-kits__button"
-        (click)="navigateMedicineKits()"
+        (click)="navigateMedicineKitsList()"
         mat-raised-button
         color="primary"
       >

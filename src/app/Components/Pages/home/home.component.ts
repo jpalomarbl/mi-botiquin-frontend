@@ -70,11 +70,16 @@ export class HomeComponent {
     });
   }
 
-  navigateReminders(): void {
+  navigateRemindersList(): void {
     this.router.navigate([]);
   }
 
-  navigateMedicineKits(): void {
+  navigateMedicineKitsList(): void {
     this.router.navigate([]);
+  }
+
+  navigateMedicineKitDetails(medicineKitId: number): void {
+    this.router.navigate([]);
+    console.log("HOLA")
   }
 }

@@ -45,6 +45,17 @@
     max-height: 30dvh;
   }
 
+  &__list-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    cursor: pointer;
+  }
+
+  &__list-item-container:nth-child(odd),
   &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
 
   &__button {
