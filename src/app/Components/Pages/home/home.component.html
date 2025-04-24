@@ -16,8 +16,12 @@
     class="reminders"
     [ngClass]="{ 'reminders--hidden': loading$ | async }"
   >
+    <!-- Title has heading and icon -->
     <div class="reminders__title">
+      <!-- Heading -->
       <h2 class="reminders__title-text">Para hoy</h2>
+
+      <!-- Icon -->
       <mat-icon
         class="reminders__title-icon"
         aria-hidden="false"
@@ -26,6 +30,7 @@
       ></mat-icon>
     </div>
 
+    <!-- Reminders list is only shown when there are reminders for today -->
     <mat-list
       class="reminders__list"
       *ngIf="todaysReminders$ | async; else noReminders"
@@ -35,6 +40,7 @@
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
         <span matListItemTitle>{{ reminder.medicineName }}</span>
+
         <span matListItemLine
           >{{ reminder.amount }} {{ reminder.medicineUnit }} -
           {{
@@ -58,6 +64,7 @@
       </button>
     </mat-list>
 
+    <!-- Message shown when there are no reminders for today -->
     <ng-template #noReminders>
       <div class="reminders__no-reminders-container">
         <p class="reminders__no-reminders-message">
@@ -67,7 +74,11 @@
     </ng-template>
   </section>
 
-  <section class="medicine-kits">
+  <!-- Medicine kits section disapears when page is loading info to store -->
+  <section
+    class="medicine-kits"
+    [ngClass]="{ 'medicine-kits--hidden': loading$ | async }"
+  >
     <div class="medicine-kits__title">
       <h2 class="medicine-kits__title-text">Tus botiquines</h2>
       <mat-icon
@@ -78,7 +89,10 @@
       ></mat-icon>
     </div>
 
-    <mat-list class="medicine-kits__list" *ngIf="medicineKits$ | async;else noMedicineKits">
+    <mat-list
+      class="medicine-kits__list"
+      *ngIf="medicineKits$ | async; else noMedicineKits"
+    >
       <mat-list-item
         class="medicine-kits__list-item"
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
@@ -89,9 +103,19 @@
           matListItemLine
           *ngIf="
             user !== null &&
-            (user.role === 'caretaker' || user.role === 'family member')
+            (user.role === 'caretaker' || user.role === 'family member') &&
+            medicineKit.owner.id !== user.id
           "
-          >Botiquín de {{ medicineKit.owner.firstName }}</span
+          >Botiquín de {{ medicineKit.owner.firstName }} {{ medicineKit.owner.lastName }}</span
+        >
+        <span
+          matListItemLine
+          *ngIf="
+            user !== null &&
+            (user.role === 'caretaker' || user.role === 'family member') &&
+            medicineKit.owner.id === user.id
+          "
+          >Este botiquín es tuyo</span
         >
       </mat-list-item>
 
