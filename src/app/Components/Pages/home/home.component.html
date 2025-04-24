@@ -4,7 +4,7 @@
   <!-- Spinner shows only when data is loading to store -->
   <mat-progress-spinner
     class="home__spinner"
-    [ngClass]="{ 'home__spinner--hidden': loading$ | async }"
+    [ngClass]="{ 'home__spinner--not-hidden': loading$ | async }"
     color="primary"
     mode="indeterminate"
     value="50"
@@ -163,7 +163,10 @@
     </ng-template>
   </section>
 
-  <section class="caretakers">
+  <section
+    class="caretakers"
+    [ngClass]="{ 'caretakers--hidden': loading$ | async }"
+  >
     <button class="caretakers__button" mat-fab extended color="primary">
       <mat-icon>diversity_3</mat-icon>
       Tus cuidadores o familiares

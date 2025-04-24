@@ -1,10 +1,19 @@
 // Global container and spinner
 .home {
+  min-height: 70dvh;
   &__spinner {
     display: none;
 
-    &--hidden {
+    &--not-hidden {
       display: block;
+
+      margin: 0;
+
+      position: fixed;
+      top: 40dvh;
+      left: 50%;
+
+      transform: translate(-50%, 0);
     }
   }
 }
@@ -96,4 +105,8 @@
   align-items: center;
 
   margin-top: 3vh;
+}
+
+.caretakers--hidden {
+  display: none;
 }
