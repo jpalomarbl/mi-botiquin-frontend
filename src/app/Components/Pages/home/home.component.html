@@ -1,4 +1,4 @@
-<custom-header></custom-header>
+<custom-header title="Inicio"></custom-header>
 
 <div class="home">
   <!-- Spinner shows only when data is loading to store -->
@@ -50,8 +50,8 @@
                 : reminder.frequency
                 : reminder.frequencyUnit
               | date : "shortTime"
-          }}</span
-        >
+          }}
+        </span>
       </mat-list-item>
 
       <button
@@ -106,7 +106,9 @@
         <!-- Information -->
         <mat-list-item class="medicine-kits__list-item">
           <span matListItemTitle>{{ medicineKit.name }}</span>
+
           <span matListItemLine>{{ medicineKit.note }}</span>
+
           <span
             matListItemLine
             *ngIf="
@@ -114,9 +116,11 @@
               (user.role === 'caretaker' || user.role === 'family member') &&
               medicineKit.owner.id !== user.id
             "
-            >Botiquín de {{ medicineKit.owner.firstName }}
-            {{ medicineKit.owner.lastName }}</span
           >
+            Botiquín de {{ medicineKit.owner.firstName }}
+            {{ medicineKit.owner.lastName }}
+          </span>
+
           <span
             matListItemLine
             *ngIf="
@@ -124,8 +128,9 @@
               (user.role === 'caretaker' || user.role === 'family member') &&
               medicineKit.owner.id === user.id
             "
-            >Este botiquín es tuyo</span
           >
+            Este botiquín es tuyo
+          </span>
         </mat-list-item>
 
         <!-- Button -->
@@ -151,9 +156,7 @@
     <!-- Message shown when there are no medicine kits -->
     <ng-template #noMedicineKits>
       <div class="reminders__no-items-container">
-        <p class="reminders__no-items-message">
-          No tienes ningún botiquín.
-        </p>
+        <p class="reminders__no-items-message">No tienes ningún botiquín.</p>
 
         <a href="" routerLink="">Crea uno</a>
       </div>

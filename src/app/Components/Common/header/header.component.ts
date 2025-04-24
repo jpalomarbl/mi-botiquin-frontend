@@ -23,7 +23,7 @@ export class HeaderComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    console.log(window.history)
+    // console.log(window.history)
   }
 
   backButtonRedirect() {
