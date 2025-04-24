@@ -2,6 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -15,6 +16,7 @@ import * as medicineActions from 'src/app/Store/medicine/actions/medicine.action
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 import { HeaderComponent } from '../../Common/header/header.component';
 
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -29,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatButtonModule,
     NextDosePipe,
   ],
   templateUrl: './home.component.html',
@@ -41,7 +44,7 @@ export class HomeComponent {
 
   constructor(
     private store: Store<GlobalStateDTO>,
-    private medicineKitService: MedicineKitService
+    private router: Router
   ) {}
   ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
@@ -58,5 +61,9 @@ export class HomeComponent {
         })
       );
     });
+  }
+
+  navigateReminders(): void {
+    this.router.navigate([]);
   }
 }

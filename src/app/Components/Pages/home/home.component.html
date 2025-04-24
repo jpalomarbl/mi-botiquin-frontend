@@ -9,7 +9,10 @@
     value="50"
   >
   </mat-progress-spinner>
-  <section class="reminders" [ngClass]="{ 'reminders--hidden': loading$ | async }">
+  <section
+    class="reminders"
+    [ngClass]="{ 'reminders--hidden': loading$ | async }"
+  >
     <div class="reminders__title">
       <h2 class="reminders__title-text">Para hoy</h2>
       <mat-icon
@@ -41,9 +44,9 @@
         </span>
       </mat-list-item>
 
-      <mat-list-item class="reminders__list-item">
-        <span matListItemTitle><a class="" routerLink="">Ver más</a></span>
-      </mat-list-item>
+      <button class="reminders__button" (click)="navigateReminders()" mat-raised-button color="primary">
+        Ver más
+      </button>
     </mat-list>
   </section>
 </div>
