@@ -15,3 +15,18 @@ export const fetchUserRemindersForTodayError = createAction(
   '[Medicine] Fetch User Reminders For Today From API Error',
   props<{ error: string }>()
 );
+
+export const fetchAllUserReminders = createAction(
+  '[Medicine] Fetch All User Reminders From API',
+  props<{ userId: number }>()
+);
+
+export const fetchAllUserRemindersSuccess = createAction(
+  '[Medicine] Fetch All User Reminders From API Success',
+  props<{ reminders: ReminderDTO[] }>()
+);
+
+export const fetchAllUserRemindersError = createAction(
+  '[Medicine] Fetch All User Reminders From API Error',
+  props<{ error: string }>()
+);
