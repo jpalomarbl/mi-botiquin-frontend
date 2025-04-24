@@ -26,16 +26,13 @@ export class ReminderService {
     return response;
   }
 
-  milisecondsToMinutes(miliseconds: number): number {
-    return Math.round(miliseconds / 1000 / 60);
-  }
+  fetchAllUserReminders(userId: number): Observable<ReminderDTO[]> {
+    const response = this.http.get<ReminderDTO[]>(`${this.apiUrl}/user`, {
+      withCredentials: true,
+      params: { userId: userId.toString() },
+    });
 
-  milisecondsToHours(miliseconds: number): number {
-    return Math.floor(miliseconds / 1000 / 60 / 60);
-  }
-
-  milisecondsToDays(miliseconds: number): number {
-    return Math.floor(miliseconds / 1000 / 60 / 60 / 24);
+    return response;
   }
 
   getLastDoseTime(
