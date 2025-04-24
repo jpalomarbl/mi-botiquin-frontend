@@ -40,12 +40,10 @@ export class MedicineKitEffects {
             );
 
             return MedicineActions.fetchUserMedicineKitsSuccess({
-              medicineKits:
-                medicineKits[0] !== null
-                  ? medicineKits.filter(
-                      (medicineKit: MedicineKitDTO) => medicineKit !== null
-                    )
-                  : null,
+              medicineKits: medicineKits[0]
+                ? medicineKits.filter((medicineKit: MedicineKitDTO) => medicineKit !== null
+                  )
+                : null,
             });
           }),
           catchError((error) =>

@@ -78,12 +78,9 @@ export class ReminderEffects {
             );
 
             return MedicineActions.fetchUserRemindersForTodaySuccess({
-              reminders:
-                reminders[0] !== null
-                  ? reminders.filter(
-                      (reminder: ReminderDTO) => reminder !== null
-                    )
-                  : null,
+              reminders: reminders[0]
+                ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
+                : null,
             });
           }),
           catchError((error) =>
