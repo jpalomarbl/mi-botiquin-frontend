@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
-import * as MedicineActions from '../actions/medicine.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
 export const initialState: MedicineStateDTO = {
   medicineKits: [],
@@ -15,14 +16,14 @@ export const medicineReducer = createReducer(
   initialState,
 
   // Get all reminders for today
-  on(MedicineActions.fetchUserRemindersForToday, (state) => ({
+  on(reminderActions.fetchUserRemindersForToday, (state) => ({
     ...state,
     loading: true,
     loaded: false,
     error: null,
   })),
   on(
-    MedicineActions.fetchUserRemindersForTodaySuccess,
+    reminderActions.fetchUserRemindersForTodaySuccess,
     (state, { reminders }) => ({
       ...state,
       reminders: reminders,
@@ -31,21 +32,21 @@ export const medicineReducer = createReducer(
       error: null,
     })
   ),
-  on(MedicineActions.fetchUserRemindersForTodayError, (state, { error }) => ({
+  on(reminderActions.fetchUserRemindersForTodayError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
     error: error,
   })),
 
-  on(MedicineActions.fetchUserMedicineKits, (state) => ({
+  on(medicineKitActions.fetchUserMedicineKits, (state) => ({
     ...state,
     loading: true,
     loaded: false,
     error: null,
   })),
   on(
-    MedicineActions.fetchUserMedicineKitsSuccess,
+    medicineKitActions.fetchUserMedicineKitsSuccess,
     (state, { medicineKits }) => ({
       ...state,
       medicineKits: medicineKits,
@@ -54,10 +55,10 @@ export const medicineReducer = createReducer(
       error: null,
     })
   ),
-  on(MedicineActions.fetchUserMedicineKitsError, (state, { error }) => ({
+  on(medicineKitActions.fetchUserMedicineKitsError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
     error: error,
-  })),
+  }))
 );

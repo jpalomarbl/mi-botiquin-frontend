@@ -1,8 +1,8 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -10,11 +10,12 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-import * as medicineActions from 'src/app/Store/medicine/actions/medicine.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
-import { HeaderComponent } from '../../Common/header/header.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
+import { HeaderComponent } from '../../Common/header/header.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,20 +48,17 @@ export class HomeComponent {
 
   user: UserDTO | null = null;
 
-  constructor(
-    private store: Store<GlobalStateDTO>,
-    private router: Router
-  ) {}
+  constructor(private store: Store<GlobalStateDTO>, private router: Router) {}
   ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
-        medicineActions.fetchUserRemindersForToday({
+        reminderActions.fetchUserRemindersForToday({
           userId: (user! as UserDTO).id,
         })
       );
 
       this.store.dispatch(
-        medicineActions.fetchUserMedicineKits({
+        medicineKitActions.fetchUserMedicineKits({
           userId: (user! as UserDTO).id,
           role: (user! as UserDTO).role,
         })

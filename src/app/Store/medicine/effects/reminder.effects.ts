@@ -7,7 +7,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { ReminderService } from '../../../Services/reminder.service';
-import * as MedicineActions from '../actions/medicine.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
 @Injectable()
 export class ReminderEffects {
@@ -20,7 +20,7 @@ export class ReminderEffects {
 
   fetchUserRemindersForToday$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(MedicineActions.fetchUserRemindersForToday),
+      ofType(reminderActions.fetchUserRemindersForToday),
       mergeMap(({ userId }) =>
         this.reminderService.fetchUserRemindersForToday(userId).pipe(
           map((response: any) => {
@@ -77,7 +77,7 @@ export class ReminderEffects {
               }
             );
 
-            return MedicineActions.fetchUserRemindersForTodaySuccess({
+            return reminderActions.fetchUserRemindersForTodaySuccess({
               reminders: reminders[0]
                 ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
                 : null,
@@ -85,7 +85,7 @@ export class ReminderEffects {
           }),
           catchError((error) =>
             of(
-              MedicineActions.fetchUserRemindersForTodayError({
+              reminderActions.fetchUserRemindersForTodayError({
                 error:
                   error.error.error || 'Get user reminders for today failed',
               })
@@ -99,7 +99,7 @@ export class ReminderEffects {
   fetchUserRemindersForTodaySuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(MedicineActions.fetchUserRemindersForTodaySuccess),
+        ofType(reminderActions.fetchUserRemindersForTodaySuccess),
         tap(({ reminders }) => console.log(reminders))
       ),
     { dispatch: false }

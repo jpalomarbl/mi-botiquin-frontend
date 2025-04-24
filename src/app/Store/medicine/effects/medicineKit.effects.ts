@@ -7,7 +7,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
-import * as MedicineActions from '../actions/medicine.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -20,7 +20,7 @@ export class MedicineKitEffects {
 
   fetchUserMedicineKits$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(MedicineActions.fetchUserMedicineKits),
+      ofType(medicineKitActions.fetchUserMedicineKits),
       mergeMap(({ userId, role }) =>
         this.medicineKitService.fetchUserMedicineKits(userId, role).pipe(
           map((response: any) => {
@@ -39,16 +39,17 @@ export class MedicineKitEffects {
               }
             );
 
-            return MedicineActions.fetchUserMedicineKitsSuccess({
+            return medicineKitActions.fetchUserMedicineKitsSuccess({
               medicineKits: medicineKits[0]
-                ? medicineKits.filter((medicineKit: MedicineKitDTO) => medicineKit !== null
+                ? medicineKits.filter(
+                    (medicineKit: MedicineKitDTO) => medicineKit !== null
                   )
                 : null,
             });
           }),
           catchError((error) =>
             of(
-              MedicineActions.fetchUserMedicineKitsError({
+              medicineKitActions.fetchUserMedicineKitsError({
                 error: error.error.error || 'Fetch user medicine kits failed',
               })
             )
@@ -61,7 +62,7 @@ export class MedicineKitEffects {
   fetchUserMedicineKitsSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(MedicineActions.fetchUserMedicineKitsSuccess),
+        ofType(medicineKitActions.fetchUserMedicineKitsSuccess),
         tap(({ medicineKits }) => console.log(medicineKits))
       ),
     { dispatch: false }
