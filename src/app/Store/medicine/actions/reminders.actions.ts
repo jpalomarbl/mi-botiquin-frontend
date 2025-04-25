@@ -18,7 +18,7 @@ export const fetchUserRemindersForTodayError = createAction(
 
 export const fetchAllUserReminders = createAction(
   '[Medicine] Fetch All User Reminders From API',
-  props<{ userId: number }>()
+  props<{ userId: number, day: Date }>()
 );
 
 export const fetchAllUserRemindersSuccess = createAction(

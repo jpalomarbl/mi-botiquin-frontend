@@ -24,34 +24,34 @@ export class ReminderEffects {
       mergeMap(({ userId }) =>
         this.reminderService.fetchUserRemindersForToday(userId).pipe(
           map((response: any) => {
-            const reminders = response.map(
-              (row: ReminderDTO, index: number) => {
-                if (index > 2) return null; // Limit to 3 reminders
-
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
+            const reminders = response
+              .slice(0, 3)
+              .filter((row: ReminderDTO) => {
+                const dayAfter = new Date();
+                dayAfter.setDate(dayAfter.getDate() + 1);
                 const finishDate = new Date(row.finish);
-                const nextDose = this.reminderService.getNextDoseTime(row, new Date());
+                const nextDose = this.reminderService.getNextDoseTime(
+                  row,
+                  new Date()
+                );
 
-                if (
-                  nextDose.getTime() < tomorrow.getTime() &&
+                return (
+                  nextDose.getTime() < dayAfter.getTime() &&
                   nextDose.getTime() < finishDate.getTime()
-                ) {
-                  return {
-                    id: row.id,
-                    frequency: row.frequency,
-                    frequencyUnit: row.frequencyUnit,
-                    start: new Date(row.start),
-                    finish: new Date(row.finish),
-                    amount: row.amount,
-                    medicineId: row.medicineId,
-                    medicineUnit: row.medicineUnit,
-                    medicineName: row.medicineName,
-                    medicinKitName: row.medicineKitName,
-                  };
-                } else return null;
-              }
-            );
+                );
+              })
+              .map((row: ReminderDTO) => ({
+                id: row.id,
+                frequency: row.frequency,
+                frequencyUnit: row.frequencyUnit,
+                start: new Date(row.start),
+                finish: new Date(row.finish),
+                amount: row.amount,
+                medicineId: row.medicineId,
+                medicineUnit: row.medicineUnit,
+                medicineName: row.medicineName,
+                medicinKitName: row.medicineKitName,
+              }));
 
             return reminderActions.fetchUserRemindersForTodaySuccess({
               reminders: reminders[0]
@@ -84,11 +84,25 @@ export class ReminderEffects {
   fetchAllUserReminders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserReminders),
-      mergeMap(({ userId }) =>
+      mergeMap(({ userId, day }) =>
         this.reminderService.fetchAllUserReminders(userId).pipe(
           map((response: any) => {
-            return reminderActions.fetchAllUserRemindersSuccess({
-              reminders: response.map((row: ReminderDTO) => ({
+            const reminders = response
+              .filter((row: ReminderDTO) => {
+                const dayAfter = new Date(day);
+                dayAfter.setDate(dayAfter.getDate() + 1);
+                const finishDate = new Date(row.finish);
+                const nextDose = this.reminderService.getNextDoseTime(
+                  row,
+                  new Date()
+                );
+
+                return (
+                  nextDose.getTime() < dayAfter.getTime() &&
+                  nextDose.getTime() < finishDate.getTime()
+                );
+              })
+              .map((row: ReminderDTO) => ({
                 id: row.id,
                 frequency: row.frequency,
                 frequencyUnit: row.frequencyUnit,
@@ -99,7 +113,12 @@ export class ReminderEffects {
                 medicineUnit: row.medicineUnit,
                 medicineName: row.medicineName,
                 medicinKitName: row.medicineKitName,
-              })),
+              }));
+
+            return reminderActions.fetchAllUserRemindersSuccess({
+              reminders: reminders[0]
+              ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
+              : null,
             });
           }),
           catchError((error) =>
