@@ -32,11 +32,11 @@ const routes: Routes = [
     component: OauthErrorComponent,
   },
   {
-    path: 'remindersList/forward/:amount',
+    path: 'remindersList/forwards/:daysDisplaced',
     component: RemindersListComponent
   },
   {
-    path: 'remindersList/back/:amount',
+    path: 'remindersList/backwards/:daysDisplaced',
     component: RemindersListComponent
   },
   {
