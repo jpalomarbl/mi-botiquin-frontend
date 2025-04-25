@@ -53,6 +53,7 @@ export class HomeComponent {
   constructor(private store: Store<GlobalStateDTO>, private router: Router) {
     this.user$ = this.store.select(selectUser);
     this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+    
     this.todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
     this.medicineKits$ = this.store.select(medicineSelectors.selectMedicineKits);
 
