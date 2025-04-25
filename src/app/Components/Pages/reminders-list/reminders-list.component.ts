@@ -25,7 +25,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    DateFormatPipe
+    DateFormatPipe,
   ],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
@@ -33,7 +33,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 export class RemindersListComponent {
   user$ = this.store.select(selectUser);
 
-  amount: number | undefined;
+  amount: number;
   day: Date;
   today: Date;
 
@@ -58,19 +58,21 @@ export class RemindersListComponent {
     //   datePicker: this.datePicker,
     // });
 
-    this.amount = this.route.snapshot.params['amount'];
+    this.amount = this.route.snapshot.params['amount']
+      ? +this.route.snapshot.params['amount']
+      : 0;
 
-    if (this.amount) {
+    if (this.amount > 0) {
       if (this.router.url.includes('forward')) {
-        this.day.setDate(this.day.getDate() + +this.amount);
+        this.day.setDate(this.day.getDate() + this.amount);
       } else if (this.router.url.includes('back')) {
-        this.day.setDate(this.day.getDate() - +this.amount);
+        this.day.setDate(this.day.getDate() - this.amount);
       }
     }
 
     this.isYesterday = this.router.url.includes('back') && this.amount === 1;
     this.isTomorrow = this.router.url.includes('forward') && this.amount === 1;
-    this.isToday = this.amount === undefined || this.amount === null;
+    this.isToday = this.amount === 0;
   }
 
   ngOnInit() {
