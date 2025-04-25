@@ -85,4 +85,30 @@ export class RemindersListComponent {
       );
     });
   }
+
+  navigateToPreviousDay() {
+    if (this.amount > 0) {
+      if (this.router.url.includes('back')) {
+        this.amount++;
+      } else if (this.router.url.includes('forward')) {
+        this.amount--;
+      }
+
+      if (this.amount === 0) this.router.navigate(['remindersList']);
+      else this.router.navigate(['remindersList/back', this.amount]);
+    } else this.router.navigate(['remindersList/back/1']);
+  }
+
+  navigateToNextDay() {
+    if (this.amount > 0) {
+      if (this.router.url.includes('back')) {
+        this.amount--;
+      } else if (this.router.url.includes('forward')) {
+        this.amount++;
+      }
+
+      if (this.amount === 0) this.router.navigate(['remindersList']);
+      else this.router.navigate(['remindersList/forward', this.amount]);
+    } else this.router.navigate(['remindersList/forward/1']);
+  }
 }
