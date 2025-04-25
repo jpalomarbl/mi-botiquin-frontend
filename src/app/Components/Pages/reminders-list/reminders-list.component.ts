@@ -112,10 +112,6 @@ export class RemindersListComponent {
     this.isToday = this.daysDisplaced === 0;
 
     this.lastClickTime = 0;
-
-    console.log('isToday', this.isToday);
-    console.log('isTomorrow', this.isTomorrow);
-    console.log('isYesterday', this.isYesterday);
   }
 
   ngOnInit() {
@@ -258,10 +254,6 @@ export class RemindersListComponent {
     this.isToday = this.daysDisplaced === 0;
 
     this.lastClickTime = 0;
-
-    console.log('isToday', this.isToday);
-    console.log('isTomorrow', this.isTomorrow);
-    console.log('isYesterday', this.isYesterday);
 
     // We fetch all user reminders and filter them for the specified day.
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
