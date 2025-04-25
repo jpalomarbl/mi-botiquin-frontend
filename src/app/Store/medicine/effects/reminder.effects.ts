@@ -48,7 +48,7 @@ export class ReminderEffects {
                 medicineId: row.medicineId,
                 medicineUnit: row.medicineUnit,
                 medicineName: row.medicineName,
-                medicinKitName: row.medicineKitName,
+                medicineKitName: row.medicineKitName,
               }));
 
             return reminderActions.fetchUserRemindersForTodaySuccess({
@@ -108,7 +108,7 @@ export class ReminderEffects {
                 medicineId: row.medicineId,
                 medicineUnit: row.medicineUnit,
                 medicineName: row.medicineName,
-                medicinKitName: row.medicineKitName,
+                medicineKitName: row.medicineKitName,
               }));
 
             return reminderActions.fetchAllUserRemindersSuccess({
