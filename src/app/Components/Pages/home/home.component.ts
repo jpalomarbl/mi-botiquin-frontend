@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -21,6 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 @Component({
   selector: 'app-home',
@@ -40,15 +42,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  user$ = this.store.select(selectUser);
-  loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+  user$: Observable<UserDTO | null>;
+  loading$: Observable<boolean>;
 
-  todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
-  medicineKits$ = this.store.select(medicineSelectors.selectMedicineKits);
+  todaysReminders$: Observable<ReminderDTO[]>;
+  medicineKits$: Observable<MedicineKitDTO[]>;
 
-  user: UserDTO | null = null;
+  user: UserDTO | null;
 
-  constructor(private store: Store<GlobalStateDTO>, private router: Router) {}
+  constructor(private store: Store<GlobalStateDTO>, private router: Router) {
+    this.user$ = this.store.select(selectUser);
+    this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+    this.todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
+    this.medicineKits$ = this.store.select(medicineSelectors.selectMedicineKits);
+
+    this.user = null;
+  }
+
   ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
