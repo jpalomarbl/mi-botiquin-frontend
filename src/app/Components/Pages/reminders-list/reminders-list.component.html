@@ -13,7 +13,9 @@
   </mat-form-field>
 </section> -->
 
+<!-- Main container -->
 <div class="reminders-list">
+  <!-- Here is the date selector -->
   <section class="reminders-list__date-picker">
     <button
       class="reminders-list__back-button"
@@ -25,6 +27,7 @@
       <mat-icon>chevron_left</mat-icon>
     </button>
 
+    <!-- Depending on the date it will display "Hoy", "Ayer", "Mañana" or the full date -->
     <h2 class="reminders-list__date" *ngIf="isYesterday">Ayer</h2>
     <h2 class="reminders-list__date" *ngIf="isToday">Hoy</h2>
     <h2 class="reminders-list__date" *ngIf="isTomorrow">Mañana</h2>
@@ -47,24 +50,24 @@
   </section>
 
   <section class="reminders-list__list">
+    <!-- organizedReminders is an array of arrays of type [Date, ReminderDTO[]] -->
     <div class="reminders-list__time-period" *ngFor="let pair of organizedReminders">
       <h3>{{ pair[0] | date : "shortTime"}}</h3>
 
       <mat-card class="reminder-list__card" *ngFor="let reminder of pair[1]">
         <mat-card-header>
+          <mat-card-subtitle class="reminder-list__card-state"> Consumido/Por consumir</mat-card-subtitle>
           <mat-card-title>{{ reminder.medicineName | shortenText}}</mat-card-title>
-          <mat-card-subtitle> Consumido/Por consumir</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <p>{{ reminder.medicineKitName }}</p>
+
           <p>{{ reminder.amount }} {{ reminder.medicineUnit }}</p>
         </mat-card-content>
         <mat-card-actions>
           <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
         </mat-card-actions>
       </mat-card>
-
     </div>
   </section>
 </div>
