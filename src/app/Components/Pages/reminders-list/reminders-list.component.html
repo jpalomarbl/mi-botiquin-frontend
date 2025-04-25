@@ -45,6 +45,28 @@
       <mat-icon>chevron_right</mat-icon>
     </button>
   </section>
+
+  <section class="reminders-list__list">
+    <div class="reminders-list__time-period" *ngFor="let pair of organizedReminders">
+      <h3>{{ pair[0] | date : "shortTime"}}</h3>
+
+      <mat-card class="reminder-list__card" *ngFor="let reminder of pair[1]">
+        <mat-card-header>
+          <mat-card-title>{{ reminder.medicineName | shortenText}}</mat-card-title>
+          <mat-card-subtitle> Consumido/Por consumir</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ reminder.medicineKitName }}</p>
+          <p>{{ reminder.amount }} {{ reminder.medicineUnit }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+
+    </div>
+  </section>
 </div>
 
 <custom-footer></custom-footer>

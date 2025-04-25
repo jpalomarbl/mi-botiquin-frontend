@@ -2,18 +2,18 @@
 import { Component } from '@angular/core';
 
 // Router
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
-import { filter, distinctUntilChanged, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 // Custom modules
@@ -27,6 +27,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 // Pipes
 import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
+import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 // Custom services
 import { ReminderService } from 'src/app/Services/reminder.service';
@@ -44,9 +45,12 @@ import { HeaderComponent } from '../../Common/header/header.component';
     FormsModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
     DateFormatPipe,
+    ShortenTextPipe,
+    DatePipe
   ],
-  providers: [DatePipe],
+  providers:[DatePipe],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
@@ -67,6 +71,9 @@ export class RemindersListComponent {
   isYesterday: boolean;
   isTomorrow: boolean;
   isToday: boolean;
+
+  // Reminders grouped by next doses
+  organizedReminders: Array<[Date, ReminderDTO[]]>;
 
   // Debounce control
   lastClickTime: number;
@@ -118,20 +125,21 @@ export class RemindersListComponent {
       this.router.url.includes('forwards') && this.daysDisplaced === 1;
     this.isToday = this.daysDisplaced === 0;
 
+    this.organizedReminders = [];
+
     this.lastClickTime = 0;
   }
 
   ngOnInit() {
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         distinctUntilChanged(),
         debounceTime(500)
       )
       .subscribe(() => {
         this.loadDataOnChange();
       });
-
 
     // We fetch all user reminders and filter them for the specified day.
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
@@ -143,16 +151,18 @@ export class RemindersListComponent {
       );
     });
 
-    this.store.select(medicineSelectors.selectReminders).pipe(
-      debounceTime(500)
-    ).subscribe((reminders: ReminderDTO[]) => {
-      console.log(this.organizeReminders(reminders));
-    });
+    this.store
+      .select(medicineSelectors.selectReminders)
+      .pipe(debounceTime(500))
+      .subscribe((reminders: ReminderDTO[]) => {
+        this.organizedReminders = this.organizeReminders(reminders);
+        console.log(this.organizedReminders);
+      });
   }
 
   navigateToPreviousDay() {
     const now = Date.now();
-    if (now - this.lastClickTime < 500) return; // Evita múltiples clics en 500ms
+    if (now - this.lastClickTime < 500) return;
     this.lastClickTime = now;
 
     const isBackwards = this.router.url.includes('backwards');
@@ -193,10 +203,10 @@ export class RemindersListComponent {
   }
 
   // Cómo represento que un reminder ha sido consumido?
+  // Nueva tabla "consumiciones" enlazada a los reminders
+  // Cada vez que se marca como consumido, se agrega una fila a la tabla
 
-  private organizeReminders(reminders: ReminderDTO[]): {
-    [hora: string]: ReminderDTO[];
-  } {
+  private organizeReminders(reminders: ReminderDTO[]): Array<[Date, ReminderDTO[]]> {
     let organizedReminders: { [hora: string]: ReminderDTO[] } = {};
     console.log(this.day);
 
@@ -211,13 +221,10 @@ export class RemindersListComponent {
       );
 
       while (nextDose.getTime() <= nextDay.getTime()) {
-        const horaKey: string =
-          this.datePipe.transform(nextDose, 'shortTime') || 'Hora inválida';
-
-        if (organizedReminders[horaKey]) {
-          organizedReminders[horaKey].push(reminder);
+        if (organizedReminders[nextDose.toString()]) {
+          organizedReminders[nextDose.toString()].push(reminder);
         } else {
-          organizedReminders[horaKey] = [reminder];
+          organizedReminders[nextDose.toString()] = [reminder];
         }
 
         // Actualizamos la fecha para la próxima dosis
@@ -226,7 +233,19 @@ export class RemindersListComponent {
       }
     });
 
-    return organizedReminders;
+    // const horaKey: string =
+    //       this.datePipe.transform(nextDose, 'shortTime') || 'Hora inválida';
+
+    // Convertimos a array y ordenamos por hora
+    const resultArray: [Date, ReminderDTO[]][] = Object.entries(
+      organizedReminders
+    )
+      .map(([hora, reminders]) => [new Date(hora), reminders] as [Date, ReminderDTO[]])
+      .sort(([horaA], [horaB]) => {
+        return horaA.getTime() - horaB.getTime();
+      });
+
+    return resultArray;
   }
 
   private loadDataOnChange(): void {
@@ -274,5 +293,12 @@ export class RemindersListComponent {
         })
       );
     });
+
+    this.store
+      .select(medicineSelectors.selectReminders)
+      .pipe(debounceTime(500))
+      .subscribe((reminders: ReminderDTO[]) => {
+        this.organizedReminders = this.organizeReminders(reminders);
+      });
   }
 }
