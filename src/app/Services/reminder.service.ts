@@ -36,11 +36,13 @@ export class ReminderService {
   }
 
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
+    const dayReset = new Date(day);
+    dayReset.setHours(0, 0, 0, 0);
     const startDate = new Date(reminder.start);
     const frequency = reminder.frequency;
     const frequencyUnit = reminder.frequencyUnit;
     const lastDose = this.getLastDoseTime(
-      day,
+      dayReset,
       startDate,
       frequency,
       frequencyUnit

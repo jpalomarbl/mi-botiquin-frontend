@@ -34,6 +34,8 @@ export class RemindersListComponent {
     if (this.router.url === '/remindersList/forward') this.wentForward = true;
     else if (this.router.url === '/remindersList/back') this.wentBack = true;
 
+    this.day.setHours(0, 0, 0, 0);
+
     this.route.queryParams.subscribe(params => {
       this.amount = params['amount'];
 
