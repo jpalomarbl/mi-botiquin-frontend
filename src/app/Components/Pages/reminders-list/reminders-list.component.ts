@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
-import { FormControl, FormGroup } from '@angular/forms';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -44,16 +43,15 @@ export class RemindersListComponent {
     //   datePicker: this.datePicker,
     // });
 
-    this.route.queryParams.subscribe((params) => {
-      this.amount = params['amount'];
+    this.amount = this.route.snapshot.params['amount'];
 
-      if (this.amount) {
-        if (this.router.url === '/remindersList/forward')
-          this.day.setDate(this.day.getDate() + this.amount);
-        else if (this.router.url === '/remindersList/back')
-          this.day.setDate(this.day.getDate() - this.amount);
+    if (this.amount) {
+      if (this.router.url.includes('forward')) {
+        this.day.setDate(this.day.getDate() + +this.amount);
+      } else if (this.router.url.includes('back')) {
+        this.day.setDate(this.day.getDate() - +this.amount);
       }
-    });
+    }
   }
 
   ngOnInit() {
