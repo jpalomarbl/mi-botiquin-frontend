@@ -28,34 +28,10 @@ export class ReminderEffects {
               (row: ReminderDTO, index: number) => {
                 if (index > 2) return null; // Limit to 3 reminders
 
-                const today = new Date();
-                const tomorrow = new Date(today);
-                tomorrow.setDate(today.getDate() + 1);
-                const startDate = new Date(row.start);
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
                 const finishDate = new Date(row.finish);
-                const frequency = row.frequency;
-                const frequencyUnit = row.frequencyUnit;
-                const lastDose = this.reminderService.getLastDoseTime(
-                  today,
-                  startDate,
-                  frequency,
-                  frequencyUnit
-                );
-                const nextDose = new Date(lastDose.getTime());
-
-                switch (frequencyUnit) {
-                  case 'minutes':
-                    nextDose.setMinutes(nextDose.getMinutes() + frequency);
-                    break;
-
-                  case 'hours':
-                    nextDose.setHours(nextDose.getHours() + frequency);
-                    break;
-
-                  case 'days':
-                    nextDose.setDate(nextDose.getDate() + frequency);
-                    break;
-                }
+                const nextDose = this.reminderService.getNextDoseTime(row, new Date());
 
                 if (
                   nextDose.getTime() < tomorrow.getTime() &&

@@ -35,6 +35,36 @@ export class ReminderService {
     return response;
   }
 
+  getNextDoseTime(reminder: ReminderDTO, day: Date) {
+    const startDate = new Date(reminder.start);
+    const frequency = reminder.frequency;
+    const frequencyUnit = reminder.frequencyUnit;
+    const lastDose = this.getLastDoseTime(
+      day,
+      startDate,
+      frequency,
+      frequencyUnit
+    );
+
+    const nextDose = new Date(lastDose.getTime());
+
+    switch (frequencyUnit) {
+      case 'minutes':
+        nextDose.setMinutes(nextDose.getMinutes() + frequency);
+        break;
+
+      case 'hours':
+        nextDose.setHours(nextDose.getHours() + frequency);
+        break;
+
+      case 'days':
+        nextDose.setDate(nextDose.getDate() + frequency);
+        break;
+    }
+
+    return nextDose;
+  }
+
   getLastDoseTime(
     currentTime: Date,
     startTime: Date,
