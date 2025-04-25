@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import * as AuthActions from '../actions/auth.actions';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from 'src/app/Services/auth.service';
 import { UserDTO } from 'src/app/Models/user.dto';
 
 @Injectable()
