@@ -45,16 +45,14 @@ export class RemindersListComponent {
     if (this.router.url === '/remindersList/forward') this.wentForward = true;
     else if (this.router.url === '/remindersList/back') this.wentBack = true;
 
-    this.day.setHours(0, 0, 0, 0);
-
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.amount = params['amount'];
 
       if (this.amount) {
         if (this.wentBack) {
-          this.day.setDate(this.day.getDate() - (+this.amount));
+          this.day.setDate(this.day.getDate() - +this.amount);
         } else if (this.wentForward) {
-          this.day.setDate(this.day.getDate() + (+this.amount));
+          this.day.setDate(this.day.getDate() + +this.amount);
         }
       }
     });
