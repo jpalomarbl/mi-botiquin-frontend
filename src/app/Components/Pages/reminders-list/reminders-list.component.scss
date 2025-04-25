@@ -1,4 +1,6 @@
 .reminders-list {
+  padding-inline: 10vw;
+
   &__date-picker {
     display: flex;
     flex-direction: row;
@@ -13,5 +15,22 @@
 
   &__date {
     margin-bottom: 0;
+  }
+
+  &__time-period {
+    margin-bottom: 4dvh;
+  }
+
+  &__time-title {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  &__card {
+    margin-bottom: 2dvh;
+  }
+
+  &__card-title {
+    font-size: 1.1rem;
   }
 }

@@ -156,7 +156,6 @@ export class RemindersListComponent {
       .pipe(debounceTime(500))
       .subscribe((reminders: ReminderDTO[]) => {
         this.organizedReminders = this.organizeReminders(reminders);
-        console.log(this.organizedReminders);
       });
   }
 
@@ -232,9 +231,6 @@ export class RemindersListComponent {
         nextDose = this.reminderService.getNextDoseTime(reminder, originalDate);
       }
     });
-
-    // const horaKey: string =
-    //       this.datePipe.transform(nextDose, 'shortTime') || 'Hora inválida';
 
     // Convertimos a array y ordenamos por hora
     const resultArray: [Date, ReminderDTO[]][] = Object.entries(
