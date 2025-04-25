@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -22,41 +23,40 @@ import { HeaderComponent } from '../../Common/header/header.component';
 export class RemindersListComponent {
   user$ = this.store.select(selectUser);
 
-  wentBack: boolean;
-  wentForward: boolean
-  amount: number | null;
+  amount: number | undefined;
   day: Date;
+  today: Date;
 
-
+  // datePicker: FormControl;
+  // datePickerForm: FormGroup;
 
   constructor(
     private store: Store<GlobalStateDTO>,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.wentBack = false;
-    this.wentForward = false;
-    this.amount = null;
-    this.day = new Date();
-    this.day.setHours(0, 0, 0, 0);
-  }
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+    this.day = new Date(this.today);
 
-  ngOnInit() {
-    if (this.router.url === '/remindersList/forward') this.wentForward = true;
-    else if (this.router.url === '/remindersList/back') this.wentBack = true;
+    // this.datePicker = new FormControl(this.today);
+    // this.datePickerForm = new FormGroup({
+    //   datePicker: this.datePicker,
+    // });
 
     this.route.queryParams.subscribe((params) => {
       this.amount = params['amount'];
 
       if (this.amount) {
-        if (this.wentBack) {
-          this.day.setDate(this.day.getDate() - +this.amount);
-        } else if (this.wentForward) {
-          this.day.setDate(this.day.getDate() + +this.amount);
-        }
+        if (this.router.url === '/remindersList/forward')
+          this.day.setDate(this.day.getDate() + this.amount);
+        else if (this.router.url === '/remindersList/back')
+          this.day.setDate(this.day.getDate() - this.amount);
       }
     });
+  }
 
+  ngOnInit() {
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
         reminderActions.fetchAllUserReminders({
