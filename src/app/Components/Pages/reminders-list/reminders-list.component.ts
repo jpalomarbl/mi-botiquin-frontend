@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
 import { filter, distinctUntilChanged } from 'rxjs';
+import { debounceTime } from 'rxjs';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
 import { selectReminders } from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -118,10 +119,10 @@ export class RemindersListComponent {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        debounceTime(500)
       )
       .subscribe(() => {
-        console.log('RELOAD')
         this.loadDataOnChange();
       });
 
@@ -136,9 +137,11 @@ export class RemindersListComponent {
       );
     });
 
-    // this.store.select(selectReminders).subscribe((reminders: ReminderDTO[]) => {
-    //   console.log(this.organizeReminders(reminders));
-    // });
+    this.store.select(selectReminders).pipe(
+      debounceTime(500)
+    ).subscribe((reminders: ReminderDTO[]) => {
+      console.log(this.organizeReminders(reminders));
+    });
   }
 
   navigateToPreviousDay() {
@@ -189,6 +192,7 @@ export class RemindersListComponent {
     [hora: string]: ReminderDTO[];
   } {
     let organizedReminders: { [hora: string]: ReminderDTO[] } = {};
+    console.log(this.day);
 
     reminders.forEach((reminder) => {
       let originalDate = new Date(this.day);
