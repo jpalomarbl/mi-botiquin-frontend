@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
@@ -13,7 +12,7 @@ import { ReminderService } from '../../../Services/reminder.service';
 export class ReminderEffects {
   constructor(
     private actions$: Actions,
-    private reminderService: ReminderService,
+    private reminderService: ReminderService
   ) {}
 
   fetchUserRemindersForToday$ = createEffect(() =>
@@ -83,6 +82,7 @@ export class ReminderEffects {
   fetchAllUserReminders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserReminders),
+      debounceTime(300),
       mergeMap(({ userId, day }) =>
         this.reminderService.fetchAllUserReminders(userId).pipe(
           map((response: any) => {
@@ -91,10 +91,7 @@ export class ReminderEffects {
                 const dayAfter = new Date(day);
                 dayAfter.setDate(dayAfter.getDate() + 1);
                 const finishDate = new Date(row.finish);
-                const nextDose = this.reminderService.getNextDoseTime(
-                  row,
-                  day
-                );
+                const nextDose = this.reminderService.getNextDoseTime(row, day);
 
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
@@ -116,8 +113,8 @@ export class ReminderEffects {
 
             return reminderActions.fetchAllUserRemindersSuccess({
               reminders: reminders[0]
-              ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
-              : null,
+                ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
+                : null,
             });
           }),
           catchError((error) =>
