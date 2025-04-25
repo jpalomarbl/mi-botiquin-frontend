@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { environment } from 'src/app/environment/environment';
 import { LoginDTO } from 'src/app/Models/auth.dto';
-import { FormsModule } from 'src/app/Modules/forms/forms.module';
+import { FormsModule } from 'src/app/Modules/forms.module';
 import { login, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
 // import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
 
@@ -27,7 +27,10 @@ export class LoginComponent {
   // error$: Observable<string | null>;
 
   constructor(private store: Store, private router: Router) {
-    this.credentials = { email: 'john.doe@example.com', password: 'password1234' };
+    this.credentials = {
+      email: 'john.doe@example.com',
+      password: 'password1234',
+    };
 
     this.email = new FormControl(this.credentials.email);
     this.password = new FormControl(this.credentials.password);
