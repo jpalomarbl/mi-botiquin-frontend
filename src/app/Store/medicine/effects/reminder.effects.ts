@@ -14,8 +14,6 @@ export class ReminderEffects {
   constructor(
     private actions$: Actions,
     private reminderService: ReminderService,
-    private router: Router,
-    private store: Store
   ) {}
 
   fetchUserRemindersForToday$ = createEffect(() =>
@@ -29,6 +27,7 @@ export class ReminderEffects {
               .filter((row: ReminderDTO) => {
                 const dayAfter = new Date();
                 dayAfter.setDate(dayAfter.getDate() + 1);
+                dayAfter.setHours(0, 0, 0, 0);
                 const finishDate = new Date(row.finish);
                 const nextDose = this.reminderService.getNextDoseTime(
                   row,
