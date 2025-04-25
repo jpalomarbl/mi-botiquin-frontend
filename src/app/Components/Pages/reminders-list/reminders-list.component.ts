@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -11,11 +14,19 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
+import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 
 @Component({
   selector: 'app-reminders-list',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, FormsModule],
+  imports: [
+    HeaderComponent,
+    FooterComponent,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    DateFormatPipe
+  ],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
@@ -25,6 +36,10 @@ export class RemindersListComponent {
   amount: number | undefined;
   day: Date;
   today: Date;
+
+  isYesterday: boolean;
+  isTomorrow: boolean;
+  isToday: boolean;
 
   // datePicker: FormControl;
   // datePickerForm: FormGroup;
@@ -52,6 +67,10 @@ export class RemindersListComponent {
         this.day.setDate(this.day.getDate() - +this.amount);
       }
     }
+
+    this.isYesterday = this.router.url.includes('back') && this.amount === 1;
+    this.isTomorrow = this.router.url.includes('forward') && this.amount === 1;
+    this.isToday = this.amount === undefined || this.amount === null;
   }
 
   ngOnInit() {

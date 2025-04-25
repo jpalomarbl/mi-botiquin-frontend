@@ -1,0 +1,17 @@
+.reminders-list {
+  &__date-picker {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-inline: auto;
+    margin-block: 5dvh;
+    width: 60vw;
+  }
+
+  &__date {
+    margin-bottom: 0;
+  }
+}

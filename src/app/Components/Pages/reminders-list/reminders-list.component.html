@@ -13,4 +13,33 @@
   </mat-form-field>
 </section> -->
 
+<div class="reminders-list">
+  <section class="reminders-list__date-picker">
+    <button
+      class="reminders-list__back-button"
+      mat-mini-fab
+      color="primary"
+      aria-label="Go to previous day"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <h2 class="reminders-list__date" *ngIf="isYesterday">Ayer</h2>
+    <h2 class="reminders-list__date" *ngIf="isToday">Hoy</h2>
+    <h2 class="reminders-list__date" *ngIf="isTomorrow">Mañana</h2>
+    <h2 class="reminders-list__date" *ngIf="!isToday && amount! > 1">
+      {{ day | dateFormat }}
+    </h2>
+
+    <button
+      class="reminders-list__back-button"
+      mat-mini-fab
+      color="primary"
+      aria-label="Go to previous day"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </section>
+</div>
+
 <custom-footer></custom-footer>
