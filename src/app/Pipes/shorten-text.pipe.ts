@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ShortenTextPipe implements PipeTransform {
 
-  transform(value: string | null | undefined): string {
+  transform(value: string | null | undefined, characers: number = 30): string {
     if (!value) return '';
-    else return value.slice(0, 30) + "\u2026";
+    else return value.slice(0, characers) + "\u2026";
   }
 }
