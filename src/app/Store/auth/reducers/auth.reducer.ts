@@ -1,9 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthStateDTO } from 'src/app/Models/authState.dto';
 import * as AuthActions from '../actions/auth.actions';
+import * as userRelationshipActions from '../actions/userRelationships.actions';
 
 export const initialState: AuthStateDTO = {
   user: null,
+  relationships: null,
   loading: false,
   loaded: false,
   error: null,
@@ -75,6 +77,7 @@ export const authReducer = createReducer(
     error: error,
   })),
 
+  // Check session
   on(AuthActions.checkSession, (state) => ({
     ...state,
     loading: true,
@@ -93,5 +96,47 @@ export const authReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  }))
+  })),
+
+  // Fetch caretaker relationships
+  on(userRelationshipActions.fetchCaretakerRelationships, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchCaretakerRelationshipsSuccess, (state, { relationships }) => ({
+    ...state,
+    relationships: relationships,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchCaretakerRelationshipsError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
+  // Fetch family member relationships
+  on(userRelationshipActions.fetchFamilyMemberRelationships, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchFamilyMemberRelationshipsSuccess, (state, { relationships }) => ({
+    ...state,
+    relationships: relationships,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchFamilyMemberRelationshipsError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
 );
