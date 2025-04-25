@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { UserRelationshipDTO } from 'src/app/Models/userRelaitonship.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
 
 export const fetchCaretakerRelationships = createAction(
   '[Auth] Fetch Caretaker Relationships From API',
@@ -8,7 +8,7 @@ export const fetchCaretakerRelationships = createAction(
 
 export const fetchCaretakerRelationshipsSuccess = createAction(
   '[Auth] Fetch Caretaker Relationships From API Success',
-  props<{ reminders: UserRelationshipDTO[] }>()
+  props<{ relationships: UserDTO[] }>()
 );
 
 export const fetchCaretakerRelationshipsError = createAction(
@@ -23,7 +23,7 @@ export const fetchFamilyMemberRelationships = createAction(
 
 export const fetchFamilyMemberRelationshipsSuccess = createAction(
   '[Auth] Fetch Family Member Relationships From API Success',
-  props<{ reminders: UserRelationshipDTO[] }>()
+  props<{ relationships: UserDTO[] }>()
 );
 
 export const fetchFamilyMemberRelationshipsError = createAction(

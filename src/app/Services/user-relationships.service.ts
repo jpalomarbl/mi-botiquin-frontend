@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../environment/environment';
-import { UserRelationshipDTO } from '../Models/userRelaitonship.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +12,15 @@ export class UserRelationshipsService {
 
   constructor(private http: HttpClient) {}
 
-  fetchCaretakerRelationships(userId: number): Observable<UserRelationshipDTO[]> {
-    return this.http.get<UserRelationshipDTO[]>(`${this.apiUrl}/caretaker`, {
+  fetchCaretakerRelationships(userId: number): Observable<[]> {
+    return this.http.get<[]>(`${this.apiUrl}/caretaker`, {
       withCredentials: true,
       params: { caretakerId: userId.toString() },
     });
   }
 
-  fetchFamilyMemberRelationships(userId: number): Observable<UserRelationshipDTO[]> {
-    return this.http.get<UserRelationshipDTO[]>(`${this.apiUrl}/familyMember`, {
+  fetchFamilyMemberRelationships(userId: number): Observable<[]> {
+    return this.http.get<[]>(`${this.apiUrl}/familyMember`, {
       withCredentials: true,
       params: { familyMemberId: userId.toString() },
     });
