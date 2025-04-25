@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 
+import { FormsModule } from 'src/app/Modules/forms.module';
+
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
@@ -13,7 +15,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 @Component({
   selector: 'app-reminders-list',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, FormsModule],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
