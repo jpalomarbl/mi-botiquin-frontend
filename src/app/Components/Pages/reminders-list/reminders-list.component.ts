@@ -6,11 +6,11 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
-import { filter, distinctUntilChanged } from 'rxjs';
+import { filter, distinctUntilChanged, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
-import { selectReminders } from 'src/app/Store/medicine/selectors/medicine.selectors';
+import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -51,7 +51,9 @@ import { HeaderComponent } from '../../Common/header/header.component';
   styleUrls: ['./reminders-list.component.scss'],
 })
 export class RemindersListComponent {
-  user$ = this.store.select(selectUser);
+  user$: Observable<UserDTO | null>;
+  loading$: Observable<boolean>;
+  error$: Observable<any>;
 
   // Amount of days displaced from today
   daysDisplaced: number;
@@ -79,6 +81,10 @@ export class RemindersListComponent {
     private reminderService: ReminderService,
     private datePipe: DatePipe
   ) {
+    this.user$ = this.store.select(selectUser);
+    this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+    this.error$ = this.store.select(medicineSelectors.selectMedicineError);
+
     // It's important that we set today's date at midnight because
     // we want to list every reminder form the day, not just from now.
     this.today = new Date();
@@ -137,7 +143,7 @@ export class RemindersListComponent {
       );
     });
 
-    this.store.select(selectReminders).pipe(
+    this.store.select(medicineSelectors.selectReminders).pipe(
       debounceTime(500)
     ).subscribe((reminders: ReminderDTO[]) => {
       console.log(this.organizeReminders(reminders));
