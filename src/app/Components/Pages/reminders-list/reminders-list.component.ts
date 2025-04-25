@@ -1,25 +1,38 @@
-import { DatePipe } from '@angular/common';
+// Angular
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
 
+// Router
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+
+// Ngrx and Observables
+import { Store } from '@ngrx/store';
+import { filter, distinctUntilChanged } from 'rxjs';
+import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
+import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
+import { selectReminders } from 'src/app/Store/medicine/selectors/medicine.selectors';
+
+// Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+// Custom modules
 import { FormsModule } from 'src/app/Modules/forms.module';
 
+// Data types
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
+
+// Pipes
+import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
+
+// Custom services
 import { ReminderService } from 'src/app/Services/reminder.service';
-import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
-import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+
+// Components
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
-
-import { selectReminders } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 @Component({
   selector: 'app-reminders-list',
@@ -39,13 +52,21 @@ import { selectReminders } from 'src/app/Store/medicine/selectors/medicine.selec
 export class RemindersListComponent {
   user$ = this.store.select(selectUser);
 
-  amount: number;
-  day: Date;
+  // Amount of days displaced from today
+  daysDisplaced: number;
+
   today: Date;
 
+  // Day = today +/- daysDisplaced
+  day: Date;
+
+  // These control whether the user sees "Ayer", "Hoy" or "Mañana" on the date picker section
   isYesterday: boolean;
   isTomorrow: boolean;
   isToday: boolean;
+
+  // Debounce control
+  lastClickTime: number;
 
   // datePicker: FormControl;
   // datePickerForm: FormGroup;
@@ -57,8 +78,11 @@ export class RemindersListComponent {
     private reminderService: ReminderService,
     private datePipe: DatePipe
   ) {
+    // It's important that we set today's date at midnight because
+    // we want to list every reminder form the day, not just from now.
     this.today = new Date();
     this.today.setHours(0, 0, 0, 0);
+
     this.day = new Date(this.today);
 
     // this.datePicker = new FormControl(this.today);
@@ -66,69 +90,108 @@ export class RemindersListComponent {
     //   datePicker: this.datePicker,
     // });
 
-    this.amount = this.route.snapshot.params['amount']
-      ? +this.route.snapshot.params['amount']
+    this.daysDisplaced = this.route.snapshot.params['daysDisplaced']
+      ? +this.route.snapshot.params['daysDisplaced']
       : 0;
 
-    if (this.amount > 0) {
-      if (this.router.url.includes('forward')) {
-        this.day.setDate(this.day.getDate() + this.amount);
-      } else if (this.router.url.includes('back')) {
-        this.day.setDate(this.day.getDate() - this.amount);
+    // If the user has navigated already to a different date, the route will be
+    // 'remindersList/forwards' or 'remindersList/backwards'. We set this.day
+    // according to that.
+    if (this.daysDisplaced > 0) {
+      if (this.router.url.includes('forwards')) {
+        this.day.setDate(this.day.getDate() + this.daysDisplaced);
+      } else if (this.router.url.includes('backwards')) {
+        this.day.setDate(this.day.getDate() - this.daysDisplaced);
       }
     }
 
-    this.isYesterday = this.router.url.includes('back') && this.amount === 1;
-    this.isTomorrow = this.router.url.includes('forward') && this.amount === 1;
-    this.isToday = this.amount === 0;
+    this.isYesterday =
+      this.router.url.includes('backwards') && this.daysDisplaced === 1;
+    this.isTomorrow =
+      this.router.url.includes('forwards') && this.daysDisplaced === 1;
+    this.isToday = this.daysDisplaced === 0;
+
+    this.lastClickTime = 0;
+
+    console.log('isToday', this.isToday);
+    console.log('isTomorrow', this.isTomorrow);
+    console.log('isYesterday', this.isYesterday);
   }
 
   ngOnInit() {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        distinctUntilChanged()
+      )
+      .subscribe(() => {
+        console.log('RELOAD')
+        this.loadDataOnChange();
+      });
+
+
+    // We fetch all user reminders and filter them for the specified day.
     this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
       this.store.dispatch(
-        reminderActions.fetchAllUserReminders({
+        fetchAllUserReminders({
           userId: (user! as UserDTO).id,
           day: this.day,
         })
       );
     });
 
-    this.store.select(selectReminders).subscribe((reminders: ReminderDTO[]) => {
-      console.log(this.organizeReminders(reminders));
-    });
+    // this.store.select(selectReminders).subscribe((reminders: ReminderDTO[]) => {
+    //   console.log(this.organizeReminders(reminders));
+    // });
   }
 
   navigateToPreviousDay() {
-    if (this.amount > 0) {
-      if (this.router.url.includes('back')) {
-        this.amount++;
-      } else if (this.router.url.includes('forward')) {
-        this.amount--;
-      }
+    const now = Date.now();
+    if (now - this.lastClickTime < 500) return; // Evita múltiples clics en 500ms
+    this.lastClickTime = now;
 
-      if (this.amount === 0) this.router.navigate(['remindersList']);
-      else this.router.navigate(['remindersList/back', this.amount]);
-    } else this.router.navigate(['remindersList/back/1']);
+    const isBackwards = this.router.url.includes('backwards');
+    const isForwards = this.router.url.includes('forwards');
+
+    if (this.daysDisplaced > 0) {
+      this.daysDisplaced += isBackwards ? +1 : isForwards ? -1 : 0;
+
+      if (this.daysDisplaced === 0) {
+        this.router.navigate(['remindersList']);
+      } else if (isForwards) {
+        this.router.navigate(['remindersList/forwards', this.daysDisplaced]);
+      } else if (isBackwards) {
+        this.router.navigate(['remindersList/backwards', this.daysDisplaced]);
+      }
+    } else this.router.navigate(['remindersList/backwards/1']);
   }
 
   navigateToNextDay() {
-    if (this.amount > 0) {
-      if (this.router.url.includes('back')) {
-        this.amount--;
-      } else if (this.router.url.includes('forward')) {
-        this.amount++;
-      }
+    const now = Date.now();
+    if (now - this.lastClickTime < 500) return; // Evita múltiples clics en 500ms
+    this.lastClickTime = now;
 
-      if (this.amount === 0) this.router.navigate(['remindersList']);
-      else this.router.navigate(['remindersList/forward', this.amount]);
-    } else this.router.navigate(['remindersList/forward/1']);
+    const isBackwards = this.router.url.includes('backwards');
+    const isForwards = this.router.url.includes('forwards');
+
+    if (this.daysDisplaced > 0) {
+      this.daysDisplaced += isBackwards ? -1 : isForwards ? +1 : 0;
+
+      if (this.daysDisplaced === 0) {
+        this.router.navigate(['remindersList']);
+      } else if (isForwards) {
+        this.router.navigate(['remindersList/forwards', this.daysDisplaced]);
+      } else if (isBackwards) {
+        this.router.navigate(['remindersList/backwards', this.daysDisplaced]);
+      }
+    } else this.router.navigate(['remindersList/forwards/1']);
   }
 
   // Cómo represento que un reminder ha sido consumido?
 
-  private organizeReminders(
-    reminders: ReminderDTO[]
-  ): { [hora: string]: ReminderDTO[] } {
+  private organizeReminders(reminders: ReminderDTO[]): {
+    [hora: string]: ReminderDTO[];
+  } {
     let organizedReminders: { [hora: string]: ReminderDTO[] } = {};
 
     reminders.forEach((reminder) => {
@@ -158,5 +221,56 @@ export class RemindersListComponent {
     });
 
     return organizedReminders;
+  }
+
+  private loadDataOnChange(): void {
+    // It's important that we set today's date at midnight because
+    // we want to list every reminder form the day, not just from now.
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+
+    this.day = new Date(this.today);
+
+    // this.datePicker = new FormControl(this.today);
+    // this.datePickerForm = new FormGroup({
+    //   datePicker: this.datePicker,
+    // });
+
+    this.daysDisplaced = this.route.snapshot.params['daysDisplaced']
+      ? +this.route.snapshot.params['daysDisplaced']
+      : 0;
+
+    // If the user has navigated already to a different date, the route will be
+    // 'remindersList/forwards' or 'remindersList/backwards'. We set this.day
+    // according to that.
+    if (this.daysDisplaced > 0) {
+      if (this.router.url.includes('forwards')) {
+        this.day.setDate(this.day.getDate() + this.daysDisplaced);
+      } else if (this.router.url.includes('backwards')) {
+        this.day.setDate(this.day.getDate() - this.daysDisplaced);
+      }
+    }
+
+    this.isYesterday =
+      this.router.url.includes('backwards') && this.daysDisplaced === 1;
+    this.isTomorrow =
+      this.router.url.includes('forwards') && this.daysDisplaced === 1;
+    this.isToday = this.daysDisplaced === 0;
+
+    this.lastClickTime = 0;
+
+    console.log('isToday', this.isToday);
+    console.log('isTomorrow', this.isTomorrow);
+    console.log('isYesterday', this.isYesterday);
+
+    // We fetch all user reminders and filter them for the specified day.
+    this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
+      this.store.dispatch(
+        fetchAllUserReminders({
+          userId: (user! as UserDTO).id,
+          day: this.day,
+        })
+      );
+    });
   }
 }
