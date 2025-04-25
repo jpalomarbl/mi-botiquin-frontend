@@ -10,11 +10,11 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
+import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
-import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 
 @Component({
   selector: 'app-reminders-list',
