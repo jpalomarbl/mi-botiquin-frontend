@@ -50,7 +50,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
     ShortenTextPipe,
     DatePipe
   ],
-  providers:[DatePipe],
+  providers:[DatePipe, ShortenTextPipe],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
