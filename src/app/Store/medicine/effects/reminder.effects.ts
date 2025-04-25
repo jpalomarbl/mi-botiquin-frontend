@@ -93,7 +93,7 @@ export class ReminderEffects {
                 const finishDate = new Date(row.finish);
                 const nextDose = this.reminderService.getNextDoseTime(
                   row,
-                  new Date()
+                  day
                 );
 
                 return (
