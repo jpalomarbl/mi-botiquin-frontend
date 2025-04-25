@@ -21,16 +21,25 @@ import { HeaderComponent } from '../../Common/header/header.component';
 })
 export class RemindersListComponent {
   user$ = this.store.select(selectUser);
-  wentBack = false;
-  wentForward = false;
-  amount = null;
-  day = new Date();
+
+  wentBack: boolean;
+  wentForward: boolean
+  amount: number | null;
+  day: Date;
+
+
 
   constructor(
     private store: Store<GlobalStateDTO>,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.wentBack = false;
+    this.wentForward = false;
+    this.amount = null;
+    this.day = new Date();
+    this.day.setHours(0, 0, 0, 0);
+  }
 
   ngOnInit() {
     if (this.router.url === '/remindersList/forward') this.wentForward = true;
