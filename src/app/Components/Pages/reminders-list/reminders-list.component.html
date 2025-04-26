@@ -49,10 +49,10 @@
     </button>
   </section>
 
-  <section class="reminders-list__patient-selector" *ngIf="!isPatient">
-    <mat-form-field appearance="fill">
+  <section class="reminders-list__patient-selector-container" *ngIf="!isPatient">
+    <mat-form-field class="reminders-list__patient-selector" appearance="fill">
       <mat-label>Filtra por pacientes</mat-label>
-      <mat-select (selectionChange)="loadData($event.value)">
+      <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">
         <mat-option *ngFor="let user of userRelationships$ | async; index as i" [value]="user.id">
           {{user.firstName}} {{user.lastName}}
         </mat-option>
