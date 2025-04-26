@@ -150,7 +150,6 @@ export class RemindersListComponent {
   ngOnInit() {
     this.route.params.pipe(
       distinctUntilChanged(),
-      debounceTime(500)
   ).subscribe(params => {
       this.userId = params['userId'] ? +params['userId'] : 0;
 
@@ -231,7 +230,7 @@ export class RemindersListComponent {
 
   loadData(userId: number = 0): void {
     this.userId = userId;
-    
+
     // If a userId has been specified, we search for that user's reminders.
     // If not, we search for the logged in user's reminders.
     if (userId && +userId !== 0) {
@@ -266,7 +265,6 @@ export class RemindersListComponent {
 
     this.store
       .select(medicineSelectors.selectReminders)
-      .pipe(debounceTime(500))
       .subscribe((reminders: ReminderDTO[]) => {
         this.organizedReminders = this.organizeReminders(reminders);
       });
@@ -276,50 +274,50 @@ export class RemindersListComponent {
   // Nueva tabla "consumiciones" enlazada a los reminders
   // Cada vez que se marca como consumido, se agrega una fila a la tabla
 
-  private organizeReminders(
-    reminders: ReminderDTO[]
-  ): Array<[Date, ReminderDTO[]]> {
-    if (!reminders) return [];
+  private organizeReminders(reminders: ReminderDTO[]): Array<[Date, ReminderDTO[]]> {
+    if (!reminders || reminders.length === 0) return [];
 
-    let organizedReminders: { [hora: string]: ReminderDTO[] } = {};
+    // Procesamiento paralelo de los recordatorios
+    const allDoses = reminders.flatMap(reminder => {
+        const doses: { time: Date; reminder: ReminderDTO }[] = [];
+        let currentDate = new Date(this.day);
+        const nextDay = new Date(this.day);
+        nextDay.setDate(nextDay.getDate() + 1);
 
-    reminders.forEach((reminder) => {
-      let originalDate = new Date(this.day);
-      const nextDay = new Date(this.day);
-      nextDay.setDate(nextDay.getDate() + 1);
+        let nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
 
-      let nextDose = this.reminderService.getNextDoseTime(
-        reminder,
-        originalDate
-      );
+        while (nextDose.getTime() <= nextDay.getTime()) {
+            doses.push({
+                time: new Date(nextDose),
+                reminder: reminder
+            });
 
-      while (nextDose.getTime() <= nextDay.getTime()) {
-        if (organizedReminders[nextDose.toString()]) {
-          organizedReminders[nextDose.toString()].push(reminder);
-        } else {
-          organizedReminders[nextDose.toString()] = [reminder];
+            // Actualizamos la fecha para la próxima dosis
+            currentDate = new Date(nextDose);
+            nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
         }
 
-        // Actualizamos la fecha para la próxima dosis
-        originalDate = new Date(nextDose);
-        nextDose = this.reminderService.getNextDoseTime(reminder, originalDate);
-      }
+        return doses;
     });
 
-    // Convertimos a array y ordenamos por hora
-    const resultArray: [Date, ReminderDTO[]][] = Object.entries(
-      organizedReminders
-    )
-      .map(
-        ([hora, reminders]) =>
-          [new Date(hora), reminders] as [Date, ReminderDTO[]]
-      )
-      .sort(([horaA], [horaB]) => {
-        return horaA.getTime() - horaB.getTime();
-      });
+    // Agrupamiento eficiente por hora
+    const grouped = new Map<number, ReminderDTO[]>();
 
-    return resultArray;
-  }
+    allDoses.forEach(({ time, reminder }) => {
+        // Usamos el timestamp como clave para agrupar
+        const timeKey = time.getTime();
+        if (grouped.has(timeKey)) {
+            grouped.get(timeKey)!.push(reminder);
+        } else {
+            grouped.set(timeKey, [reminder]);
+        }
+    });
+
+    // Conversión a array y ordenación
+    return Array.from(grouped.entries())
+        .map(([timestamp, reminders]) => [new Date(timestamp), reminders] as [Date, ReminderDTO[]])
+        .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
+}
 
   private calculateDate(): void {
     // It's important that we set today's date at midnight because
