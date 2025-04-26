@@ -44,6 +44,18 @@ const routes: Routes = [
     component: RemindersListComponent
   },
   {
+    path: 'remindersList/:userId/forwards/:daysDisplaced',
+    component: RemindersListComponent
+  },
+  {
+    path: 'remindersList/:userId/backwards/:daysDisplaced',
+    component: RemindersListComponent
+  },
+  {
+    path: 'remindersList/:userId',
+    component: RemindersListComponent
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full',
