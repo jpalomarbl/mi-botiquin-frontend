@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
-import * as AuthActions from '../actions/auth.actions';
-import { AuthService } from 'src/app/Services/auth.service';
 import { UserDTO } from 'src/app/Models/user.dto';
+import { AuthService } from 'src/app/Services/auth.service';
+import { UserRelationshipsService } from 'src/app/Services/user-relationships.service';
+import * as AuthActions from '../actions/auth.actions';
+import * as userRelationshipActions from '../actions/userRelationships.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -15,7 +17,8 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private userRelationshipService: UserRelationshipsService
   ) {}
 
   login$ = createEffect(() =>
@@ -119,23 +122,12 @@ export class AuthEffects {
     )
   );
 
-  // registerSuccess$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
-  //       tap(() => this.router.navigate(['/']))
-  //     ),
-  //   { dispatch: false }
-  // );
-
   checkSession$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkSession),
       mergeMap(() =>
         this.authService.checkSession().pipe(
-          map((user: UserDTO) =>
-            AuthActions.checkSessionSuccess({ user })
-          ),
+          map((user: UserDTO) => AuthActions.checkSessionSuccess({ user })),
           catchError((error) =>
             of(
               AuthActions.checkSessionError({
@@ -146,5 +138,63 @@ export class AuthEffects {
         )
       )
     )
+  );
+
+  fetchCaretakerRelationships$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.fetchCaretakerRelationships),
+      mergeMap(({ userId }) =>
+        this.userRelationshipService.fetchCaretakerRelationships(userId).pipe(
+          map((response: UserDTO[]) => {
+            console.log(response);
+            return userRelationshipActions.fetchCaretakerRelationshipsSuccess({
+              relationships: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              userRelationshipActions.fetchCaretakerRelationshipsError({
+                error: error.error || 'Fetch relationships failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  fetchFamilyMemberRelationships$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.fetchFamilyMemberRelationships),
+      mergeMap(({ userId }) =>
+        this.userRelationshipService.fetchFamilyMemberRelationships(userId).pipe(
+          map((response: UserDTO[]) => {
+            console.log(response);
+            return userRelationshipActions.fetchFamilyMemberRelationshipsSuccess({
+              relationships: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              userRelationshipActions.fetchFamilyMemberRelationshipsError({
+                error: error.error || 'Fetch relationships failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  fetchCaretakerRelationshipsSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          userRelationshipActions.fetchCaretakerRelationshipsSuccess,
+          userRelationshipActions.fetchFamilyMemberRelationshipsSuccess
+        ),
+        tap(() => console.log('Hola'))
+      ),
+    { dispatch: false }
   );
 }
