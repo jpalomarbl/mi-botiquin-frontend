@@ -6,7 +6,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Observable, switchMap } from 'rxjs';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
@@ -148,19 +148,23 @@ export class RemindersListComponent {
   }
 
   ngOnInit() {
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        distinctUntilChanged(),
-        debounceTime(500)
-      )
-      .subscribe(() => {
-        this.calculateDate();
-        this.loadData();
-      });
+    this.route.params.pipe(
+      distinctUntilChanged(),
+      debounceTime(500)
+  ).subscribe(params => {
+      this.userId = params['userId'] ? +params['userId'] : 0;
+      console.log('params', this.userId);
+      this.calculateDate();
+      this.loadData(this.userId);
+  });
 
     // We fetch all user reminders and filter them for the specified day.
-    this.loadData();
+    if (
+      !this.router.url.includes('forwards') &&
+      !this.router.url.includes('backwards')
+    ) {
+      this.loadData(this.userId);
+    }
   }
 
   navigateToPreviousDay() {
@@ -171,17 +175,27 @@ export class RemindersListComponent {
     const isBackwards = this.router.url.includes('backwards');
     const isForwards = this.router.url.includes('forwards');
 
+    const userIdString =
+      this.userId && this.userId !== 0 ? `/${this.userId.toString()}` : '';
+
     if (this.daysDisplaced > 0) {
       this.daysDisplaced += isBackwards ? +1 : isForwards ? -1 : 0;
 
       if (this.daysDisplaced === 0) {
-        this.router.navigate(['remindersList']);
+        this.router.navigate(['remindersList' + userIdString]);
       } else if (isForwards) {
-        this.router.navigate(['remindersList/forwards', this.daysDisplaced]);
+        this.router.navigate([
+          'remindersList' + userIdString + '/forwards',
+          this.daysDisplaced,
+        ]);
       } else if (isBackwards) {
-        this.router.navigate(['remindersList/backwards', this.daysDisplaced]);
+        this.router.navigate([
+          'remindersList' + userIdString + '/backwards',
+          this.daysDisplaced,
+        ]);
       }
-    } else this.router.navigate(['remindersList/backwards/1']);
+    } else
+      this.router.navigate(['remindersList' + userIdString + '/backwards/1']);
   }
 
   navigateToNextDay() {
@@ -192,23 +206,39 @@ export class RemindersListComponent {
     const isBackwards = this.router.url.includes('backwards');
     const isForwards = this.router.url.includes('forwards');
 
+    console.log('navigate', this.userId);
+
+    const userIdString =
+      this.userId && this.userId !== 0 ? `/${this.userId.toString()}` : '';
+
     if (this.daysDisplaced > 0) {
       this.daysDisplaced += isBackwards ? -1 : isForwards ? +1 : 0;
 
       if (this.daysDisplaced === 0) {
-        this.router.navigate(['remindersList']);
+        this.router.navigate(['remindersList' + userIdString]);
       } else if (isForwards) {
-        this.router.navigate(['remindersList/forwards', this.daysDisplaced]);
+        this.router.navigate([
+          'remindersList' + userIdString + '/forwards',
+          this.daysDisplaced,
+        ]);
       } else if (isBackwards) {
-        this.router.navigate(['remindersList/backwards', this.daysDisplaced]);
+        this.router.navigate([
+          'remindersList' + userIdString + '/backwards',
+          this.daysDisplaced,
+        ]);
       }
-    } else this.router.navigate(['remindersList/forwards/1']);
+    } else
+      this.router.navigate(['remindersList' + userIdString + '/forwards/1']);
   }
 
-  loadData(userId: number | null = null): void {
+  loadData(userId: number = 0): void {
+    this.userId = userId;
+    console.log('loaddata', userId);
     // If a userId has been specified, we search for that user's reminders.
     // If not, we search for the logged in user's reminders.
     if (userId && +userId !== 0) {
+      this.userId = +userId;
+
       this.store.dispatch(
         fetchAllUserReminders({
           userId: userId,
