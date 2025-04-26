@@ -146,7 +146,6 @@ export class AuthEffects {
       mergeMap(({ userId }) =>
         this.userRelationshipService.fetchCaretakerRelationships(userId).pipe(
           map((response: UserDTO[]) => {
-            console.log(response);
             return userRelationshipActions.fetchCaretakerRelationshipsSuccess({
               relationships: response,
             });
@@ -169,7 +168,6 @@ export class AuthEffects {
       mergeMap(({ userId }) =>
         this.userRelationshipService.fetchFamilyMemberRelationships(userId).pipe(
           map((response: UserDTO[]) => {
-            console.log(response);
             return userRelationshipActions.fetchFamilyMemberRelationshipsSuccess({
               relationships: response,
             });
@@ -193,7 +191,7 @@ export class AuthEffects {
           userRelationshipActions.fetchCaretakerRelationshipsSuccess,
           userRelationshipActions.fetchFamilyMemberRelationshipsSuccess
         ),
-        tap(() => console.log('Hola'))
+        // tap(() => console.log('Hola'))
       ),
     { dispatch: false }
   );
