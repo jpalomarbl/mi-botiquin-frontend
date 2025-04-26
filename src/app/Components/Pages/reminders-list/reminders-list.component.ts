@@ -7,9 +7,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
-import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
+import { selectUser, selectUserRelationships } from 'src/app/Store/auth/selectors/auth.selectors';
 import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
+import { fetchCaretakerRelationships, fetchFamilyMemberRelationships } from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
+import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -56,8 +58,13 @@ import { HeaderComponent } from '../../Common/header/header.component';
 })
 export class RemindersListComponent {
   user$: Observable<UserDTO | null>;
-  loading$: Observable<boolean>;
-  error$: Observable<any>;
+  userRelationships$: Observable<UserDTO[] | null>;
+
+  loadingMedicine$: Observable<boolean>;
+  loadingAuth$: Observable<boolean>;
+
+  errorMedicine$: Observable<any>;
+  errorAuth$: Observable<any>;
 
   // Amount of days displaced from today
   daysDisplaced: number;
@@ -86,11 +93,15 @@ export class RemindersListComponent {
     private router: Router,
     private route: ActivatedRoute,
     private reminderService: ReminderService,
-    private datePipe: DatePipe
   ) {
     this.user$ = this.store.select(selectUser);
-    this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
-    this.error$ = this.store.select(medicineSelectors.selectMedicineError);
+    this.userRelationships$ = this.store.select(selectUserRelationships);
+
+    this.loadingMedicine$ = this.store.select(medicineSelectors.selectMedicineLoading);
+    this.loadingAuth$ = this.store.select(authSelectors.selectAuthLoading);
+
+    this.errorMedicine$ = this.store.select(medicineSelectors.selectMedicineError);
+    this.errorAuth$ = this.store.select(authSelectors.selectAuthError);
 
     // It's important that we set today's date at midnight because
     // we want to list every reminder form the day, not just from now.
@@ -149,6 +160,12 @@ export class RemindersListComponent {
           day: this.day,
         })
       );
+
+      if ((user! as UserDTO).role === 'caretaker') {
+        this.store.dispatch(fetchCaretakerRelationships({ userId: (user! as UserDTO).id }));
+      } else if ((user! as UserDTO).role === 'family member') {
+        this.store.dispatch(fetchFamilyMemberRelationships({ userId: (user! as UserDTO).id }));
+      }
     });
 
     this.store

@@ -49,15 +49,29 @@
     </button>
   </section>
 
-  <section class="reminders-list__list">
+  <section class="reminders-list__patient-selector"></section>
+
+  <section
+    class="reminders-list__list"
+    *ngIf="organizedReminders.length > 0; else noReminders"
+  >
     <!-- organizedReminders is an array of arrays of type [Date, ReminderDTO[]] -->
-    <div class="reminders-list__time-period" *ngFor="let pair of organizedReminders">
-      <h3 class="reminders-list__time-title">{{ pair[0] | date : "shortTime"}}</h3>
+    <div
+      class="reminders-list__time-period"
+      *ngFor="let pair of organizedReminders"
+    >
+      <h3 class="reminders-list__time-title">
+        {{ pair[0] | date : "shortTime" }}
+      </h3>
 
       <mat-card class="reminders-list__card" *ngFor="let reminder of pair[1]">
         <mat-card-header>
-          <mat-card-subtitle class="reminders-list__card-state"> Consumido/Por consumir</mat-card-subtitle>
-          <mat-card-title class="reminders-list__card-title">{{ reminder.medicineName | shortenText : 30}}</mat-card-title>
+          <mat-card-subtitle class="reminders-list__card-state">
+            Consumido/Por consumir</mat-card-subtitle
+          >
+          <mat-card-title class="reminders-list__card-title">{{
+            reminder.medicineName | shortenText : 30
+          }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p>{{ reminder.medicineKitName }}</p>
@@ -70,6 +84,14 @@
       </mat-card>
     </div>
   </section>
+
+  <ng-template #noReminders>
+    <div class="reminders-list__no-reminders-container">
+      <h2 class="reminders-list__no-reminders-text">
+        Aún no tienes ningún recordatorio.
+      </h2>
+    </div>
+  </ng-template>
 </div>
 
 <custom-footer></custom-footer>

@@ -33,4 +33,15 @@
   &__card-title {
     font-size: 1.1rem;
   }
+
+  &__no-reminders-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 60dvh;
+    margin-inline: auto;
+
+    background-color: rgb(185, 185, 185);
+  }
 }
