@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../environment/environment';
 
+import { UserDTO } from '../Models/user.dto';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,15 +14,15 @@ export class UserRelationshipsService {
 
   constructor(private http: HttpClient) {}
 
-  fetchCaretakerRelationships(userId: number): Observable<[]> {
-    return this.http.get<[]>(`${this.apiUrl}/caretaker`, {
+  fetchCaretakerRelationships(userId: number): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/caretaker`, {
       withCredentials: true,
       params: { caretakerId: userId.toString() },
     });
   }
 
-  fetchFamilyMemberRelationships(userId: number): Observable<[]> {
-    return this.http.get<[]>(`${this.apiUrl}/familyMember`, {
+  fetchFamilyMemberRelationships(userId: number): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/familyMember`, {
       withCredentials: true,
       params: { familyMemberId: userId.toString() },
     });
