@@ -19,6 +19,11 @@ export const selectUser = createSelector(
   (state: AuthStateDTO) => state.user
 );
 
+export const selectUserRelationships = createSelector(
+  selectAuthState,
+  (state: AuthStateDTO) => state.relationships
+);
+
 export const selectAuthError = createSelector(
   selectAuthState,
   (state: AuthStateDTO) => state.error
