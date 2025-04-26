@@ -79,6 +79,8 @@ export class RemindersListComponent {
   isTomorrow: boolean;
   isToday: boolean;
 
+  isPatient: boolean;
+
   // Reminders grouped by next doses
   organizedReminders: Array<[Date, ReminderDTO[]]>;
 
@@ -139,6 +141,8 @@ export class RemindersListComponent {
     this.organizedReminders = [];
 
     this.lastClickTime = 0;
+
+    this.isPatient = false;
   }
 
   ngOnInit() {
@@ -165,7 +169,7 @@ export class RemindersListComponent {
         this.store.dispatch(fetchCaretakerRelationships({ userId: (user! as UserDTO).id }));
       } else if ((user! as UserDTO).role === 'family member') {
         this.store.dispatch(fetchFamilyMemberRelationships({ userId: (user! as UserDTO).id }));
-      }
+      } else this.isPatient = true;
     });
 
     this.store

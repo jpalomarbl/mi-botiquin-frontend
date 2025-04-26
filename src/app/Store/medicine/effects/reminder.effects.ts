@@ -133,7 +133,7 @@ export class ReminderEffects {
     () =>
       this.actions$.pipe(
         ofType(reminderActions.fetchAllUserRemindersSuccess),
-        tap(({ reminders }) => console.log(reminders))
+        // tap(({ reminders }) => console.log(reminders))
       ),
     { dispatch: false }
   );
