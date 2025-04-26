@@ -56,6 +56,9 @@
         <mat-option *ngFor="let user of userRelationships$ | async; index as i" [value]="user.id">
           {{user.firstName}} {{user.lastName}}
         </mat-option>
+        <mat-option value="0">
+          Tus recordatorios
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </section>

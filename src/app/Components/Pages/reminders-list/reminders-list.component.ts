@@ -208,7 +208,7 @@ export class RemindersListComponent {
   loadData(userId: number | null = null): void {
     // If a userId has been specified, we search for that user's reminders.
     // If not, we search for the logged in user's reminders.
-    if (userId) {
+    if (userId && +userId !== 0) {
       this.store.dispatch(
         fetchAllUserReminders({
           userId: userId,
