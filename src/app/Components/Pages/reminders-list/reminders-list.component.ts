@@ -153,7 +153,7 @@ export class RemindersListComponent {
       debounceTime(500)
   ).subscribe(params => {
       this.userId = params['userId'] ? +params['userId'] : 0;
-      console.log('params', this.userId);
+
       this.calculateDate();
       this.loadData(this.userId);
   });
@@ -206,8 +206,6 @@ export class RemindersListComponent {
     const isBackwards = this.router.url.includes('backwards');
     const isForwards = this.router.url.includes('forwards');
 
-    console.log('navigate', this.userId);
-
     const userIdString =
       this.userId && this.userId !== 0 ? `/${this.userId.toString()}` : '';
 
@@ -233,7 +231,7 @@ export class RemindersListComponent {
 
   loadData(userId: number = 0): void {
     this.userId = userId;
-    console.log('loaddata', userId);
+    
     // If a userId has been specified, we search for that user's reminders.
     // If not, we search for the logged in user's reminders.
     if (userId && +userId !== 0) {
