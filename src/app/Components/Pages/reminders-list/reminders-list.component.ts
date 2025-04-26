@@ -223,8 +223,9 @@ export class RemindersListComponent {
   // Cada vez que se marca como consumido, se agrega una fila a la tabla
 
   private organizeReminders(reminders: ReminderDTO[]): Array<[Date, ReminderDTO[]]> {
+    if (!reminders) return [];
+
     let organizedReminders: { [hora: string]: ReminderDTO[] } = {};
-    console.log(this.day);
 
     reminders.forEach((reminder) => {
       let originalDate = new Date(this.day);
