@@ -12,13 +12,14 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
   providedIn: 'root',
 })
 export class ReminderService {
-  private apiUrl = environment.api_url + '/reminder';
+  private apiUrlReminder = environment.api_url + '/reminder';
+  private apiUrlConsumption = environment.api_url + '/consumption';
   user$ = this.store.select(selectUser);
 
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {}
 
   fetchUserRemindersForToday(userId: number): Observable<ReminderDTO[]> {
-    const response = this.http.get<ReminderDTO[]>(`${this.apiUrl}/today/user`, {
+    const response = this.http.get<ReminderDTO[]>(`${this.apiUrlReminder}/today/user`, {
       withCredentials: true,
       params: { userId: userId.toString() },
     });
@@ -27,7 +28,16 @@ export class ReminderService {
   }
 
   fetchAllUserReminders(userId: number): Observable<ReminderDTO[]> {
-    const response = this.http.get<ReminderDTO[]>(`${this.apiUrl}/user`, {
+    const response = this.http.get<ReminderDTO[]>(`${this.apiUrlReminder}/user`, {
+      withCredentials: true,
+      params: { userId: userId.toString() },
+    });
+
+    return response;
+  }
+
+  fetchAllUserConsumptions(userId: number): Observable<Array<[number, Date]>> {
+    const response = this.http.get<Array<[number, Date]>>(`${this.apiUrlConsumption}/user`, {
       withCredentials: true,
       params: { userId: userId.toString() },
     });
