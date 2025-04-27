@@ -8,6 +8,7 @@ import { RegisterComponent } from './Components/Auth/register/register.component
 import { HomeComponent } from './Components/Pages/home/home.component';
 import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
 import { RemindersListComponent } from './Components/Pages/reminders-list/reminders-list.component';
+import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list/medicine-kits-list.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,11 @@ const routes: Routes = [
   {
     path: 'remindersList/:userId',
     component: RemindersListComponent
+  },
+
+  {
+    path: 'medicineKitsList',
+    component: MedicineKitsListComponent
   },
   {
     path: '**',
