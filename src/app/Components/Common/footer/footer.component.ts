@@ -15,7 +15,7 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   navigate(route: string): void {
-    if (route === '/' || route === 'remindersList') {
+    if (route === '/' || route === 'remindersList' || route === 'medicineKitsList') {
       this.router.navigate([route]);
     }
 
