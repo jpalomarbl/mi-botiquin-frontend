@@ -62,8 +62,18 @@
     </mat-form-field>
   </section>
 
+  <mat-progress-spinner
+    class="reminders-list__spinner"
+    [ngClass]="{ 'reminders-list__spinner--not-hidden': (loadingMedicine$ | async) || (loadingAuth$ | async) }"
+    color="primary"
+    mode="indeterminate"
+    value="50"
+  >
+  </mat-progress-spinner>
+
   <cdk-virtual-scroll-viewport
     class="reminders-list__viewport"
+    *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)"
     appendOnly
     itemSize="50"
   >

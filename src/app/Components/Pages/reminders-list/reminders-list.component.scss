@@ -29,6 +29,22 @@
     width: 100%;
   }
 
+  &__spinner {
+    display: none;
+
+    &--not-hidden {
+      display: block;
+
+      margin: 0;
+
+      position: fixed;
+      top: 40dvh;
+      left: 50%;
+
+      transform: translate(-50%, 0);
+    }
+  }
+
   &__time-period {
     margin-bottom: 4dvh;
   }

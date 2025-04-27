@@ -29,6 +29,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Custom modules
 import { FormsModule } from 'src/app/Modules/forms.module';
@@ -60,6 +61,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     ScrollingModule,
     DateFormatPipe,
     ShortenTextPipe,
