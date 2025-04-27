@@ -7,9 +7,13 @@ import { filter, Observable } from 'rxjs';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
-import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
+import {
+  selectUser,
+  selectUserRelationships,
+} from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
+import { fetchCaretakerRelationships, fetchFamilyMemberRelationships } from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
@@ -21,8 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
 @Component({
   selector: 'app-home',
@@ -43,21 +47,32 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 })
 export class HomeComponent {
   user$: Observable<UserDTO | null>;
+  userRelationships$: Observable<UserDTO[] | null>;
+
   loading$: Observable<boolean>;
 
   todaysReminders$: Observable<ReminderDTO[]>;
   medicineKits$: Observable<MedicineKitDTO[]>;
 
   user: UserDTO | null;
+  isPatient: boolean;
 
   constructor(private store: Store<GlobalStateDTO>, private router: Router) {
     this.user$ = this.store.select(selectUser);
+    this.userRelationships$ = this.store.select(selectUserRelationships);
+
     this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
 
-    this.todaysReminders$ = this.store.select(medicineSelectors.selectReminders);
-    this.medicineKits$ = this.store.select(medicineSelectors.selectMedicineKits);
+    this.todaysReminders$ = this.store.select(
+      medicineSelectors.selectReminders
+    );
+    this.medicineKits$ = this.store.select(
+      medicineSelectors.selectMedicineKits
+    );
 
     this.user = null;
+
+    this.isPatient = false;
   }
 
   ngOnInit() {
@@ -74,6 +89,16 @@ export class HomeComponent {
           role: (user! as UserDTO).role,
         })
       );
+
+      if ((user! as UserDTO).role === 'caretaker') {
+        this.store.dispatch(
+          fetchCaretakerRelationships({ userId: (user! as UserDTO).id })
+        );
+      } else if ((user! as UserDTO).role === 'family member') {
+        this.store.dispatch(
+          fetchFamilyMemberRelationships({ userId: (user! as UserDTO).id })
+        );
+      } else this.isPatient = true;
 
       this.user = user! as UserDTO;
     });

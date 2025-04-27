@@ -112,9 +112,7 @@
           <span
             matListItemLine
             *ngIf="
-              user !== null &&
-              (user.role === 'caretaker' || user.role === 'family member') &&
-              medicineKit.owner.id !== user.id
+              user !== null && !isPatient && medicineKit.owner.id !== user.id
             "
           >
             Botiquín de {{ medicineKit.owner.firstName }}
