@@ -13,7 +13,10 @@ import {
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-import { fetchCaretakerRelationships, fetchFamilyMemberRelationships } from 'src/app/Store/auth/actions/userRelationships.actions';
+import {
+  fetchCaretakerRelationships,
+  fetchFamilyMemberRelationships,
+} from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
@@ -101,6 +104,16 @@ export class HomeComponent {
       } else this.isPatient = true;
 
       this.user = user! as UserDTO;
+    });
+
+    this.userRelationships$.subscribe((relationships) => {
+      if (relationships && relationships.length > 0) {
+        relationships.forEach((user) => {
+          this.store.dispatch(
+            reminderActions.fetchUserRemindersForToday({ userId: user.id })
+          );
+        });
+      }
     });
   }
 
