@@ -139,51 +139,51 @@ export class ReminderEffects {
     { dispatch: false }
   );
 
-  fetchAllUserConsumptions$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(reminderActions.fetchAllUserConsumptions),
-      debounceTime(300),
-      mergeMap(({ userId, day }) =>
-        this.reminderService.fetchAllUserConsumptions(userId).pipe(
-          map((response: any) => {
-            const consumptions = response
-              // .filter((row: [number, Date]) => {
-              //   const dayAfter = new Date(day);
-              //   dayAfter.setDate(dayAfter.getDate() + 1);
-              //   const finishDate = new Date(row);
-              //   const nextDose = this.reminderService.getNextDoseTime(row, day);
+  // fetchAllUserConsumptions$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(reminderActions.fetchAllUserConsumptions),
+  //     debounceTime(300),
+  //     mergeMap(({ userId, day }) =>
+  //       this.reminderService.fetchAllUserConsumptions(userId).pipe(
+  //         map((response: any) => {
+  //           const consumptions = response
+  //             // .filter((row: [number, Date]) => {
+  //             //   const dayAfter = new Date(day);
+  //             //   dayAfter.setDate(dayAfter.getDate() + 1);
+  //             //   const finishDate = new Date(row);
+  //             //   const nextDose = this.reminderService.getNextDoseTime(row, day);
 
-              //   return (
-              //     nextDose.getTime() < dayAfter.getTime() &&
-              //     nextDose.getTime() < finishDate.getTime()
-              //   );
-              // })
-              .map((row: ReminderDTO) => {
-                console.log(row);
-              });
+  //             //   return (
+  //             //     nextDose.getTime() < dayAfter.getTime() &&
+  //             //     nextDose.getTime() < finishDate.getTime()
+  //             //   );
+  //             // })
+  //             .map((row: ReminderDTO) => {
+  //               console.log(row);
+  //             });
 
-            return reminderActions.fetchAllUserConsumptionsSuccess({
-              consumptions: [],
-            });
-          }),
-          catchError((error) =>
-            of(
-              reminderActions.fetchAllUserRemindersError({
-                error: error.error.error || 'Get all user reminders failed',
-              })
-            )
-          )
-        )
-      )
-    )
-  );
+  //           return reminderActions.fetchAllUserConsumptionsSuccess({
+  //             consumptions: [],
+  //           });
+  //         }),
+  //         catchError((error) =>
+  //           of(
+  //             reminderActions.fetchAllUserRemindersError({
+  //               error: error.error.error || 'Get all user reminders failed',
+  //             })
+  //           )
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
 
-  fetchAllUserConsumptionsSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(reminderActions.fetchAllUserRemindersSuccess)
-        // tap(({ reminders }) => console.log(reminders))
-      ),
-    { dispatch: false }
-  );
+  // fetchAllUserConsumptionsSuccess$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(reminderActions.fetchAllUserRemindersSuccess)
+  //       // tap(({ reminders }) => console.log(reminders))
+  //     ),
+  //   { dispatch: false }
+  // );
 }

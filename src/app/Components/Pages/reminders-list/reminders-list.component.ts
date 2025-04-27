@@ -17,7 +17,7 @@ import {
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import {
-  fetchAllUserConsumptions,
+  // fetchAllUserConsumptions,
   fetchAllUserReminders,
 } from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -168,9 +168,9 @@ export class RemindersListComponent {
       this.loadData(this.userId);
     }
 
-    this.store.dispatch(
-      fetchAllUserConsumptions({ userId: 2, day: new Date() })
-    );
+    // this.store.dispatch(
+    //   fetchAllUserConsumptions({ userId: 2, day: new Date() })
+    // );
   }
 
   navigateToPreviousDay() {

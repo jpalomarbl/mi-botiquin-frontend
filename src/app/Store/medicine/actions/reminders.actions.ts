@@ -31,17 +31,17 @@ export const fetchAllUserRemindersError = createAction(
   props<{ error: string }>()
 );
 
-export const fetchAllUserConsumptions = createAction(
-  '[Medicine] Fetch All User Consumptions From API',
-  props<{ userId: number, day: Date }>()
-);
+// export const fetchAllUserConsumptions = createAction(
+//   '[Medicine] Fetch All User Consumptions From API',
+//   props<{ userId: number, day: Date }>()
+// );
 
-export const fetchAllUserConsumptionsSuccess = createAction(
-  '[Medicine] Fetch All User Consumptions From API Success',
-  props<{ consumptions: Array<[number, Date]> }>()
-);
+// export const fetchAllUserConsumptionsSuccess = createAction(
+//   '[Medicine] Fetch All User Consumptions From API Success',
+//   props<{ consumptions: Array<[number, Date]> }>()
+// );
 
-export const fetchAllUserConsumptionsError = createAction(
-  '[Medicine] Fetch All User Consumptions From API Error',
-  props<{ error: string }>()
-);
+// export const fetchAllUserConsumptionsError = createAction(
+//   '[Medicine] Fetch All User Consumptions From API Error',
+//   props<{ error: string }>()
+// );

@@ -65,27 +65,27 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
-  on(reminderActions.fetchAllUserConsumptions, (state) => ({
-    ...state,
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
-  on(
-    reminderActions.fetchAllUserConsumptionsSuccess,
-    (state, { consumptions }) => ({
-      ...state,
-      loading: false,
-      loaded: true,
-      error: null,
-    })
-  ),
-  on(reminderActions.fetchAllUserConsumptionsError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  // on(reminderActions.fetchAllUserConsumptions, (state) => ({
+  //   ...state,
+  //   loading: true,
+  //   loaded: false,
+  //   error: null,
+  // })),
+  // on(
+  //   reminderActions.fetchAllUserConsumptionsSuccess,
+  //   (state, { consumptions }) => ({
+  //     ...state,
+  //     loading: false,
+  //     loaded: true,
+  //     error: null,
+  //   })
+  // ),
+  // on(reminderActions.fetchAllUserConsumptionsError, (state, { error }) => ({
+  //   ...state,
+  //   loading: false,
+  //   loaded: true,
+  //   error: error,
+  // })),
 
   // Get all medicine kits from user
   on(medicineKitActions.fetchUserMedicineKits, (state) => ({
