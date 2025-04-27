@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -11,5 +12,13 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
+  constructor(private router: Router) {}
 
+  navigate(route: string): void {
+    if (route === '/' || route === 'remindersList') {
+      this.router.navigate([route]);
+    }
+
+
+  }
 }

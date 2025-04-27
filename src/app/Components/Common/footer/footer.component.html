@@ -1,5 +1,5 @@
 <footer class="footer">
-  <div class="footer__button footer__button--reminders">
+  <div class="footer__button footer__button--reminders" (click)="navigate('remindersList')">
     <button mat-mini-fab color="primary" aria-label="Go to reminders">
       <mat-icon>calendar_month</mat-icon>
     </button>
@@ -13,7 +13,7 @@
     <small>Botiquines</small>
   </div>
 
-  <div class="footer__button footer__button--home">
+  <div class="footer__button footer__button--home" (click)="navigate('/')">
     <button mat-mini-fab color="primary" aria-label="Go to home page">
       <mat-icon>home</mat-icon>
     </button>
