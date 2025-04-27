@@ -5,10 +5,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Ngrx, Rxjs and Redux
-import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, Observable } from 'rxjs';
 
 // Store
+import { Store } from '@ngrx/store';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
