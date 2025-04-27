@@ -4,9 +4,11 @@ import { Component } from '@angular/core';
 // Router
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Ngrx and Observables
+// Ngrx, Rxjs and Redux
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, filter, Observable } from 'rxjs';
+
+// Store
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
@@ -18,7 +20,6 @@ import {
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import {
   changeReminderState,
-  // fetchAllUserConsumptions,
   fetchAllUserReminders,
 } from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -242,8 +243,20 @@ export class RemindersListComponent {
       this.router.navigate(['remindersList' + userIdString + '/forwards/1']);
   }
 
-  changeReminderState(index: number, reminderId: number, time: Date, status: boolean) {
-    this.store.dispatch(changeReminderState({ index: index, reminderId: reminderId, time: time, status: status }));
+  changeReminderState(
+    index: number,
+    reminderId: number,
+    time: Date,
+    status: boolean
+  ) {
+    this.store.dispatch(
+      changeReminderState({
+        index: index,
+        reminderId: reminderId,
+        time: time,
+        status: status,
+      })
+    );
   }
 
   loadData(userId: number = 0): void {
