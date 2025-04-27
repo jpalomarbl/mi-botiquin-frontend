@@ -7,6 +7,7 @@ import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actio
 export const initialState: MedicineStateDTO = {
   medicineKits: [],
   reminders: [],
+  organizedReminders: [],
   loading: false,
   loaded: false,
   error: null,
@@ -22,7 +23,8 @@ export const medicineReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(reminderActions.fetchUserRemindersForTodaySuccess,
+  on(
+    reminderActions.fetchUserRemindersForTodaySuccess,
     (state, { reminders }) => ({
       ...state,
       reminders: reminders,
@@ -45,10 +47,12 @@ export const medicineReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(reminderActions.fetchAllUserRemindersSuccess,
-    (state, { reminders }) => ({
+  on(
+    reminderActions.fetchAllUserRemindersSuccess,
+    (state, { reminders, organizedReminders }) => ({
       ...state,
       reminders: reminders,
+      organizedReminders: organizedReminders,
       loading: false,
       loaded: true,
       error: null,
@@ -67,7 +71,8 @@ export const medicineReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(reminderActions.fetchAllUserConsumptionsSuccess,
+  on(
+    reminderActions.fetchAllUserConsumptionsSuccess,
     (state, { consumptions }) => ({
       ...state,
       loading: false,
@@ -104,5 +109,5 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  })),
+  }))
 );

@@ -2,11 +2,11 @@
 import { Component } from '@angular/core';
 
 // Router
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Ngrx and Observables
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged, filter, Observable, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, Observable } from 'rxjs';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
@@ -16,7 +16,10 @@ import {
   selectUser,
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
-import { fetchAllUserReminders } from 'src/app/Store/medicine/actions/reminders.actions';
+import {
+  fetchAllUserConsumptions,
+  fetchAllUserReminders,
+} from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
@@ -65,6 +68,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 export class RemindersListComponent {
   user$: Observable<UserDTO | null>;
   userRelationships$: Observable<UserDTO[] | null>;
+  organizedReminders$: Observable<Array<[Date, ReminderDTO[]] | null>>;
 
   loadingMedicine$: Observable<boolean>;
   loadingAuth$: Observable<boolean>;
@@ -107,6 +111,7 @@ export class RemindersListComponent {
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
+    this.organizedReminders$ = this.store.select(medicineSelectors.selectOrganizedReminders);
 
     this.loadingMedicine$ = this.store.select(
       medicineSelectors.selectMedicineLoading
@@ -148,14 +153,12 @@ export class RemindersListComponent {
   }
 
   ngOnInit() {
-    this.route.params.pipe(
-      distinctUntilChanged(),
-  ).subscribe(params => {
+    this.route.params.pipe(distinctUntilChanged()).subscribe((params) => {
       this.userId = params['userId'] ? +params['userId'] : 0;
 
       this.calculateDate();
       this.loadData(this.userId);
-  });
+    });
 
     // We fetch all user reminders and filter them for the specified day.
     if (
@@ -164,6 +167,10 @@ export class RemindersListComponent {
     ) {
       this.loadData(this.userId);
     }
+
+    this.store.dispatch(
+      fetchAllUserConsumptions({ userId: 2, day: new Date() })
+    );
   }
 
   navigateToPreviousDay() {
@@ -263,61 +270,71 @@ export class RemindersListComponent {
       });
     }
 
-    this.store
-      .select(medicineSelectors.selectReminders)
-      .subscribe((reminders: ReminderDTO[]) => {
-        this.organizedReminders = this.organizeReminders(reminders);
-      });
+    // this.store
+    //   .select(medicineSelectors.selectOrganizedReminders)
+    //   .subscribe(
+    //     (reminders: Array<[Date, ReminderDTO[]] | null> | ReminderDTO[]) => {
+    //       console.log(reminders);
+    //     }
+    //   );
   }
 
   // Cómo represento que un reminder ha sido consumido?
   // Nueva tabla "consumiciones" enlazada a los reminders
   // Cada vez que se marca como consumido, se agrega una fila a la tabla
 
-  private organizeReminders(reminders: ReminderDTO[]): Array<[Date, ReminderDTO[]]> {
+  private organizeReminders(
+    reminders: ReminderDTO[]
+  ): Array<[Date, ReminderDTO[]]> {
     if (!reminders || reminders.length === 0) return [];
 
     // Procesamiento paralelo de los recordatorios
-    const allDoses = reminders.flatMap(reminder => {
-        const doses: { time: Date; reminder: ReminderDTO }[] = [];
-        let currentDate = new Date(this.day);
-        const nextDay = new Date(this.day);
-        nextDay.setDate(nextDay.getDate() + 1);
+    const allDoses = reminders.flatMap((reminder) => {
+      const doses: { time: Date; reminder: ReminderDTO }[] = [];
+      let currentDate = new Date(this.day);
+      const nextDay = new Date(this.day);
+      nextDay.setDate(nextDay.getDate() + 1);
 
-        let nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
+      let nextDose = this.reminderService.getNextDoseTime(
+        reminder,
+        currentDate
+      );
 
-        while (nextDose.getTime() <= nextDay.getTime()) {
-            doses.push({
-                time: new Date(nextDose),
-                reminder: reminder
-            });
+      while (nextDose.getTime() <= nextDay.getTime()) {
+        doses.push({
+          time: new Date(nextDose),
+          reminder: reminder,
+        });
 
-            // Actualizamos la fecha para la próxima dosis
-            currentDate = new Date(nextDose);
-            nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
-        }
+        // Actualizamos la fecha para la próxima dosis
+        currentDate = new Date(nextDose);
+        nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
+      }
 
-        return doses;
+      return doses;
     });
 
     // Agrupamiento eficiente por hora
     const grouped = new Map<number, ReminderDTO[]>();
 
     allDoses.forEach(({ time, reminder }) => {
-        // Usamos el timestamp como clave para agrupar
-        const timeKey = time.getTime();
-        if (grouped.has(timeKey)) {
-            grouped.get(timeKey)!.push(reminder);
-        } else {
-            grouped.set(timeKey, [reminder]);
-        }
+      // Usamos el timestamp como clave para agrupar
+      const timeKey = time.getTime();
+      if (grouped.has(timeKey)) {
+        grouped.get(timeKey)!.push(reminder);
+      } else {
+        grouped.set(timeKey, [reminder]);
+      }
     });
 
     // Conversión a array y ordenación
     return Array.from(grouped.entries())
-        .map(([timestamp, reminders]) => [new Date(timestamp), reminders] as [Date, ReminderDTO[]])
-        .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
-}
+      .map(
+        ([timestamp, reminders]) =>
+          [new Date(timestamp), reminders] as [Date, ReminderDTO[]]
+      )
+      .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
+  }
 
   private calculateDate(): void {
     // It's important that we set today's date at midnight because

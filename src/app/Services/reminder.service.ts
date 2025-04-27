@@ -19,28 +19,37 @@ export class ReminderService {
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {}
 
   fetchUserRemindersForToday(userId: number): Observable<ReminderDTO[]> {
-    const response = this.http.get<ReminderDTO[]>(`${this.apiUrlReminder}/today/user`, {
-      withCredentials: true,
-      params: { userId: userId.toString() },
-    });
+    const response = this.http.get<ReminderDTO[]>(
+      `${this.apiUrlReminder}/today/user`,
+      {
+        withCredentials: true,
+        params: { userId: userId.toString() },
+      }
+    );
 
     return response;
   }
 
   fetchAllUserReminders(userId: number): Observable<ReminderDTO[]> {
-    const response = this.http.get<ReminderDTO[]>(`${this.apiUrlReminder}/user`, {
-      withCredentials: true,
-      params: { userId: userId.toString() },
-    });
+    const response = this.http.get<ReminderDTO[]>(
+      `${this.apiUrlReminder}/user`,
+      {
+        withCredentials: true,
+        params: { userId: userId.toString() },
+      }
+    );
 
     return response;
   }
 
   fetchAllUserConsumptions(userId: number): Observable<Array<[number, Date]>> {
-    const response = this.http.get<Array<[number, Date]>>(`${this.apiUrlConsumption}/user`, {
-      withCredentials: true,
-      params: { userId: userId.toString() },
-    });
+    const response = this.http.get<Array<[number, Date]>>(
+      `${this.apiUrlConsumption}/user`,
+      {
+        withCredentials: true,
+        params: { userId: userId.toString() },
+      }
+    );
 
     return response;
   }
@@ -124,5 +133,58 @@ export class ReminderService {
     const lastDoseTime = new Date(startTime.getTime() + lastDoseMs);
 
     return lastDoseTime;
+  }
+
+  organizeReminders(
+    reminders: ReminderDTO[],
+    day: Date
+  ): Array<[Date, ReminderDTO[]] | null> {
+    if (!reminders || reminders.length === 0) return [];
+
+    // Procesamiento paralelo de los recordatorios
+    const allDoses = reminders.flatMap((reminder) => {
+      if (!reminder) return null;
+
+      const doses: { time: Date; reminder: ReminderDTO }[] = [];
+      let currentDate = new Date(day);
+      const nextDay = new Date(day);
+      nextDay.setDate(nextDay.getDate() + 1);
+
+      let nextDose = this.getNextDoseTime(reminder, currentDate);
+
+      while (nextDose.getTime() <= nextDay.getTime()) {
+        doses.push({
+          time: new Date(nextDose),
+          reminder: reminder,
+        });
+
+        // Actualizamos la fecha para la próxima dosis
+        currentDate = new Date(nextDose);
+        nextDose = this.getNextDoseTime(reminder, currentDate);
+      }
+
+      return doses;
+    }).filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
+
+    // Agrupamiento eficiente por hora
+    const grouped = new Map<number, ReminderDTO[]>();
+
+    allDoses.forEach(({ time, reminder }) => {
+      // Usamos el timestamp como clave para agrupar
+      const timeKey = time.getTime();
+      if (grouped.has(timeKey)) {
+        grouped.get(timeKey)!.push(reminder);
+      } else {
+        grouped.set(timeKey, [reminder]);
+      }
+    });
+
+    // Conversión a array y ordenación
+    return Array.from(grouped.entries())
+      .map(
+        ([timestamp, reminders]) =>
+          [new Date(timestamp), reminders] as [Date, ReminderDTO[]]
+      )
+      .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
   }
 }

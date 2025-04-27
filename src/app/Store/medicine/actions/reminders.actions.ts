@@ -23,7 +23,7 @@ export const fetchAllUserReminders = createAction(
 
 export const fetchAllUserRemindersSuccess = createAction(
   '[Medicine] Fetch All User Reminders From API Success',
-  props<{ reminders: ReminderDTO[] }>()
+  props<{ organizedReminders:  Array<[Date, ReminderDTO[]] | null>, reminders: ReminderDTO[] }>()
 );
 
 export const fetchAllUserRemindersError = createAction(
