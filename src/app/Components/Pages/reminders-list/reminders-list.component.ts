@@ -68,7 +68,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 export class RemindersListComponent {
   user$: Observable<UserDTO | null>;
   userRelationships$: Observable<UserDTO[] | null>;
-  organizedReminders$: Observable<Array<[Date, ReminderDTO[]] | null>>;
+  organizedReminders$: Observable<Array<[Date, [ReminderDTO, boolean][]] | null>>;
 
   loadingMedicine$: Observable<boolean>;
   loadingAuth$: Observable<boolean>;
@@ -282,59 +282,6 @@ export class RemindersListComponent {
   // Cómo represento que un reminder ha sido consumido?
   // Nueva tabla "consumiciones" enlazada a los reminders
   // Cada vez que se marca como consumido, se agrega una fila a la tabla
-
-  private organizeReminders(
-    reminders: ReminderDTO[]
-  ): Array<[Date, ReminderDTO[]]> {
-    if (!reminders || reminders.length === 0) return [];
-
-    // Procesamiento paralelo de los recordatorios
-    const allDoses = reminders.flatMap((reminder) => {
-      const doses: { time: Date; reminder: ReminderDTO }[] = [];
-      let currentDate = new Date(this.day);
-      const nextDay = new Date(this.day);
-      nextDay.setDate(nextDay.getDate() + 1);
-
-      let nextDose = this.reminderService.getNextDoseTime(
-        reminder,
-        currentDate
-      );
-
-      while (nextDose.getTime() <= nextDay.getTime()) {
-        doses.push({
-          time: new Date(nextDose),
-          reminder: reminder,
-        });
-
-        // Actualizamos la fecha para la próxima dosis
-        currentDate = new Date(nextDose);
-        nextDose = this.reminderService.getNextDoseTime(reminder, currentDate);
-      }
-
-      return doses;
-    });
-
-    // Agrupamiento eficiente por hora
-    const grouped = new Map<number, ReminderDTO[]>();
-
-    allDoses.forEach(({ time, reminder }) => {
-      // Usamos el timestamp como clave para agrupar
-      const timeKey = time.getTime();
-      if (grouped.has(timeKey)) {
-        grouped.get(timeKey)!.push(reminder);
-      } else {
-        grouped.set(timeKey, [reminder]);
-      }
-    });
-
-    // Conversión a array y ordenación
-    return Array.from(grouped.entries())
-      .map(
-        ([timestamp, reminders]) =>
-          [new Date(timestamp), reminders] as [Date, ReminderDTO[]]
-      )
-      .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
-  }
 
   private calculateDate(): void {
     // It's important that we set today's date at midnight because

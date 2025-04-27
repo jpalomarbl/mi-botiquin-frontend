@@ -4,7 +4,7 @@ import { ReminderDTO } from './reminder.dto';
 export interface MedicineStateDTO {
   medicineKits: MedicineKitDTO[];
   reminders: ReminderDTO[];
-  organizedReminders: Array<[Date, ReminderDTO[]] | null>;
+  organizedReminders: Array<[Date, [ReminderDTO, boolean][]] | null>;
   loading: boolean;
   loaded: boolean;
   error: string | null;

@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import { ReminderService } from '../../../Services/reminder.service';
 
@@ -110,12 +111,18 @@ export class ReminderEffects {
                 medicineKitName: row.medicineKitName,
               }));
 
-            const organizedReminders: Array<[Date, ReminderDTO[]] | null> =
-              this.reminderService.organizeReminders(reminders, day);
+            // const organizedReminders: Array<[Date, ReminderDTO[]] | null> =
+            //   this.reminderService.organizeReminders(reminders, day);
 
-            return reminderActions.fetchAllUserRemindersSuccess({
-              organizedReminders: organizedReminders,
-              reminders: reminders
+            // return reminderActions.fetchAllUserRemindersSuccess({
+            //   organizedReminders: organizedReminders,
+            //   reminders: reminders
+            // });
+
+            return reminderActions.fetchAllUserConsumptions({
+              userId: userId,
+              reminders: reminders,
+              day: day
             });
           }),
           catchError((error) =>
@@ -139,44 +146,37 @@ export class ReminderEffects {
     { dispatch: false }
   );
 
-  // fetchAllUserConsumptions$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(reminderActions.fetchAllUserConsumptions),
-  //     debounceTime(300),
-  //     mergeMap(({ userId, day }) =>
-  //       this.reminderService.fetchAllUserConsumptions(userId).pipe(
-  //         map((response: any) => {
-  //           const consumptions = response
-  //             // .filter((row: [number, Date]) => {
-  //             //   const dayAfter = new Date(day);
-  //             //   dayAfter.setDate(dayAfter.getDate() + 1);
-  //             //   const finishDate = new Date(row);
-  //             //   const nextDose = this.reminderService.getNextDoseTime(row, day);
+  fetchAllUserConsumptions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reminderActions.fetchAllUserConsumptions),
+      debounceTime(300),
+      mergeMap(({ userId, reminders, day }) =>
+        this.reminderService.fetchAllUserConsumptions(userId).pipe(
+          map((response: ConsumptionDTO[]) => {
+            const consumptions: ConsumptionDTO[] = response.map((consumption) =>({
+              reminderId: consumption.reminderId,
+              consumptionDate: new Date(consumption.consumptionDate)
+            }))
 
-  //             //   return (
-  //             //     nextDose.getTime() < dayAfter.getTime() &&
-  //             //     nextDose.getTime() < finishDate.getTime()
-  //             //   );
-  //             // })
-  //             .map((row: ReminderDTO) => {
-  //               console.log(row);
-  //             });
+            const organizedReminders: Array<[Date, [ReminderDTO, boolean][]] | null> =
+              this.reminderService.organizeReminders(reminders, consumptions, day);
 
-  //           return reminderActions.fetchAllUserConsumptionsSuccess({
-  //             consumptions: [],
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             reminderActions.fetchAllUserRemindersError({
-  //               error: error.error.error || 'Get all user reminders failed',
-  //             })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+            return reminderActions.fetchAllUserRemindersSuccess({
+              reminders: reminders,
+              organizedReminders: organizedReminders
+            });
+          }),
+          catchError((error) =>
+            of(
+              reminderActions.fetchAllUserRemindersError({
+                error: error.error || 'Get all user consumptions failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 
   // fetchAllUserConsumptionsSuccess$ = createEffect(
   //   () =>

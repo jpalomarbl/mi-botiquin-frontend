@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/app/environment/environment';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { ConsumptionDTO } from '../Models/consumption.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
 @Injectable({
@@ -42,8 +43,8 @@ export class ReminderService {
     return response;
   }
 
-  fetchAllUserConsumptions(userId: number): Observable<Array<[number, Date]>> {
-    const response = this.http.get<Array<[number, Date]>>(
+  fetchAllUserConsumptions(userId: number): Observable<ConsumptionDTO[]> {
+    const response = this.http.get<ConsumptionDTO[]>(
       `${this.apiUrlConsumption}/user`,
       {
         withCredentials: true,
@@ -137,8 +138,9 @@ export class ReminderService {
 
   organizeReminders(
     reminders: ReminderDTO[],
+    consumptions: ConsumptionDTO[],
     day: Date
-  ): Array<[Date, ReminderDTO[]] | null> {
+  ): Array<[Date, Array<[ReminderDTO, boolean]>] | null> {
     if (!reminders || reminders.length === 0) return [];
 
     // Procesamiento paralelo de los recordatorios
@@ -167,15 +169,18 @@ export class ReminderService {
     }).filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
 
     // Agrupamiento eficiente por hora
-    const grouped = new Map<number, ReminderDTO[]>();
+    const grouped = new Map<number, [ReminderDTO, boolean][]>();
 
     allDoses.forEach(({ time, reminder }) => {
       // Usamos el timestamp como clave para agrupar
       const timeKey = time.getTime();
+
+      const consumptionFound = consumptions.find((consumption) => consumption.consumptionDate.getTime() === timeKey && consumption.reminderId === reminder.id);
+
       if (grouped.has(timeKey)) {
-        grouped.get(timeKey)!.push(reminder);
+        grouped.get(timeKey)!.push([reminder, consumptionFound ? true : false]);
       } else {
-        grouped.set(timeKey, [reminder]);
+        grouped.set(timeKey, [[reminder, consumptionFound ? true : false]]);
       }
     });
 
@@ -183,7 +188,7 @@ export class ReminderService {
     return Array.from(grouped.entries())
       .map(
         ([timestamp, reminders]) =>
-          [new Date(timestamp), reminders] as [Date, ReminderDTO[]]
+          [new Date(timestamp), reminders] as [Date, [ReminderDTO, boolean][]]
       )
       .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
   }

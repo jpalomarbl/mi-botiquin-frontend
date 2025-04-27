@@ -65,12 +65,12 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
-  // on(reminderActions.fetchAllUserConsumptions, (state) => ({
-  //   ...state,
-  //   loading: true,
-  //   loaded: false,
-  //   error: null,
-  // })),
+  on(reminderActions.fetchAllUserConsumptions, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
   // on(
   //   reminderActions.fetchAllUserConsumptionsSuccess,
   //   (state, { consumptions }) => ({
