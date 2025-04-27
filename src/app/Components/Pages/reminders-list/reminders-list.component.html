@@ -65,18 +65,18 @@
 
   <section
     class="reminders-list__list"
-    *ngIf="organizedReminders.length > 0; else noReminders"
+    *ngIf="organizedReminders$ | async; else noReminders"
   >
     <!-- organizedReminders is an array of arrays of type [Date, ReminderDTO[]] -->
     <div
       class="reminders-list__time-period"
-      *ngFor="let pair of organizedReminders"
+      *ngFor="let pair of organizedReminders$ | async"
     >
       <h3 class="reminders-list__time-title">
-        {{ pair[0] | date : "shortTime" }}
+        {{ pair![0] | date : "shortTime" }}
       </h3>
 
-      <mat-card class="reminders-list__card" *ngFor="let reminder of pair[1]">
+      <mat-card class="reminders-list__card" *ngFor="let reminder of pair![1]">
         <mat-card-header>
           <mat-card-subtitle class="reminders-list__card-state">
             Consumido/Por consumir</mat-card-subtitle
