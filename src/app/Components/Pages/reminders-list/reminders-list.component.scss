@@ -1,8 +1,10 @@
-.reminders-list {
+// Main reminders container
+.reminders {
   padding-inline: 10vw;
+}
 
-  &__date-picker {
-    display: flex;
+.date-picker {
+  display: flex;
     flex-direction: row;
 
     justify-content: space-between;
@@ -11,16 +13,17 @@
     margin-inline: auto;
     margin-block: 5dvh;
     width: 60vw;
-  }
 
-  &__patient-selector {
-    width: 100%;
-  }
+    &__date {
+      margin-bottom: 0;
+    }
+}
 
-  &__date {
-    margin-bottom: 0;
-  }
+.patient-selector {
+  width: 100%;
+}
 
+.reminders-list {
   &__time-period {
     margin-bottom: 4dvh;
   }
