@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
-import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import { ReminderService } from '../../../Services/reminder.service';
 
@@ -122,7 +122,7 @@ export class ReminderEffects {
             return reminderActions.fetchAllUserConsumptions({
               userId: userId,
               reminders: reminders,
-              day: day
+              day: day,
             });
           }),
           catchError((error) =>
@@ -153,17 +153,24 @@ export class ReminderEffects {
       mergeMap(({ userId, reminders, day }) =>
         this.reminderService.fetchAllUserConsumptions(userId).pipe(
           map((response: ConsumptionDTO[]) => {
-            const consumptions: ConsumptionDTO[] = response.map((consumption) =>({
-              reminderId: consumption.reminderId,
-              consumptionDate: new Date(consumption.consumptionDate)
-            }))
+            const consumptions: ConsumptionDTO[] = response.map(
+              (consumption) => ({
+                reminderId: consumption.reminderId,
+                consumptionDate: new Date(consumption.consumptionDate),
+              })
+            );
 
-            const organizedReminders: Array<[Date, [ReminderDTO, boolean][]] | null> =
-              this.reminderService.organizeReminders(reminders, consumptions, day);
+            const organizedReminders: Array<
+              [Date, [ReminderDTO, boolean][]] | null
+            > = this.reminderService.organizeReminders(
+              reminders,
+              consumptions,
+              day
+            );
 
             return reminderActions.fetchAllUserRemindersSuccess({
               reminders: reminders,
-              organizedReminders: organizedReminders
+              organizedReminders: organizedReminders,
             });
           }),
           catchError((error) =>
@@ -177,13 +184,4 @@ export class ReminderEffects {
       )
     )
   );
-
-  // fetchAllUserConsumptionsSuccess$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(reminderActions.fetchAllUserRemindersSuccess)
-  //       // tap(({ reminders }) => console.log(reminders))
-  //     ),
-  //   { dispatch: false }
-  // );
 }

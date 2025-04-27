@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
@@ -71,21 +72,33 @@ export const medicineReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  // on(
-  //   reminderActions.fetchAllUserConsumptionsSuccess,
-  //   (state, { consumptions }) => ({
-  //     ...state,
-  //     loading: false,
-  //     loaded: true,
-  //     error: null,
-  //   })
-  // ),
-  // on(reminderActions.fetchAllUserConsumptionsError, (state, { error }) => ({
-  //   ...state,
-  //   loading: false,
-  //   loaded: true,
-  //   error: error,
-  // })),
+
+  // Mark reminder as consumed
+  on(reminderActions.changeRemidnerState, (state, { index }) => {
+    // Validación de índice
+    if (index < 0 || index >= state.organizedReminders.length) {
+      return state;
+    }
+
+    // Copia inmutable del array
+    const updatedReminders = state.organizedReminders.map((pair, i) => {
+      if (i !== index) return pair; // Mantener los demás elementos
+
+      // Modificar solo el elemento en el índice dado
+      return [
+        pair![0], // Conservar la Date
+        [[pair![1][0][0], !pair![1][0][1]]] as [ReminderDTO, boolean][], // Actualizar el booleano
+      ] as [Date, [ReminderDTO, boolean][]];
+    });
+
+    return {
+      ...state,
+      organizedReminders: updatedReminders,
+      loading: false,
+      loaded: true,
+      error: null,
+    };
+  }),
 
   // Get all medicine kits from user
   on(medicineKitActions.fetchUserMedicineKits, (state) => ({
