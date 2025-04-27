@@ -54,6 +54,7 @@ export class ReminderEffects {
                 medicineUnit: row.medicineUnit,
                 medicineName: row.medicineName,
                 medicineKitName: row.medicineKitName,
+                ownerId: row.ownerId,
                 ownerFirstName: row.ownerFirstName,
                 ownerLastName: row.ownerLastName
               }));
