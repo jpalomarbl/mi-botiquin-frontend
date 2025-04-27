@@ -79,32 +79,36 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
-      this.store.dispatch(
-        reminderActions.fetchUserRemindersForToday({
-          userId: (user! as UserDTO).id,
-        })
-      );
+    this.user$
+      .pipe(filter((user) => user !== null))
+      .subscribe((user: UserDTO | null) => {
+        if (user) {
+          this.store.dispatch(
+            reminderActions.fetchUserRemindersForToday({
+              userId: user.id,
+            })
+          );
 
-      this.store.dispatch(
-        medicineKitActions.fetchUserMedicineKits({
-          userId: (user! as UserDTO).id,
-          role: (user! as UserDTO).role,
-        })
-      );
+          this.store.dispatch(
+            medicineKitActions.fetchUserMedicineKits({
+              userId: user.id,
+              role: user.role,
+            })
+          );
 
-      if ((user! as UserDTO).role === 'caretaker') {
-        this.store.dispatch(
-          fetchCaretakerRelationships({ userId: (user! as UserDTO).id })
-        );
-      } else if ((user! as UserDTO).role === 'family member') {
-        this.store.dispatch(
-          fetchFamilyMemberRelationships({ userId: (user! as UserDTO).id })
-        );
-      } else this.isPatient = true;
+          if (user.role === 'caretaker') {
+            this.store.dispatch(
+              fetchCaretakerRelationships({ userId: user.id })
+            );
+          } else if (user.role === 'family member') {
+            this.store.dispatch(
+              fetchFamilyMemberRelationships({ userId: user.id })
+            );
+          } else this.isPatient = true;
 
-      this.user = user! as UserDTO;
-    });
+          this.user = user! as UserDTO;
+        }
+      });
 
     this.userRelationships$.subscribe((relationships) => {
       if (relationships && relationships.length > 0) {

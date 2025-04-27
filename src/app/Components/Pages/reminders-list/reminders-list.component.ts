@@ -276,24 +276,28 @@ export class RemindersListComponent {
         })
       );
     } else {
-      this.user$.pipe(filter((user) => user !== null)).subscribe((user) => {
-        this.store.dispatch(
-          fetchAllUserReminders({
-            userId: (user! as UserDTO).id,
-            day: this.day,
-          })
-        );
+      this.user$
+        .pipe(filter((user) => user !== null))
+        .subscribe((user: UserDTO | null) => {
+          if (user) {
+            this.store.dispatch(
+              fetchAllUserReminders({
+                userId: user.id,
+                day: this.day,
+              })
+            );
 
-        if ((user! as UserDTO).role === 'caretaker') {
-          this.store.dispatch(
-            fetchCaretakerRelationships({ userId: (user! as UserDTO).id })
-          );
-        } else if ((user! as UserDTO).role === 'family member') {
-          this.store.dispatch(
-            fetchFamilyMemberRelationships({ userId: (user! as UserDTO).id })
-          );
-        } else this.isPatient = true;
-      });
+            if (user.role === 'caretaker') {
+              this.store.dispatch(
+                fetchCaretakerRelationships({ userId: user.id })
+              );
+            } else if (user.role === 'family member') {
+              this.store.dispatch(
+                fetchFamilyMemberRelationships({ userId: user.id })
+              );
+            } else this.isPatient = true;
+          }
+        });
     }
 
     // this.store
