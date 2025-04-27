@@ -52,6 +52,27 @@
               | date : "shortTime"
           }}
         </span>
+
+        <span
+          matListItemLine
+          *ngIf="
+            user !== null && !isPatient && reminder.ownerId !== user.id
+          "
+        >
+          Recordatorio de {{ reminder.ownerFirstName }}
+          {{ reminder.ownerLastName }}
+        </span>
+
+        <span
+          matListItemLine
+          *ngIf="
+            user !== null &&
+            (user.role === 'caretaker' || user.role === 'family member') &&
+            reminder.ownerId === user.id
+          "
+        >
+          Este recordatorio es tuyo
+        </span>
       </mat-list-item>
 
       <button
