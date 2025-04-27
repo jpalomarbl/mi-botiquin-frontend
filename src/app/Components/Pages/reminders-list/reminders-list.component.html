@@ -62,46 +62,52 @@
     </mat-form-field>
   </section>
 
-  <section *ngIf="organizedReminders$ | async; else noReminders">
-    <!-- organizedReminders is an array of arrays of type [Date, ReminderDTO[]] -->
-    <div
-      class="reminders-list__time-period"
-      *ngFor="let pair of organizedReminders$ | async"
-    >
-      <h3 class="reminders-list__time-title">
-        {{ pair![0] | date : "shortTime" }}
-      </h3>
+  <cdk-virtual-scroll-viewport class="reminders-list__viewport" appendOnly itemSize="50">
+    <section *ngIf="organizedReminders$ | async; else noReminders">
+      <!-- organizedReminders is an array of arrays of type [Date, ReminderDTO[]] -->
+      <div
+        class="reminders-list__time-period"
+        *cdkVirtualFor="let pair of organizedReminders$ | async"
+      >
+        <h3 class="reminders-list__time-title">
+          {{ pair![0] | date : "shortTime" }}
+        </h3>
 
-      <mat-card class="reminders-list__card" *ngFor="let reminder of pair![1]">
-        <mat-card-header>
-          <mat-card-subtitle
-            class="reminders-list__card-state"
-            *ngIf="reminder[1]; else notConsumed"
-          >
-            Consumido
-          </mat-card-subtitle>
-
-          <ng-template #notConsumed>
-            <mat-card-subtitle class="reminders-list__card-state">
-              Por consumir
+        <mat-card class="reminders-list__card" *ngFor="let reminder of pair![1]" [ngClass]="{'reminders-list__card--consumed' :!reminder[1]}">
+          <mat-card-header>
+            <mat-card-subtitle
+              class="reminders-list__card-state"
+              *ngIf="reminder[1]; else notConsumed"
+            >
+              Consumido
             </mat-card-subtitle>
-          </ng-template>
 
-          <mat-card-title class="reminders-list__card-title">{{
-            reminder[0].medicineName | shortenText : 30
-          }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ reminder[0].medicineKitName }}</p>
+            <ng-template #notConsumed>
+              <mat-card-subtitle class="reminders-list__card-state">
+                Por consumir
+              </mat-card-subtitle>
+            </ng-template>
 
-          <p>{{ reminder[0].amount }} {{ reminder[0].medicineUnit }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>LIKE</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </section>
+            <mat-card-title class="reminders-list__card-title">{{
+              reminder[0].medicineName | shortenText : 30
+            }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ reminder[0].medicineKitName }}</p>
+
+            <p>{{ reminder[0].amount }} {{ reminder[0].medicineUnit }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" *ngIf="reminder[1]; else toBeConsumed">Consumir</button>
+
+            <ng-template #toBeConsumed>
+              <button mat-raised-button color="primary">Dejar de consumir</button>
+            </ng-template>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </section>
+  </cdk-virtual-scroll-viewport>
 
   <ng-template #noReminders>
     <div class="reminders-list__no-reminders-container">

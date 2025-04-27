@@ -23,6 +23,7 @@ import {
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -57,6 +58,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    ScrollingModule,
     DateFormatPipe,
     ShortenTextPipe,
     DatePipe,
@@ -68,7 +70,9 @@ import { HeaderComponent } from '../../Common/header/header.component';
 export class RemindersListComponent {
   user$: Observable<UserDTO | null>;
   userRelationships$: Observable<UserDTO[] | null>;
-  organizedReminders$: Observable<Array<[Date, [ReminderDTO, boolean][]] | null>>;
+  organizedReminders$: Observable<
+    Array<[Date, [ReminderDTO, boolean][]] | null>
+  >;
 
   loadingMedicine$: Observable<boolean>;
   loadingAuth$: Observable<boolean>;
@@ -111,7 +115,9 @@ export class RemindersListComponent {
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
-    this.organizedReminders$ = this.store.select(medicineSelectors.selectOrganizedReminders);
+    this.organizedReminders$ = this.store.select(
+      medicineSelectors.selectOrganizedReminders
+    );
 
     this.loadingMedicine$ = this.store.select(
       medicineSelectors.selectMedicineLoading
