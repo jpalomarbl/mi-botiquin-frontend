@@ -28,7 +28,7 @@ export const medicineReducer = createReducer(
     reminderActions.fetchUserRemindersForTodaySuccess,
     (state, { reminders }) => ({
       ...state,
-      reminders: reminders,
+      reminders: [...state.reminders, ...reminders],
       loading: false,
       loaded: true,
       error: null,
@@ -74,40 +74,40 @@ export const medicineReducer = createReducer(
   })),
 
   // Mark reminder as consumed
-  on(reminderActions.changeReminderState, (state, { index, reminderId, time, status }) => {
-    // Validación de índice
-    if (index < 0 || index >= state.organizedReminders.length) {
-      return state;
-    }
-
-    // Copia inmutable del array
-    const updatedReminders = state.organizedReminders.map((pair, i) => {
-      if (i !== index) return pair; // Mantener los demás elementos
-
-      // Modificar solo el elemento en el índice dado
-      return [
-        pair![0], // Conservar la Date
-        [[pair![1][0][0], !status]] as [ReminderDTO, boolean][], // Actualizar el booleano
-      ] as [Date, [ReminderDTO, boolean][]];
-    });
-
-    return {
-      ...state,
-      organizedReminders: updatedReminders,
-      loading: true,
-      loaded: false,
-      error: null,
-    };
-  }),
   on(
-    reminderActions.changeReminderStateSuccess,
-    (state) => ({
-      ...state,
-      loading: false,
-      loaded: true,
-      error: null,
-    })
+    reminderActions.changeReminderState,
+    (state, { index, reminderId, time, status }) => {
+      // Validación de índice
+      if (index < 0 || index >= state.organizedReminders.length) {
+        return state;
+      }
+
+      // Copia inmutable del array
+      const updatedReminders = state.organizedReminders.map((pair, i) => {
+        if (i !== index) return pair; // Mantener los demás elementos
+
+        // Modificar solo el elemento en el índice dado
+        return [
+          pair![0], // Conservar la Date
+          [[pair![1][0][0], !status]] as [ReminderDTO, boolean][], // Actualizar el booleano
+        ] as [Date, [ReminderDTO, boolean][]];
+      });
+
+      return {
+        ...state,
+        organizedReminders: updatedReminders,
+        loading: true,
+        loaded: false,
+        error: null,
+      };
+    }
   ),
+  on(reminderActions.changeReminderStateSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
   on(reminderActions.changeReminderStateError, (state, { error }) => ({
     ...state,
     loading: false,
