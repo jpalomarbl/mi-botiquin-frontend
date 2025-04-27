@@ -6,7 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { authReducer } from './reducers/auth.reducer';
 import { AuthEffects } from './effects/auth.effects';
-import { AuthService } from './services/auth.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @NgModule({
   declarations: [],

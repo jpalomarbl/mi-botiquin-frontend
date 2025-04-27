@@ -24,14 +24,19 @@ export class ReminderEffects {
             const reminders = response
               .slice(0, 3)
               .filter((row: ReminderDTO) => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
                 const dayAfter = new Date();
                 dayAfter.setDate(dayAfter.getDate() + 1);
                 dayAfter.setHours(0, 0, 0, 0);
                 const finishDate = new Date(row.finish);
                 const nextDose = this.reminderService.getNextDoseTime(
                   row,
-                  new Date()
+                  today
                 );
+
+                console.log(nextDose.getTime() < dayAfter.getTime() &&
+                nextDose.getTime() < finishDate.getTime())
 
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
