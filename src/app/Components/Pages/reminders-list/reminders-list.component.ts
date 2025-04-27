@@ -17,7 +17,7 @@ import {
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import {
-  changeRemidnerState,
+  changeReminderState,
   // fetchAllUserConsumptions,
   fetchAllUserReminders,
 } from 'src/app/Store/medicine/actions/reminders.actions';
@@ -242,8 +242,8 @@ export class RemindersListComponent {
       this.router.navigate(['remindersList' + userIdString + '/forwards/1']);
   }
 
-  changeRemidnerState(index: number) {
-    this.store.dispatch(changeRemidnerState({ index: index }));
+  changeReminderState(index: number, reminderId: number, time: Date, status: boolean) {
+    this.store.dispatch(changeReminderState({ index: index, reminderId: reminderId, time: time, status: status }));
   }
 
   loadData(userId: number = 0): void {

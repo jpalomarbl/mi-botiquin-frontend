@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/app/environment/environment';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-import { ConsumptionDTO } from '../Models/consumption.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
+import { ConsumptionDTO } from '../Models/consumption.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +53,34 @@ export class ReminderService {
     );
 
     return response;
+  }
+
+  changeReminderState(
+    reminderId: number,
+    time: Date,
+    status: boolean
+  ): Observable<any> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('reminderId', reminderId.toString());
+    body.set('consumptionDate', time.toString());
+
+    if (!status) {
+      return this.http.post<any>(`${this.apiUrlConsumption}`, body.toString(), {
+        withCredentials: true,
+        headers: headers,
+      });
+    } else {
+      return this.http.delete<any>(`${this.apiUrlConsumption}`, {
+        body: body.toString(),
+        withCredentials: true,
+        headers: headers,
+      });
+    }
   }
 
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
@@ -144,29 +172,31 @@ export class ReminderService {
     if (!reminders || reminders.length === 0) return [];
 
     // Procesamiento paralelo de los recordatorios
-    const allDoses = reminders.flatMap((reminder) => {
-      if (!reminder) return null;
+    const allDoses = reminders
+      .flatMap((reminder) => {
+        if (!reminder) return null;
 
-      const doses: { time: Date; reminder: ReminderDTO }[] = [];
-      let currentDate = new Date(day);
-      const nextDay = new Date(day);
-      nextDay.setDate(nextDay.getDate() + 1);
+        const doses: { time: Date; reminder: ReminderDTO }[] = [];
+        let currentDate = new Date(day);
+        const nextDay = new Date(day);
+        nextDay.setDate(nextDay.getDate() + 1);
 
-      let nextDose = this.getNextDoseTime(reminder, currentDate);
+        let nextDose = this.getNextDoseTime(reminder, currentDate);
 
-      while (nextDose.getTime() <= nextDay.getTime()) {
-        doses.push({
-          time: new Date(nextDose),
-          reminder: reminder,
-        });
+        while (nextDose.getTime() <= nextDay.getTime()) {
+          doses.push({
+            time: new Date(nextDose),
+            reminder: reminder,
+          });
 
-        // Actualizamos la fecha para la próxima dosis
-        currentDate = new Date(nextDose);
-        nextDose = this.getNextDoseTime(reminder, currentDate);
-      }
+          // Actualizamos la fecha para la próxima dosis
+          currentDate = new Date(nextDose);
+          nextDose = this.getNextDoseTime(reminder, currentDate);
+        }
 
-      return doses;
-    }).filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
+        return doses;
+      })
+      .filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
 
     // Agrupamiento eficiente por hora
     const grouped = new Map<number, [ReminderDTO, boolean][]>();
@@ -175,7 +205,11 @@ export class ReminderService {
       // Usamos el timestamp como clave para agrupar
       const timeKey = time.getTime();
 
-      const consumptionFound = consumptions.find((consumption) => consumption.consumptionDate.getTime() === timeKey && consumption.reminderId === reminder.id);
+      const consumptionFound = consumptions.find(
+        (consumption) =>
+          consumption.consumptionDate.getTime() === timeKey &&
+          consumption.reminderId === reminder.id
+      );
 
       if (grouped.has(timeKey)) {
         grouped.get(timeKey)!.push([reminder, consumptionFound ? true : false]);

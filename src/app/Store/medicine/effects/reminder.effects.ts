@@ -70,15 +70,6 @@ export class ReminderEffects {
     )
   );
 
-  fetchUserRemindersForTodaySuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(reminderActions.fetchUserRemindersForTodaySuccess)
-        // tap(({ reminders }) => console.log(reminders))
-      ),
-    { dispatch: false }
-  );
-
   fetchAllUserReminders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserReminders),
@@ -137,15 +128,6 @@ export class ReminderEffects {
     )
   );
 
-  fetchAllUserRemindersSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(reminderActions.fetchAllUserRemindersSuccess)
-        // tap(({ reminders }) => console.log(reminders))
-      ),
-    { dispatch: false }
-  );
-
   fetchAllUserConsumptions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserConsumptions),
@@ -184,4 +166,47 @@ export class ReminderEffects {
       )
     )
   );
+
+  changeReminderState$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reminderActions.changeReminderState),
+      debounceTime(300),
+      mergeMap(({ reminderId, time, status }) =>
+        this.reminderService.changeReminderState(reminderId, time, status).pipe(
+          catchError((error) =>
+            of(
+              reminderActions.fetchAllUserRemindersError({
+                error: error.error || 'Get all user consumptions failed',
+              })
+            )
+          )
+        )
+      )
+    ),
+    { dispatch: false }
+  );
+
+  // stopConsumingReminder$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(reminderActions.stopConsumingReminder),
+  //     debounceTime(300),
+  //     mergeMap(({ reminderId, time }) =>
+  //       this.reminderService.stopConsumingReminder(reminderId, time).pipe(
+  //         map((response: ConsumptionDTO[]) => {
+
+  //           console.log(response)
+
+  //         }),
+  //         catchError((error) =>
+  //           of(
+  //             reminderActions.fetchAllUserRemindersError({
+  //               error: error.error || 'Get all user consumptions failed',
+  //             })
+  //           )
+  //         )
+  //       )
+  //     )
+  //   ),
+  //   { dispatch: false }
+  // );
 }
