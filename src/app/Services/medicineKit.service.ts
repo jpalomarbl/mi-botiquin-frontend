@@ -23,7 +23,7 @@ export class MedicineKitService {
     const caretakerKits$ = (role === 'caretaker')
       ? this.fetchCaretakerMedicineKits(userId)
       : of([]);
-      
+
     const familyMemberKits$ = (role === 'family member')
       ? this.fetchFamilyMemberMedicineKits(userId)
       : of([]);
@@ -63,6 +63,16 @@ export class MedicineKitService {
       {
         withCredentials: true,
         params: { familyMemberId: userId.toString() },
+      }
+    );
+  }
+
+  fetchMedicineKitById(medicineKitId: number): Observable<MedicineKitDTO> {
+    return this.http.get<MedicineKitDTO>(
+      `${this.apiUrl}`,
+      {
+        withCredentials: true,
+        params: { familyMemberId: medicineKitId.toString() },
       }
     );
   }
