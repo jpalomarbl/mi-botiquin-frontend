@@ -35,9 +35,6 @@ export class ReminderEffects {
                   today
                 );
 
-                console.log(nextDose.getTime() < dayAfter.getTime() &&
-                nextDose.getTime() < finishDate.getTime())
-
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
                   nextDose.getTime() < finishDate.getTime()

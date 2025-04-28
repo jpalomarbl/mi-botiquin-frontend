@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
@@ -150,39 +149,38 @@ export const medicineReducer = createReducer(
   on(
     medicineKitActions.fetchMedicineKitByIdSuccess,
     (state, { medicineKit }) => {
-      if (medicineKit && state.medicineKits) {
-        // Validación de índice
-        const newIndex = state.medicineKits.findIndex(
-          (medicineKitItem) => medicineKitItem.id === medicineKit.id
-        );
 
-        if (newIndex < 0) {
-          return {
-            ...state,
-            medicineKits: [...state.medicineKits, medicineKit],
-          };
-        }
+      // Validación de índice
+      const newIndex = state.medicineKits.findIndex(
+        (medicineKitItem) => medicineKitItem.id === medicineKit.id
+      );
 
-        // Copia inmutable del array
-        const updatedMedicineKits = state.medicineKits.map(
-          (medicineKitItem, i) => {
-            if (i !== newIndex) return medicineKitItem; // Mantener los demás elementos
-
-            // Actualiza solo el elemento en el índice dado
-            return medicineKit;
-          }
-        );
-
-        console.log(updatedMedicineKits)
-
+      if (newIndex < 0) {
         return {
           ...state,
-          medicineKits: updatedMedicineKits,
-          loading: true,
-          loaded: false,
-          error: null,
+          medicineKits: [...state.medicineKits, medicineKit],
         };
-      } else return state;
+      }
+
+      // Copia inmutable del array
+      const updatedMedicineKits = state.medicineKits.map(
+        (medicineKitItem, i) => {
+          if (i !== newIndex) return medicineKitItem; // Mantener los demás elementos
+
+          // Actualiza solo el elemento en el índice dado
+          return medicineKit;
+        }
+      );
+
+      console.log("Updated", updatedMedicineKits);
+
+      return {
+        ...state,
+        medicineKits: updatedMedicineKits,
+        loading: true,
+        loaded: false,
+        error: null,
+      };
     }
   ),
   on(medicineKitActions.fetchMedicineKitByIdError, (state, { error }) => ({
