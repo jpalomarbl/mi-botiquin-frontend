@@ -137,5 +137,55 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
+  })),
+
+  // Get all medicine kits from user
+  on(medicineKitActions.fetchMedicineKitById, (state, { medicineKitId }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(
+    medicineKitActions.fetchMedicineKitsByIdSuccess,
+    (state, { medicineKit }) => {
+      if (medicineKit) {
+        // Validación de índice
+        const newIndex = state.medicineKits.findIndex(
+          (medicineKitItem) => medicineKitItem.id === medicineKit.id
+        );
+
+        if (newIndex < 0) {
+          return {
+            ...state,
+            medicineKits: [...state.medicineKits, medicineKit],
+          };
+        }
+
+        // Copia inmutable del array
+        const updatedMedicineKits = state.medicineKits.map(
+          (medicineKitItem, i) => {
+            if (i !== newIndex) return medicineKitItem; // Mantener los demás elementos
+
+            // Actualiza solo el elemento en el índice dado
+            return medicineKit;
+          }
+        );
+
+        return {
+          ...state,
+          medicineKits: updatedMedicineKits,
+          loading: true,
+          loaded: false,
+          error: null,
+        };
+      } else return state;
+    }
+  ),
+  on(medicineKitActions.fetchMedicineKitsByIdError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
   }))
 );

@@ -67,4 +67,28 @@ export class MedicineKitEffects {
       ),
     { dispatch: false }
   );
+
+  fetchMedicineKitById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.fetchMedicineKitById),
+      mergeMap(({ medicineKitId }) =>
+        this.medicineKitService.fetchMedicineKitById(medicineKitId).pipe(
+          map((response: MedicineKitDTO) => {
+            console.log(response);
+
+            return medicineKitActions.fetchMedicineKitsByIdSuccess({
+              medicineKit: {} as MedicineKitDTO
+            });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.fetchUserMedicineKitsError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }

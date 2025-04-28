@@ -1,6 +1,7 @@
-import { createSelector } from "@ngrx/store";
-import { MedicineStateDTO } from "src/app/Models/medicineState.dto";
-import { GlobalStateDTO } from "src/app/Models/globalState.dto";
+import { createSelector } from '@ngrx/store';
+import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
 
 export const selectMedicineState = (state: GlobalStateDTO) => state.medicine;
 
@@ -18,6 +19,12 @@ export const selectMedicineKits = createSelector(
   selectMedicineState,
   (state: MedicineStateDTO) => state.medicineKits
 );
+
+export const selectMedicineKitById = (medicineKitId: number) =>
+  createSelector(
+    selectMedicineKits,
+    (medicineKits: MedicineKitDTO[]) => medicineKits.find((medicineKit) => medicineKit.id === medicineKitId)
+  );
 
 export const selectMedicineLoading = createSelector(
   selectMedicineState,
