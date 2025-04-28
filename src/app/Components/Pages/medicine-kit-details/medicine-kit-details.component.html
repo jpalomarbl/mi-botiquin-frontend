@@ -4,6 +4,8 @@
   "
 ></custom-header>
 
+<p>{{ medicineKit$ | async | json }}</p>
+
 <div class="medicine-kit" *ngIf="medicineKit$ | async">
   <section class="titles">
     <h2 class="titles__title">{{ (medicineKit$ | async)!.name }}</h2>
@@ -32,7 +34,7 @@
     </mat-form-field>
   </section>
 
-  <section class="medicines-list">
+  <section class="medicines-list" *ngIf="medicineKit">
     <cdk-virtual-scroll-viewport
       class="medicines-list__viewport"
       appendOnly

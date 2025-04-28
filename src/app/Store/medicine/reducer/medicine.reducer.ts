@@ -188,5 +188,28 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  }))
+  })),
+
+  // Delete a medicine
+  on(medicineKitActions.deleteMedicineById, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(
+    medicineKitActions.deleteMedicineByIdSuccess,
+    (state) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(medicineKitActions.deleteMedicineByIdError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
 );

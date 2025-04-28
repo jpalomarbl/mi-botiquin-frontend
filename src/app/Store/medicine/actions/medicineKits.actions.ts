@@ -3,7 +3,7 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 export const fetchUserMedicineKits = createAction(
   '[Medicine] Fetch User Medicine Kits From API',
-  props<{ userId: number, role: string }>()
+  props<{ userId: number; role: string }>()
 );
 
 export const fetchUserMedicineKitsSuccess = createAction(
@@ -28,5 +28,19 @@ export const fetchMedicineKitByIdSuccess = createAction(
 
 export const fetchMedicineKitByIdError = createAction(
   '[Medicine] Fetch Medicine Kit By ID From API Error',
+  props<{ error: string }>()
+);
+
+export const deleteMedicineById = createAction(
+  '[Medicine] Delete Medicine By Id',
+  props<{ medicineId: number, medicineKitId: number }>()
+);
+
+export const deleteMedicineByIdSuccess = createAction(
+  '[Medicine] Delete Medicine By Id Success'
+);
+
+export const deleteMedicineByIdError = createAction(
+  '[Medicine] Delete Medicine By Id',
   props<{ error: string }>()
 );

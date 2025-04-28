@@ -70,6 +70,7 @@ export class MedicineKitService {
   }
 
   deleteMedicineById(medicineId: number): Observable<any> {
+    console.log(medicineId)
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'

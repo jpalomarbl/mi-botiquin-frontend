@@ -89,4 +89,28 @@ export class MedicineKitEffects {
       )
     )
   );
+
+  deleteMedicineById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.deleteMedicineById),
+      mergeMap(({ medicineId, medicineKitId }) =>
+        this.medicineKitService.deleteMedicineById(medicineId).pipe(
+          map((response: any) => {
+            console.log(response);
+
+            return medicineKitActions.fetchMedicineKitById({
+              medicineKitId: medicineKitId
+            });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.deleteMedicineByIdError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }

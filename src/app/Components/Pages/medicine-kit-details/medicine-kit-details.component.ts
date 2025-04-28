@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // Rxjs
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 // Angular material
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import {MatCardModule} from '@angular/material/card';
 
 // Data models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -19,6 +19,7 @@ import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 // Store
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -49,15 +50,19 @@ import { AsyncPipe } from '@angular/common';
 })
 export class MedicineKitDetailsComponent {
   medicineKit$: Observable<MedicineKitDTO | undefined>;
+  medicineKit: MedicineKitDTO | null;
 
   medicineKitId: number | undefined;
 
   medicines: MedicineDTO[] | undefined;
   sortedMedicines: MedicineDTO[] | undefined;
 
+  lastClickTime: number;
+
   constructor(
     private store: Store<GlobalStateDTO>,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private actions$: Actions
   ) {
     this.medicineKitId = +this.route.snapshot.params['medicineKitId'];
 
@@ -65,8 +70,11 @@ export class MedicineKitDetailsComponent {
       selectMedicineKitById(+this.medicineKitId)
     );
 
+    this.medicineKit = null;
+
     this.medicines = [];
     this.sortedMedicines = [];
+    this.lastClickTime = 0;
   }
 
   ngOnInit(): void {
@@ -78,8 +86,12 @@ export class MedicineKitDetailsComponent {
       );
 
       this.medicineKit$.subscribe((medicineKit) => {
-        this.medicines = medicineKit!.medicines;
-        this.sortedMedicines = medicineKit!.medicines;
+        if (medicineKit && medicineKit.medicines) {
+          this.medicines = medicineKit.medicines;
+          this.sortedMedicines = medicineKit.medicines;
+
+          this.medicineKit = medicineKit;
+        }
       });
     }
   }
@@ -90,7 +102,27 @@ export class MedicineKitDetailsComponent {
   }
 
   deleteMedicine(medicineId: number): void {
-    
+    this.medicineKit$.pipe(take(1)).subscribe((medicineKit) => {
+      this.store.dispatch(
+        medicineKitActions.deleteMedicineById({
+          medicineId: medicineId,
+          medicineKitId: medicineKit!.id,
+        })
+      );
+    });
+
+    this.actions$
+      .pipe(
+        ofType(medicineKitActions.fetchMedicineKitByIdSuccess),
+        take(1) // Para autodesuscribirse después de ejecutarse una vez
+      )
+      .subscribe(() => {
+        // Código a ejecutar después de eliminar
+        console.log('Medicina eliminada, actualizando vista...');
+        this.sortedMedicines = this.sortedMedicines?.filter(
+          (m) => m.id !== medicineId
+        );
+      });
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
