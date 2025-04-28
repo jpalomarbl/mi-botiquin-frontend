@@ -1,3 +1,88 @@
 <custom-header title="Tus botiquines"></custom-header>
 
+<div class="medicine-kits">
+  <mat-progress-spinner
+    class="medicine-kits__spinner"
+    [ngClass]="{ 'medicine-kits__spinner--not-hidden': (loadingMedicine$ | async) || (loadingAuth$ | async) }"
+    color="primary"
+    mode="indeterminate"
+    value="50"
+  >
+  </mat-progress-spinner>
+
+  <section class="options__container" *ngIf="!isPatient && (!(loadingMedicine$ | async) && !(loadingAuth$ | async))">
+    <mat-form-field class="options__selector" appearance="fill">
+      <mat-label>Filtra por pacientes</mat-label>
+      <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">
+        <mat-option
+          *ngFor="let user of userRelationships$ | async; index as i"
+          [value]="user.id"
+        >
+          {{ user.firstName }} {{ user.lastName }}
+        </mat-option>
+        <mat-option value="0"> Todos los botiquines </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button class="options__button" mat-fab extended color="primary">
+      <mat-icon>favorite</mat-icon>
+      Añadir botiquín
+    </button>
+  </section>
+
+  <section class="medicine-kits-list" *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)">
+    <cdk-virtual-scroll-viewport
+      class="medicine-kits-list__viewport"
+      appendOnly
+      itemSize="200"
+    >
+      <div
+        class="medicine-kits-list__list-item"
+        *cdkVirtualFor="let medicineKit of medicineKits$ | async; index as i"
+        (click)="navigateMedicineKitDetails(medicineKit.id)"
+      >
+        <mat-card class="medicine-kits-list__card">
+          <mat-card-header>
+            <mat-card-title>{{ medicineKit.name }}</mat-card-title>
+            <mat-card-subtitle>{{ medicineKit.note }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p
+              *ngIf="
+                medicineKit.owner.id === (user$ | async)!.id;
+                else notOwner
+              "
+            >
+              Este botiquín es tuyo.
+            </p>
+            <ng-template #notOwner>
+              <p>
+                Botiquín de {{ medicineKit.owner.firstName }}
+                {{ medicineKit.owner.lastName }}.
+              </p>
+            </ng-template>
+
+            <ul class="medicine-kits-list__medicine-list">
+              <li>{{ medicineKit.medicines[0].name }}.</li>
+
+              <li *ngIf="medicineKit.medicines[1]">{{ medicineKit.medicines[1].name }}.</li>
+
+              <li *ngIf="(medicineKit.medicines.length - 2) > 0">{{ medicineKit.medicines.length - 2 }} medicamentos más.</li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <button
+        class="medicine-kits-list__button"
+          mat-icon-button
+          color="primary"
+          aria-label="Example icon button with a home icon"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </section>
+</div>
+
 <custom-footer></custom-footer>

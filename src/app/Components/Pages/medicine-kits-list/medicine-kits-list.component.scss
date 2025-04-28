@@ -1,0 +1,51 @@
+.medicine-kits {
+  margin-top: 10dvh;
+  padding-inline: 10vw;
+
+  &__spinner {
+    display: none;
+
+    &--not-hidden {
+      display: block;
+
+      margin: 0;
+
+      position: fixed;
+      top: 40dvh;
+      left: 50%;
+
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+.options {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 2dvh;
+  }
+}
+
+.medicine-kits-list {
+  &__viewport {
+    height: 65dvh;
+  }
+
+  &__list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-bottom: 3dvh;
+
+    cursor: pointer;
+  }
+
+  &__card {
+    width: 90%;
+  }
+}
