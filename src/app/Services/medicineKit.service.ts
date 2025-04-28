@@ -72,7 +72,7 @@ export class MedicineKitService {
       `${this.apiUrl}`,
       {
         withCredentials: true,
-        params: { familyMemberId: medicineKitId.toString() },
+        params: { medicineKitId: medicineKitId.toString() },
       }
     );
   }
