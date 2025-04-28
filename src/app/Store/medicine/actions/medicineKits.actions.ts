@@ -21,12 +21,12 @@ export const fetchMedicineKitById = createAction(
   props<{ medicineKitId: number }>()
 );
 
-export const fetchMedicineKitsByIdSuccess = createAction(
-  '[Medicine] Fetch User Medicine Kits From API Success',
+export const fetchMedicineKitByIdSuccess = createAction(
+  '[Medicine] Fetch Medicine Kit By ID From API Success',
   props<{ medicineKit: MedicineKitDTO }>()
 );
 
-export const fetchMedicineKitsByIdError = createAction(
-  '[Medicine] Fetch User Medicine Kits From API Error',
+export const fetchMedicineKitByIdError = createAction(
+  '[Medicine] Fetch Medicine Kit By ID From API Error',
   props<{ error: string }>()
 );

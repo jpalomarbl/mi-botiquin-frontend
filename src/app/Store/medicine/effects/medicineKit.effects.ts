@@ -74,15 +74,13 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKitId }) =>
         this.medicineKitService.fetchMedicineKitById(medicineKitId).pipe(
           map((response: MedicineKitDTO) => {
-            console.log(response);
-
-            return medicineKitActions.fetchMedicineKitsByIdSuccess({
-              medicineKit: {} as MedicineKitDTO
+            return medicineKitActions.fetchMedicineKitByIdSuccess({
+              medicineKit: response
             });
           }),
           catchError((error) =>
             of(
-              medicineKitActions.fetchUserMedicineKitsError({
+              medicineKitActions.fetchMedicineKitByIdError({
                 error: error.error.error || 'Fetch user medicine kits failed',
               })
             )

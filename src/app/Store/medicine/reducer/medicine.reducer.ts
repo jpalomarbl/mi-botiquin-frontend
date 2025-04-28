@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
@@ -147,9 +148,9 @@ export const medicineReducer = createReducer(
     error: null,
   })),
   on(
-    medicineKitActions.fetchMedicineKitsByIdSuccess,
+    medicineKitActions.fetchMedicineKitByIdSuccess,
     (state, { medicineKit }) => {
-      if (medicineKit) {
+      if (medicineKit && state.medicineKits) {
         // Validación de índice
         const newIndex = state.medicineKits.findIndex(
           (medicineKitItem) => medicineKitItem.id === medicineKit.id
@@ -172,6 +173,8 @@ export const medicineReducer = createReducer(
           }
         );
 
+        console.log(updatedMedicineKits)
+
         return {
           ...state,
           medicineKits: updatedMedicineKits,
@@ -182,7 +185,7 @@ export const medicineReducer = createReducer(
       } else return state;
     }
   ),
-  on(medicineKitActions.fetchMedicineKitsByIdError, (state, { error }) => ({
+  on(medicineKitActions.fetchMedicineKitByIdError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
