@@ -103,7 +103,7 @@ export class MedicineKitService {
     body.set('ownerId', medicineKit.owner.id.toString());
 
     return this.http.post<MedicineKitDTO>(
-      `${this.apiUrlMedicine}`,
+      `${this.apiUrlMedicineKit}`,
       body.toString(),
       {
         withCredentials: true,
