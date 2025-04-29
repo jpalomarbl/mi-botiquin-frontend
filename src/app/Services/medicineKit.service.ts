@@ -48,8 +48,8 @@ export class MedicineKitService {
     });
   }
 
-  fetchCaretakerMedicineKits(userId: number): Observable<any> {
-    return this.http.get<MedicineKitDTO>(
+  fetchCaretakerMedicineKits(userId: number): Observable<MedicineKitDTO[]> {
+    return this.http.get<MedicineKitDTO[]>(
       `${this.apiUrlMedicineKit}/caretaker`,
       {
         withCredentials: true,
@@ -58,8 +58,8 @@ export class MedicineKitService {
     );
   }
 
-  fetchFamilyMemberMedicineKits(userId: number): Observable<any> {
-    return this.http.get<MedicineKitDTO>(
+  fetchFamilyMemberMedicineKits(userId: number): Observable<MedicineKitDTO[]> {
+    return this.http.get<MedicineKitDTO[]>(
       `${this.apiUrlMedicineKit}/familyMember`,
       {
         withCredentials: true,
