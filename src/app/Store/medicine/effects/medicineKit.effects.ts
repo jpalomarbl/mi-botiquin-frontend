@@ -8,6 +8,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
+import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -117,6 +118,36 @@ export class MedicineKitEffects {
           catchError((error) =>
             of(
               medicineKitActions.addMedicineKitError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  fetchMedicinesCIMA$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.fetchMedicinesCIMA),
+      mergeMap(({ medicineName }) =>
+        this.medicineKitService.fetchMedicinesCIMA(medicineName).pipe(
+          map((response) => {
+            const medicines: MedicineDTO[] = response.resultados.map((medicine: any) => ({
+              id: 0,
+              name: medicine.nombre,
+              reminder: null,
+              unit: medicine.formaFarmaceuticaSimplificada.nombre,
+              amount: 0,
+              expirationDate: new Date(),
+              nregistro: medicine.nregistro
+            }))
+
+            return medicineKitActions.fetchMedicinesCIMASuccess( { medicines: medicines });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.fetchMedicinesCIMAError({
                 error: error.error.error || 'Fetch user medicine kits failed',
               })
             )
