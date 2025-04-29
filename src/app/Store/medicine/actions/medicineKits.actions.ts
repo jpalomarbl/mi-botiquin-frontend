@@ -44,3 +44,17 @@ export const deleteMedicineByIdError = createAction(
   '[Medicine] Delete Medicine By Id',
   props<{ error: string }>()
 );
+
+export const addMedicineKit = createAction(
+  '[Medicine] Insert Medicine Kit',
+  props<{ medicineKit: MedicineKitDTO }>()
+);
+
+export const addMedicineKitSuccess = createAction(
+  '[Medicine] Insert Medicine Kit Success'
+);
+
+export const addMedicineKitError = createAction(
+  '[Medicine] Insert Medicine Kit Error',
+  props<{ error: string }>()
+);

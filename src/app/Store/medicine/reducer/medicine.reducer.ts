@@ -28,7 +28,9 @@ export const medicineReducer = createReducer(
     reminderActions.fetchUserRemindersForTodaySuccess,
     (state, { reminders }) => ({
       ...state,
-      reminders: reminders ? [...state.reminders, ...reminders] : state.reminders,
+      reminders: reminders
+        ? [...state.reminders, ...reminders]
+        : state.reminders,
       loading: false,
       loaded: true,
       error: null,
@@ -149,7 +151,6 @@ export const medicineReducer = createReducer(
   on(
     medicineKitActions.fetchMedicineKitByIdSuccess,
     (state, { medicineKit }) => {
-
       // Validación de índice
       const newIndex = state.medicineKits.findIndex(
         (medicineKitItem) => medicineKitItem.id === medicineKit.id
@@ -195,19 +196,36 @@ export const medicineReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(
-    medicineKitActions.deleteMedicineByIdSuccess,
-    (state) => ({
-      ...state,
-      loading: false,
-      loaded: true,
-      error: null,
-    })
-  ),
+  on(medicineKitActions.deleteMedicineByIdSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
   on(medicineKitActions.deleteMedicineByIdError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
     error: error,
   })),
+
+  // Add new mediicne kit
+  on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(medicineKitActions.addMedicineKitSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(medicineKitActions.addMedicineKitError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  }))
 );
