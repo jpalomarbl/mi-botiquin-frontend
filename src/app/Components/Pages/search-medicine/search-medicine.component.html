@@ -25,9 +25,10 @@
         <mat-list-item
           class="medicines-list__list-item"
           *cdkVirtualFor="let medicine of medicinesSearch"
+          (click)="navigateAddMedicine(medicine)"
           role="listitem"
         >
-          <a [routerLink]="['/']">{{ medicine.name | shortenText : 33 | titlecase }}</a>
+          {{ medicine.name | shortenText : 33 | titlecase }}
         </mat-list-item>
       </cdk-virtual-scroll-viewport>
     </mat-list>

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 // Rxjs
 import { debounceTime, Observable, Subject, take, takeUntil } from 'rxjs';
 
@@ -40,7 +41,6 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     MatListModule,
     CommonModule,
     ShortenTextPipe,
-    RouterLink
   ],
   templateUrl: './search-medicine.component.html',
   styleUrls: ['./search-medicine.component.scss'],
@@ -56,7 +56,12 @@ export class SearchMedicineComponent {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<GlobalStateDTO>, private actions$: Actions) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private actions$: Actions,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.medicineName = '';
     this.medicinesSearch = [];
 
@@ -98,5 +103,12 @@ export class SearchMedicineComponent {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  navigateAddMedicine(medicine: MedicineDTO) {
+    const medicineJSON = JSON.stringify(medicine);
+    const medicineKitId = this.route.snapshot.params['medicineKitId'];
+
+    this.router.navigate([`/addMedicine/${medicineKitId}/${medicineJSON}`]);
   }
 }
