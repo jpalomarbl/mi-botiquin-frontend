@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Rxjs
 import { Observable } from 'rxjs';
@@ -49,7 +49,7 @@ export class AddMedicineKitComponent {
 
   isPatient: boolean;
 
-  userId: number;
+  userId: number | null;
 
   constructor(private store: Store<GlobalStateDTO>) {
     this.medicineKit = {
@@ -66,8 +66,15 @@ export class AddMedicineKitComponent {
       medicines: [],
     };
 
-    this.medicineKitName = new FormControl(this.medicineKit.name);
-    this.medicineKitNote = new FormControl(this.medicineKit.note);
+    this.medicineKitName = new FormControl(this.medicineKit.name, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]);
+    this.medicineKitNote = new FormControl(this.medicineKit.note, [
+      Validators.minLength(5),
+      Validators.maxLength(150),
+    ]);
     this.ownerId = new FormControl(this.medicineKit.owner.id);
 
     this.medicineKitForm = new FormGroup({
@@ -93,7 +100,7 @@ export class AddMedicineKitComponent {
 
     this.isPatient = false;
 
-    this.userId = 0;
+    this.userId = null;
   }
 
   ngOnInit(): void {
@@ -115,6 +122,8 @@ export class AddMedicineKitComponent {
 
         this.userId = user.id;
         this.medicineKit.owner.id = user.id;
+
+        if (!this.isPatient) this.ownerId.addValidators(Validators.required);
       }
     });
   }
