@@ -67,12 +67,9 @@
       <mat-hint>¿Quién va a utilizar el botiquín?</mat-hint>
     </mat-form-field>
 
-    <button class="form__button" mat-raised-button color="primary">
+    <button class="form__button" [disabled]="medicineKitForm.invalid" mat-raised-button color="primary">
       Crear botiquín
     </button>
-    <!-- <button class="form__button" [disabled]="medicineKitForm.invalid" mat-raised-button color="primary">
-      Crear botiquín
-    </button> -->
   </form>
 </div>
 
