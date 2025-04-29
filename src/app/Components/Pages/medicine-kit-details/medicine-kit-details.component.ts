@@ -128,7 +128,7 @@ export class MedicineKitDetailsComponent {
   }
 
   navigateAddMedicine(): void {
-    this.router.navigate(['searchMedicine']);
+    this.router.navigate([`searchMedicine/${this.medicineKit!.id}`]);
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
