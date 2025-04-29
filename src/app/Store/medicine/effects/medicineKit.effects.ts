@@ -53,16 +53,7 @@ export class MedicineKitEffects {
       )
     )
   );
-
-  fetchUserMedicineKitsSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(medicineKitActions.fetchUserMedicineKitsSuccess),
-        tap(({ medicineKits }) => console.log(medicineKits))
-      ),
-    { dispatch: false }
-  );
-
+  
   fetchMedicineKitById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(medicineKitActions.fetchMedicineKitById),

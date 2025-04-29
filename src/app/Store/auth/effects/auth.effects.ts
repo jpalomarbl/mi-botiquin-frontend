@@ -190,8 +190,7 @@ export class AuthEffects {
         ofType(
           userRelationshipActions.fetchCaretakerRelationshipsSuccess,
           userRelationshipActions.fetchFamilyMemberRelationshipsSuccess
-        ),
-        // tap(() => console.log('Hola'))
+        )
       ),
     { dispatch: false }
   );

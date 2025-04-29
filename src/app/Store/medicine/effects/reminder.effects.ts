@@ -179,7 +179,6 @@ export class ReminderEffects {
       mergeMap(({ reminderId, time, status }) =>
         this.reminderService.changeReminderState(reminderId, time, status).pipe(
           map((response) => {
-            console.log("Hola")
             return reminderActions.changeReminderStateSuccess();
           }),
           catchError((error) =>
@@ -193,28 +192,4 @@ export class ReminderEffects {
       )
     )
   );
-
-  // stopConsumingReminder$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(reminderActions.stopConsumingReminder),
-  //     debounceTime(300),
-  //     mergeMap(({ reminderId, time }) =>
-  //       this.reminderService.stopConsumingReminder(reminderId, time).pipe(
-  //         map((response: ConsumptionDTO[]) => {
-
-  //           console.log(response)
-
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             reminderActions.fetchAllUserRemindersError({
-  //               error: error.error || 'Get all user consumptions failed',
-  //             })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   ),
-  //   { dispatch: false }
-  // );
 }
