@@ -10,6 +10,7 @@ import { OAuthRedirectGuard } from './Guards/o-auth-redirect.guard';
 import { RemindersListComponent } from './Components/Pages/reminders-list/reminders-list.component';
 import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list/medicine-kits-list.component';
 import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
+import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,10 @@ const routes: Routes = [
   {
     path: 'medicineKitDetails/:medicineKitId',
     component: MedicineKitDetailsComponent
+  },
+  {
+    path: 'addMedicineKit',
+    component: AddMedicineKitComponent
   },
   {
     path: '**',
