@@ -12,6 +12,7 @@ import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list
 import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
 import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 import { SearchMedicineComponent } from './Components/Pages/search-medicine/search-medicine.component';
+import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 
 const routes: Routes = [
   {
@@ -72,8 +73,12 @@ const routes: Routes = [
     component: AddMedicineKitComponent
   },
   {
-    path: 'searchMedicine',
+    path: 'searchMedicine/:medicineKitId',
     component: SearchMedicineComponent
+  },
+  {
+    path: 'addMedicine/:medicineKitId/:medicine',
+    component: AddMedicineComponent
   },
   {
     path: '**',
