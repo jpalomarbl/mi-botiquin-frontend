@@ -118,4 +118,26 @@ export class MedicineKitEffects {
       )
     )
   );
+
+  addMedicineKit$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.addMedicineKit),
+      mergeMap(({ medicineKit }) =>
+        this.medicineKitService.addMedicineKit(medicineKit).pipe(
+          map((response: any) => {
+            console.log(response);
+
+            return medicineKitActions.addMedicineKitSuccess();
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.addMedicineKitError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }
