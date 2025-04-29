@@ -212,6 +212,7 @@ export const medicineReducer = createReducer(
   // Add new mediicne kit
   on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => ({
     ...state,
+    medicineKits: [...state.medicineKits, medicineKit],
     loading: true,
     loaded: false,
     error: null,
