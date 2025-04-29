@@ -18,10 +18,9 @@ import { authReducer } from './Store/auth/reducers/auth.reducer';
 import { MedicineKitEffects } from './Store/medicine/effects/medicineKit.effects';
 import { ReminderEffects } from './Store/medicine/effects/reminder.effects';
 import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
-import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 
 @NgModule({
-  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent, AddMedicineComponent],
+  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
