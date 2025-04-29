@@ -15,6 +15,11 @@ export const selectOrganizedReminders = createSelector(
   (state: MedicineStateDTO) => state.organizedReminders
 );
 
+export const selectMedicinesSearch = createSelector(
+  selectMedicineState,
+  (state: MedicineStateDTO) => state.medicinesSearch
+);
+
 export const selectMedicineKits = createSelector(
   selectMedicineState,
   (state: MedicineStateDTO) => state.medicineKits
