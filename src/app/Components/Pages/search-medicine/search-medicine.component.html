@@ -22,7 +22,13 @@
         class="medicines-list__viewport"
         itemSize="50"
       >
-        <mat-list-item *cdkVirtualFor="let medicine of medicinesSearch" role="listitem">{{ medicine.name | shortenText: 25 }}</mat-list-item>
+        <mat-list-item
+          class="medicines-list__list-item"
+          *cdkVirtualFor="let medicine of medicinesSearch"
+          role="listitem"
+        >
+          {{ medicine.name | shortenText : 33 | titlecase }}
+        </mat-list-item>
       </cdk-virtual-scroll-viewport>
     </mat-list>
   </section>
