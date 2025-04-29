@@ -49,17 +49,23 @@ export class MedicineKitService {
   }
 
   fetchCaretakerMedicineKits(userId: number): Observable<any> {
-    return this.http.get<MedicineKitDTO>(`${this.apiUrlMedicineKit}/caretaker`, {
-      withCredentials: true,
-      params: { caretakerId: userId.toString() },
-    });
+    return this.http.get<MedicineKitDTO>(
+      `${this.apiUrlMedicineKit}/caretaker`,
+      {
+        withCredentials: true,
+        params: { caretakerId: userId.toString() },
+      }
+    );
   }
 
   fetchFamilyMemberMedicineKits(userId: number): Observable<any> {
-    return this.http.get<MedicineKitDTO>(`${this.apiUrlMedicineKit}/familyMember`, {
-      withCredentials: true,
-      params: { familyMemberId: userId.toString() },
-    });
+    return this.http.get<MedicineKitDTO>(
+      `${this.apiUrlMedicineKit}/familyMember`,
+      {
+        withCredentials: true,
+        params: { familyMemberId: userId.toString() },
+      }
+    );
   }
 
   fetchMedicineKitById(medicineKitId: number): Observable<MedicineKitDTO> {
@@ -83,5 +89,26 @@ export class MedicineKitService {
       withCredentials: true,
       headers: headers,
     });
+  }
+
+  addMedicineKit(medicineKit: MedicineKitDTO): Observable<MedicineKitDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('name', medicineKit.name);
+    body.set('note', medicineKit.note);
+    body.set('ownerId', medicineKit.owner.id.toString());
+
+    return this.http.post<MedicineKitDTO>(
+      `${this.apiUrlMedicine}`,
+      body.toString(),
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
   }
 }
