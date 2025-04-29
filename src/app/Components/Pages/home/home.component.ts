@@ -134,7 +134,6 @@ export class HomeComponent {
       )
       .subscribe(() => {
         // Código a ejecutar después de eliminar
-        console.log('Actualizando recordatorios');
         this.todaysReminders$.subscribe((reminders) => {
           this.reminders = reminders;
         });
@@ -147,7 +146,6 @@ export class HomeComponent {
       )
       .subscribe(() => {
         // Código a ejecutar después de eliminar
-        console.log('Actualizando recordatorios');
         this.medicineKits$.subscribe((medicineKits) => {
           this.medicineKits = medicineKits;
         });

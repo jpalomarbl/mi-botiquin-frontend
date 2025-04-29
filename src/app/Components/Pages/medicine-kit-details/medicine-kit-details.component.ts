@@ -120,7 +120,6 @@ export class MedicineKitDetailsComponent {
       )
       .subscribe(() => {
         // Código a ejecutar después de eliminar
-        console.log('Medicina eliminada, actualizando vista...');
         this.sortedMedicines = this.sortedMedicines?.filter(
           (m) => m.id !== medicineId
         );
@@ -128,7 +127,6 @@ export class MedicineKitDetailsComponent {
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
-    console.log(medicineA.expirationDate.getTime() < medicineB.expirationDate.getTime());
     if (medicineA.expirationDate.getTime() < medicineB.expirationDate.getTime())
       return -1;
     else if (

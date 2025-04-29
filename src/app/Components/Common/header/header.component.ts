@@ -20,10 +20,6 @@ export class HeaderComponent {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    // console.log(window.history)
-  }
-
   backButtonRedirect() {
     if (this.backButtonDirection === 'back') {
       history.back();

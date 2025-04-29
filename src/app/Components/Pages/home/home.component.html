@@ -36,45 +36,47 @@
       *ngIf="todaysReminders$ | async; else noReminders"
     >
       <ng-container *ngIf="todaysReminders$ | async; else noReminders">
-        <mat-list-item
-        class="reminders__list-item"
-        *ngFor="let reminder of todaysReminders$ | async; index as i"
-      >
-        <span matListItemTitle>{{ reminder.medicineName }}</span>
+        <ng-container *ngFor="let reminder of todaysReminders$ | async; index as i">
+          <mat-list-item
+            class="reminders__list-item"
+            *ngIf="i < 2"
+          >
+            <span matListItemTitle>{{ reminder.medicineName }}</span>
 
-        <span matListItemLine
-          >{{ reminder.amount }} {{ reminder.medicineUnit }} -
-          {{
-            reminder.start
-              | nextDose
-                : reminder.finish
-                : reminder.frequency
-                : reminder.frequencyUnit
-              | date : "shortTime"
-          }}
-        </span>
+            <span matListItemLine
+              >{{ reminder.amount }} {{ reminder.medicineUnit }} -
+              {{
+                reminder.start
+                  | nextDose
+                    : reminder.finish
+                    : reminder.frequency
+                    : reminder.frequencyUnit
+                  | date : "shortTime"
+              }}
+            </span>
 
-        <span
-          matListItemLine
-          *ngIf="
-            user !== null && !isPatient && reminder.ownerId !== user.id
-          "
-        >
-          Recordatorio de {{ reminder.ownerFirstName }}
-          {{ reminder.ownerLastName }}
-        </span>
+            <span
+              matListItemLine
+              *ngIf="
+                user !== null && !isPatient && reminder.ownerId !== user.id
+              "
+            >
+              Recordatorio de {{ reminder.ownerFirstName }}
+              {{ reminder.ownerLastName }}
+            </span>
 
-        <span
-          matListItemLine
-          *ngIf="
-            user !== null &&
-            (user.role === 'caretaker' || user.role === 'family member') &&
-            reminder.ownerId === user.id
-          "
-        >
-          Este recordatorio es tuyo
-        </span>
-      </mat-list-item>
+            <span
+              matListItemLine
+              *ngIf="
+                user !== null &&
+                (user.role === 'caretaker' || user.role === 'family member') &&
+                reminder.ownerId === user.id
+              "
+            >
+              Este recordatorio es tuyo
+            </span>
+          </mat-list-item>
+        </ng-container>
       </ng-container>
 
       <button
@@ -121,9 +123,10 @@
       *ngIf="medicineKits$ | async; else noMedicineKits"
     >
       <!-- Every medicine kit is shown in a list item with a title, a note and an arrow button -->
-      <div
+      <ng-container *ngFor="let medicineKit of medicineKits$ | async; index as i">
+        <div
         class="medicine-kits__list-item-container"
-        *ngFor="let medicineKit of medicineKits$ | async; index as i"
+        *ngIf="i < 2"
       >
         <!-- Information -->
         <mat-list-item>
@@ -162,6 +165,7 @@
           <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
+      </ng-container>
 
       <button
         class="medicine-kits__button"
@@ -187,7 +191,13 @@
     class="caretakers"
     [ngClass]="{ 'caretakers--hidden': loading$ | async }"
   >
-    <button class="caretakers__button" mat-fab disabled extended color="primary">
+    <button
+      class="caretakers__button"
+      mat-fab
+      disabled
+      extended
+      color="primary"
+    >
       <mat-icon>diversity_3</mat-icon>
       Tus cuidadores o familiares
     </button>
