@@ -1,7 +1,7 @@
 // Angular
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Rxjs
 import { Observable, take } from 'rxjs';
@@ -62,7 +62,8 @@ export class MedicineKitDetailsComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private route: ActivatedRoute,
-    private actions$: Actions
+    private actions$: Actions,
+    private router: Router
   ) {
     this.medicineKitId = +this.route.snapshot.params['medicineKitId'];
 
@@ -124,6 +125,10 @@ export class MedicineKitDetailsComponent {
           (m) => m.id !== medicineId
         );
       });
+  }
+
+  navigateAddMedicine(): void {
+    this.router.navigate(['searchMedicine']);
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
