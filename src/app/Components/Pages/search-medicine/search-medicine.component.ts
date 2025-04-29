@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Rxjs
@@ -23,12 +24,23 @@ import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 // Angular material
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatListModule } from '@angular/material/list';
 
+//Pipes
+import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 @Component({
   selector: 'app-search-medicine',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, FormsModule, ScrollingModule],
+  imports: [
+    HeaderComponent,
+    FooterComponent,
+    FormsModule,
+    ScrollingModule,
+    MatListModule,
+    CommonModule,
+    ShortenTextPipe
+  ],
   templateUrl: './search-medicine.component.html',
   styleUrls: ['./search-medicine.component.scss'],
 })
@@ -71,6 +83,8 @@ export class SearchMedicineComponent {
         this.medicinesSearch$.subscribe((medicines: MedicineDTO[]) => {
           this.medicinesSearch = medicines;
         });
+
+        console.log(this.medicinesSearch);
       });
   }
 }

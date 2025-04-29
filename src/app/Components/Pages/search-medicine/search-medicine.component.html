@@ -13,6 +13,19 @@
       />
     </mat-form-field>
   </form>
+
+  <section class="medicines-list">
+    <mat-list class="medicines-list" role="list">
+      <!-- <mat-list-item *ngFor="let medicine of medicinesSearch" role="listitem">Item 1</mat-list-item> -->
+
+      <cdk-virtual-scroll-viewport
+        class="medicines-list__viewport"
+        itemSize="50"
+      >
+        <mat-list-item *cdkVirtualFor="let medicine of medicinesSearch" role="listitem">{{ medicine.name | shortenText: 25 }}</mat-list-item>
+      </cdk-virtual-scroll-viewport>
+    </mat-list>
+  </section>
 </div>
 
 <custom-footer></custom-footer>
