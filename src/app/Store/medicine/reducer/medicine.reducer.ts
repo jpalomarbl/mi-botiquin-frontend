@@ -228,5 +228,25 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  }))
+  })),
+
+  // Fetch medicines from CIMA REST API
+  on(medicineKitActions.fetchMedicinesCIMA, (state, { medicineName }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(medicineKitActions.fetchMedicinesCIMASuccess, (state, { medicines }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(medicineKitActions.fetchMedicinesCIMAError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
 );

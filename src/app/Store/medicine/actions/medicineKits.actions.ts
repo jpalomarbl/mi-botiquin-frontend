@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 export const fetchUserMedicineKits = createAction(
   '[Medicine] Fetch User Medicine Kits From API',
@@ -56,5 +57,20 @@ export const addMedicineKitSuccess = createAction(
 
 export const addMedicineKitError = createAction(
   '[Medicine] Insert Medicine Kit Error',
+  props<{ error: string }>()
+);
+
+export const fetchMedicinesCIMA = createAction(
+  '[Medicine] Fetch Medicines From CIMA REST API',
+  props<{ medicineName: string }>()
+);
+
+export const fetchMedicinesCIMASuccess = createAction(
+  '[Medicine] Fetch Medicines From CIMA REST API Success',
+  props<{ medicines: MedicineDTO[] }>()
+);
+
+export const fetchMedicinesCIMAError = createAction(
+  '[Medicine] Fetch Medicines From CIMA REST API Error',
   props<{ error: string }>()
 );
