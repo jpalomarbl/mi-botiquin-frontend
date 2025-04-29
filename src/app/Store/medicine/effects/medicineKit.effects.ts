@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
-import { MedicineKitService } from '../../../Services/medicineKit.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import { MedicineKitService } from '../../../Services/medicineKit.service';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -25,18 +25,13 @@ export class MedicineKitEffects {
         this.medicineKitService.fetchUserMedicineKits(userId, role).pipe(
           map((response: any) => {
             const medicineKits = response.map(
-              (row: MedicineKitDTO, index: number) => {
-                if (index > 2) return null; // Limit to 3 medicine kits
-                else {
-                  return {
-                    id: row.id,
-                    owner: row.owner,
-                    name: row.name,
-                    note: row.note,
-                    medicines: row.medicines,
-                  };
-                }
-              }
+              (row: MedicineKitDTO) => ({
+                id: row.id,
+                owner: row.owner,
+                name: row.name,
+                note: row.note,
+                medicines: row.medicines,
+              })
             );
 
             return medicineKitActions.fetchUserMedicineKitsSuccess({
@@ -74,15 +69,14 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKitId }) =>
         this.medicineKitService.fetchMedicineKitById(medicineKitId).pipe(
           map((response: MedicineKitDTO) => {
-            console.log(response)
             return medicineKitActions.fetchMedicineKitByIdSuccess({
               medicineKit: {
                 ...response,
                 medicines: response.medicines.map((medicine) => ({
                   ...medicine,
-                  expirationDate: new Date(medicine.expirationDate)
-                }))
-              }
+                  expirationDate: new Date(medicine.expirationDate),
+                })),
+              },
             });
           }),
           catchError((error) =>
@@ -104,7 +98,7 @@ export class MedicineKitEffects {
         this.medicineKitService.deleteMedicineById(medicineId).pipe(
           map((response: any) => {
             return medicineKitActions.fetchMedicineKitById({
-              medicineKitId: medicineKitId
+              medicineKitId: medicineKitId,
             });
           }),
           catchError((error) =>
