@@ -126,4 +126,8 @@ export class MedicineKitsListComponent {
   navigateMedicineKitDetails(medicineKitId: number): void {
     this.router.navigate(['medicineKitDetails/' + medicineKitId.toString()]);
   }
+
+  navigateAddMedicineKit(): void {
+    this.router.navigate(['addMedicineKit'])
+  }
 }
