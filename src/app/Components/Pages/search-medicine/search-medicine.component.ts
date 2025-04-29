@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { RouterLink } from '@angular/router';
 // Rxjs
-import { Observable, take } from 'rxjs';
+import { debounceTime, Observable, Subject, take, takeUntil } from 'rxjs';
 
 // Custom modules
 import { FormsModule } from 'src/app/Modules/forms.module';
@@ -39,7 +39,8 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     ScrollingModule,
     MatListModule,
     CommonModule,
-    ShortenTextPipe
+    ShortenTextPipe,
+    RouterLink
   ],
   templateUrl: './search-medicine.component.html',
   styleUrls: ['./search-medicine.component.scss'],
@@ -52,6 +53,8 @@ export class SearchMedicineComponent {
 
   medicinesSearch: MedicineDTO[];
   medicinesSearch$: Observable<MedicineDTO[]>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store<GlobalStateDTO>, private actions$: Actions) {
     this.medicineName = '';
@@ -69,10 +72,6 @@ export class SearchMedicineComponent {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(
-      medicineKitActions.fetchMedicinesCIMA({ medicineName: 'ibuprofeno' })
-    );
-
     this.actions$
       .pipe(
         ofType(medicineKitActions.fetchMedicinesCIMASuccess),
@@ -86,5 +85,18 @@ export class SearchMedicineComponent {
 
         console.log(this.medicinesSearch);
       });
+
+    this.medicine.valueChanges
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.store.dispatch(
+          medicineKitActions.fetchMedicinesCIMA({ medicineName: value })
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

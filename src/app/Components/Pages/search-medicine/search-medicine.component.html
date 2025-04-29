@@ -14,7 +14,7 @@
     </mat-form-field>
   </form>
 
-  <section class="medicines-list">
+  <section class="medicines-list" *ngIf="medicinesSearch.length > 0">
     <mat-list class="medicines-list" role="list">
       <!-- <mat-list-item *ngFor="let medicine of medicinesSearch" role="listitem">Item 1</mat-list-item> -->
 
@@ -27,7 +27,7 @@
           *cdkVirtualFor="let medicine of medicinesSearch"
           role="listitem"
         >
-          {{ medicine.name | shortenText : 33 | titlecase }}
+          <a [routerLink]="['/']">{{ medicine.name | shortenText : 33 | titlecase }}</a>
         </mat-list-item>
       </cdk-virtual-scroll-viewport>
     </mat-list>
