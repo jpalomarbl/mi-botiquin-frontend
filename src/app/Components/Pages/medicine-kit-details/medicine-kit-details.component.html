@@ -25,7 +25,7 @@
   <section>
     <mat-form-field class="patient-selector" appearance="fill">
       <mat-label>Ordenar</mat-label>
-      <mat-select (selectionChange)="orderMedicineKits($event.value)">
+      <mat-select (selectionChange)="orderMedicineKits(+$event.value)">
         <mat-option value="1"> Caducidad </mat-option>
         <mat-option value="0"> No ordenar </mat-option>
       </mat-select>

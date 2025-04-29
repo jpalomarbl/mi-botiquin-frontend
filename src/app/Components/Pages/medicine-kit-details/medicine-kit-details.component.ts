@@ -54,8 +54,8 @@ export class MedicineKitDetailsComponent {
 
   medicineKitId: number | undefined;
 
-  medicines: MedicineDTO[] | undefined;
-  sortedMedicines: MedicineDTO[] | undefined;
+  medicines: Array<MedicineDTO>;
+  sortedMedicines: Array<MedicineDTO>;
 
   lastClickTime: number;
 
@@ -97,7 +97,9 @@ export class MedicineKitDetailsComponent {
   }
 
   orderMedicineKits(sortingMethod: number): void {
-    if (sortingMethod === 1) this.sortedMedicines!.sort(this.compareDates);
+    const sorted: MedicineDTO[] = [...this.medicines];
+
+    if (sortingMethod === 1) this.sortedMedicines = sorted.sort(this.compareDates);
     else this.sortedMedicines = this.medicines;
   }
 
@@ -126,6 +128,7 @@ export class MedicineKitDetailsComponent {
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
+    console.log(medicineA.expirationDate.getTime() < medicineB.expirationDate.getTime());
     if (medicineA.expirationDate.getTime() < medicineB.expirationDate.getTime())
       return -1;
     else if (
