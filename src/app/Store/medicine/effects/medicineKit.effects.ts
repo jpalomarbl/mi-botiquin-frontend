@@ -74,8 +74,15 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKitId }) =>
         this.medicineKitService.fetchMedicineKitById(medicineKitId).pipe(
           map((response: MedicineKitDTO) => {
+            console.log(response)
             return medicineKitActions.fetchMedicineKitByIdSuccess({
-              medicineKit: response
+              medicineKit: {
+                ...response,
+                medicines: response.medicines.map((medicine) => ({
+                  ...medicine,
+                  expirationDate: new Date(medicine.expirationDate)
+                }))
+              }
             });
           }),
           catchError((error) =>
