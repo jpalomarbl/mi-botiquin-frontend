@@ -111,4 +111,8 @@ export class MedicineKitService {
       }
     );
   }
+
+  fetchMedicinesCIMA(medicineName: string): Observable<any> {
+    return this.http.get<any>(`https://cima.aemps.es/cima/rest/medicamentos?nombre=${medicineName}`);
+  }
 }
