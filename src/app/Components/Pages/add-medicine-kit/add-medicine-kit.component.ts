@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 // Rxjs
 import { Observable } from 'rxjs';
@@ -16,6 +17,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { Store } from '@ngrx/store';
 import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
+import { addMedicineKit } from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
@@ -51,7 +53,7 @@ export class AddMedicineKitComponent {
 
   userId: number | null;
 
-  constructor(private store: Store<GlobalStateDTO>) {
+  constructor(private store: Store<GlobalStateDTO>, private router: Router) {
     this.medicineKit = {
       id: 0,
       owner: {
@@ -134,6 +136,8 @@ export class AddMedicineKitComponent {
 
     this.medicineKit.owner.id = this.ownerId.value;
 
-    console.log(this.medicineKit);
+    this.store.dispatch(addMedicineKit({ medicineKit: this.medicineKit }));
+
+    this.router.navigate(['medicineKitsList']);
   }
 }
