@@ -49,6 +49,6 @@ export const changeReminderStateSuccess = createAction(
 );
 
 export const changeReminderStateError = createAction(
-  '[Medicine] Mark Reminder As Consumed Success',
+  '[Medicine] Mark Reminder As Consumed Error',
   props<{ error: string }>()
 );

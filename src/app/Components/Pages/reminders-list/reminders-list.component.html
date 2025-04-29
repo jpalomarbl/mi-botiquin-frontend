@@ -120,7 +120,6 @@
           <mat-card-actions>
             <button
               mat-raised-button
-              disabled
               color="primary"
               *ngIf="!reminder[1]; else toBeConsumed"
               (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
@@ -131,7 +130,6 @@
             <ng-template #toBeConsumed>
               <button
                 mat-raised-button
-                disabled
                 color="primary"
                 (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
               >

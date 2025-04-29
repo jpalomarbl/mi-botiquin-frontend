@@ -178,6 +178,10 @@ export class ReminderEffects {
       debounceTime(300),
       mergeMap(({ reminderId, time, status }) =>
         this.reminderService.changeReminderState(reminderId, time, status).pipe(
+          map((response) => {
+            console.log("Hola")
+            return reminderActions.changeReminderStateSuccess();
+          }),
           catchError((error) =>
             of(
               reminderActions.fetchAllUserRemindersError({
@@ -187,8 +191,7 @@ export class ReminderEffects {
           )
         )
       )
-    ),
-    { dispatch: false }
+    )
   );
 
   // stopConsumingReminder$ = createEffect(() =>
