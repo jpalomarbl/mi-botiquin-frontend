@@ -53,7 +53,7 @@ export class MedicineKitEffects {
       )
     )
   );
-  
+
   fetchMedicineKitById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(medicineKitActions.fetchMedicineKitById),
