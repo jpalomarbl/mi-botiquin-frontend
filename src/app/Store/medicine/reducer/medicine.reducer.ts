@@ -9,6 +9,7 @@ export const initialState: MedicineStateDTO = {
   medicineKits: [],
   reminders: [],
   organizedReminders: [],
+  medicinesSearch: [],
   loading: false,
   loaded: false,
   error: null,
@@ -239,6 +240,7 @@ export const medicineReducer = createReducer(
   })),
   on(medicineKitActions.fetchMedicinesCIMASuccess, (state, { medicines }) => ({
     ...state,
+    medicinesSearch: medicines,
     loading: false,
     loaded: true,
     error: null,
