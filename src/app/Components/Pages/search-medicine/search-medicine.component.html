@@ -1,1 +1,18 @@
-<p>search-medicine works!</p>
+<custom-header></custom-header>
+
+<div class="add-medicine">
+  <form class="form" [formGroup]="medicineForm">
+    <h1 class="form__title">Añadir un medicamento</h1>
+    <mat-form-field class="form__field" appearance="fill">
+      <mat-label>¿Qué medicamento deseas añadir? </mat-label>
+      <input
+        type="text"
+        [formControl]="medicine"
+        matInput
+        placeholder="Ibuprofeno CINFA 600mg comprimidos"
+      />
+    </mat-form-field>
+  </form>
+</div>
+
+<custom-footer></custom-footer>
