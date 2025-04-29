@@ -1,1 +1,34 @@
-<p>add-medicine-kit works!</p>
+<custom-header title="Añadir un botiquín"></custom-header>
+
+<div class="loginContainer">
+  <h1>Login</h1>
+  <form
+    class="loginForm"
+    [formGroup]="medicineKitForm"
+    (ngSubmit)="submitMedicineKit()"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre del botiquín </mat-label>
+      <input
+        type="text"
+        [formControl]="medicineKitName"
+        matInput
+        placeholder="Botiquín de la cocina"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Añade una nota breve </mat-label>
+      <input
+        type="text"
+        [formControl]="medicineKitNote"
+        matInput
+        placeholder="Aquí van las tiritas, betadine y analgésicos."
+      />
+    </mat-form-field>
+
+    <button mat-button>Crear botiquín</button>
+  </form>
+</div>
+
+<custom-footer></custom-footer>

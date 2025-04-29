@@ -1,0 +1,10 @@
+.loginContainer, .loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginContainer {
+  height: 60dvh;
+}

@@ -1,11 +1,20 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 
 // Custom modules
+import { FormsModule } from 'src/app/Modules/forms.module';
+
+// Models
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+
+// Components
+import { HeaderComponent } from '../../Common/header/header.component';
+import { FooterComponent } from '../../Common/footer/footer.component';
 
 @Component({
   selector: 'app-add-medicine-kit',
+  standalone: true,
+  imports: [FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './add-medicine-kit.component.html',
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
@@ -42,5 +51,13 @@ export class AddMedicineKitComponent {
       medicineKitNote: this.medicineKitNote,
       ownerId: this.ownerId
     });
+  }
+
+  submitMedicineKit(): void {
+    this.medicineKit.name = this.medicineKitName.value;
+    this.medicineKit.note = this.medicineKitNote.value;
+
+
+    console.log(this.medicineKit);
   }
 }
