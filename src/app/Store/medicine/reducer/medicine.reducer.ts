@@ -28,7 +28,7 @@ export const medicineReducer = createReducer(
     reminderActions.fetchUserRemindersForTodaySuccess,
     (state, { reminders }) => ({
       ...state,
-      reminders: [...state.reminders, ...reminders],
+      reminders: reminders ? [...state.reminders, ...reminders] : state.reminders,
       loading: false,
       loaded: true,
       error: null,
@@ -171,8 +171,6 @@ export const medicineReducer = createReducer(
           return medicineKit;
         }
       );
-
-      console.log("Updated", updatedMedicineKits);
 
       return {
         ...state,

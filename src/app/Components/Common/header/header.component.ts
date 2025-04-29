@@ -18,8 +18,6 @@ export class HeaderComponent {
 
   @Input() title: string = 'Mi Botiquín';
 
-  private buttonDirection: string = '';
-
   constructor(private router: Router) {}
 
   ngOnInit() {

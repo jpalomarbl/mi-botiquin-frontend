@@ -57,7 +57,7 @@ export class ReminderEffects {
               }));
 
             return reminderActions.fetchUserRemindersForTodaySuccess({
-              reminders: reminders[0]
+              reminders: reminders.length > 0
                 ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
                 : null,
             });

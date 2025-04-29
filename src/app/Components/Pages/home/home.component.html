@@ -35,7 +35,8 @@
       class="reminders__list"
       *ngIf="todaysReminders$ | async; else noReminders"
     >
-      <mat-list-item
+      <ng-container *ngIf="todaysReminders$ | async; else noReminders">
+        <mat-list-item
         class="reminders__list-item"
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
@@ -74,6 +75,7 @@
           Este recordatorio es tuyo
         </span>
       </mat-list-item>
+      </ng-container>
 
       <button
         class="reminders__button"
@@ -122,7 +124,6 @@
       <div
         class="medicine-kits__list-item-container"
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
-        (click)="navigateMedicineKitDetails(medicineKit.id)"
       >
         <!-- Information -->
         <mat-list-item>
@@ -156,7 +157,7 @@
         <button
           mat-icon-button
           color="primary"
-          aria-label="Example icon button with a home icon"
+          (click)="navigateMedicineKitDetails(medicineKit.id)"
         >
           <mat-icon>chevron_right</mat-icon>
         </button>
@@ -186,7 +187,7 @@
     class="caretakers"
     [ngClass]="{ 'caretakers--hidden': loading$ | async }"
   >
-    <button class="caretakers__button" mat-fab extended color="primary">
+    <button class="caretakers__button" mat-fab disabled extended color="primary">
       <mat-icon>diversity_3</mat-icon>
       Tus cuidadores o familiares
     </button>

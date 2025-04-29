@@ -4,8 +4,6 @@
   "
 ></custom-header>
 
-<p>{{ medicineKit$ | async | json }}</p>
-
 <div class="medicine-kit" *ngIf="medicineKit$ | async">
   <section class="titles">
     <h2 class="titles__title">{{ (medicineKit$ | async)!.name }}</h2>
@@ -13,12 +11,12 @@
   </section>
 
   <section class="buttons">
-    <button class="buttons__add" mat-fab extended color="primary">
+    <button class="buttons__add" mat-fab disabled extended color="primary">
       <mat-icon>add</mat-icon>
       Añadir medicina
     </button>
 
-    <button class="buttons__remove" mat-fab extended color="primary">
+    <button class="buttons__remove" mat-fab disabled extended color="primary">
       <mat-icon>delete</mat-icon>
       Eliminar botiquín
     </button>
@@ -26,7 +24,7 @@
 
   <section>
     <mat-form-field class="patient-selector" appearance="fill">
-      <mat-label>Filtra por pacientes</mat-label>
+      <mat-label>Ordenar</mat-label>
       <mat-select (selectionChange)="orderMedicineKits($event.value)">
         <mat-option value="1"> Caducidad </mat-option>
         <mat-option value="0"> No ordenar </mat-option>

@@ -1,4 +1,4 @@
-<custom-header title="Recordatorios"></custom-header>
+<custom-header title="Recordatorios" backButtonDirection="/"></custom-header>
 
 <!-- <section class="date-picker">
   <mat-form-field appearance="fill">
@@ -90,12 +90,12 @@
         <mat-card
           class="reminders-list__card"
           *ngFor="let reminder of pair![1]"
-          [ngClass]="{ 'reminders-list__card--consumed': !!reminder[1] }"
+          [ngClass]="{ 'reminders-list__card--consumed': reminder[1] }"
         >
           <mat-card-header>
             <mat-card-subtitle
               class="reminders-list__card-state"
-              *ngIf="!reminder[1]; else notConsumed"
+              *ngIf="reminder[1]; else notConsumed"
             >
               Consumido
             </mat-card-subtitle>
@@ -115,12 +115,12 @@
 
             <p>
               {{ reminder[0].amount }} {{ reminder[0].medicineUnit }}
-              {{ !reminder[1] }}
             </p>
           </mat-card-content>
           <mat-card-actions>
             <button
               mat-raised-button
+              disabled
               color="primary"
               *ngIf="!reminder[1]; else toBeConsumed"
               (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
@@ -131,6 +131,7 @@
             <ng-template #toBeConsumed>
               <button
                 mat-raised-button
+                disabled
                 color="primary"
                 (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
               >

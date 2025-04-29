@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -19,6 +19,7 @@ import {
 } from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import { Actions, ofType } from '@ngrx/effects';
 
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -57,10 +58,13 @@ export class HomeComponent {
   todaysReminders$: Observable<ReminderDTO[]>;
   medicineKits$: Observable<MedicineKitDTO[]>;
 
+  reminders: ReminderDTO[];
+  medicineKits: MedicineKitDTO[];
+
   user: UserDTO | null;
   isPatient: boolean;
 
-  constructor(private store: Store<GlobalStateDTO>, private router: Router) {
+  constructor(private store: Store<GlobalStateDTO>, private router: Router, private actions$: Actions) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
 
@@ -72,6 +76,9 @@ export class HomeComponent {
     this.medicineKits$ = this.store.select(
       medicineSelectors.selectMedicineKits
     );
+
+    this.reminders = [];
+    this.medicineKits = [];
 
     this.user = null;
 
@@ -119,6 +126,32 @@ export class HomeComponent {
         });
       }
     });
+
+    this.actions$
+      .pipe(
+        ofType(reminderActions.fetchUserRemindersForTodaySuccess),
+        take(1) // Para autodesuscribirse después de ejecutarse una vez
+      )
+      .subscribe(() => {
+        // Código a ejecutar después de eliminar
+        console.log('Actualizando recordatorios');
+        this.todaysReminders$.subscribe((reminders) => {
+          this.reminders = reminders;
+        });
+      });
+
+    this.actions$
+      .pipe(
+        ofType(medicineKitActions.fetchUserMedicineKitsSuccess),
+        take(1) // Para autodesuscribirse después de ejecutarse una vez
+      )
+      .subscribe(() => {
+        // Código a ejecutar después de eliminar
+        console.log('Actualizando recordatorios');
+        this.medicineKits$.subscribe((medicineKits) => {
+          this.medicineKits = medicineKits;
+        });
+      });
   }
 
   navigateRemindersList(): void {
@@ -126,10 +159,10 @@ export class HomeComponent {
   }
 
   navigateMedicineKitsList(): void {
-    this.router.navigate([]);
+    this.router.navigate(['medicineKitsList']);
   }
 
   navigateMedicineKitDetails(medicineKitId: number): void {
-    this.router.navigate([]);
+    this.router.navigate(['medicineKitDetails/' + medicineKitId.toString()]);
   }
 }

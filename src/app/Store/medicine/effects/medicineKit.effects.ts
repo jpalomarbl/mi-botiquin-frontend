@@ -96,8 +96,6 @@ export class MedicineKitEffects {
       mergeMap(({ medicineId, medicineKitId }) =>
         this.medicineKitService.deleteMedicineById(medicineId).pipe(
           map((response: any) => {
-            console.log(response);
-
             return medicineKitActions.fetchMedicineKitById({
               medicineKitId: medicineKitId
             });
