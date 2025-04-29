@@ -309,10 +309,6 @@ export class RemindersListComponent {
     //   );
   }
 
-  // Cómo represento que un reminder ha sido consumido?
-  // Nueva tabla "consumiciones" enlazada a los reminders
-  // Cada vez que se marca como consumido, se agrega una fila a la tabla
-
   private calculateDate(): void {
     // It's important that we set today's date at midnight because
     // we want to list every reminder form the day, not just from now.

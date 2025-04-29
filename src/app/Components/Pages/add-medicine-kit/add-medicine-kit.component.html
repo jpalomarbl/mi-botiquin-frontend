@@ -1,13 +1,13 @@
 <custom-header title="Añadir un botiquín"></custom-header>
 
-<div class="loginContainer">
+<div class="login">
   <h1>Login</h1>
   <form
-    class="loginForm"
+    class="form"
     [formGroup]="medicineKitForm"
     (ngSubmit)="submitMedicineKit()"
   >
-    <mat-form-field appearance="fill">
+    <mat-form-field class="form__field" appearance="fill">
       <mat-label>Nombre del botiquín </mat-label>
       <input
         type="text"
@@ -17,7 +17,7 @@
       />
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field class="form__field" appearance="fill">
       <mat-label>Añade una nota breve </mat-label>
       <input
         type="text"
@@ -27,7 +27,21 @@
       />
     </mat-form-field>
 
-    <button mat-button>Crear botiquín</button>
+    <mat-form-field class="form__field" *ngIf="!isPatient" appearance="fill">
+      <mat-label>Paciente</mat-label>
+      <mat-select [formControl]="ownerId">
+        <mat-option
+          *ngFor="let user of userRelationships$ | async; index as i"
+          [value]="user.id"
+        >
+          {{ user.firstName }} {{ user.lastName }}
+        </mat-option>
+        <mat-option value="userId"> Tú </mat-option>
+      </mat-select>
+      <mat-hint>¿Quién va a utilizar el botiquín?</mat-hint>
+    </mat-form-field>
+
+    <button class="form__button" mat-raised-button color="primary">Crear botiquín</button>
   </form>
 </div>
 

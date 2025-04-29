@@ -1,15 +1,26 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+// Rxjs
+import { Observable } from 'rxjs';
+
 // Custom modules
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Models
+import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
+
+// Store
+import { Store } from '@ngrx/store';
+import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
+import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
+import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
-import { HeaderComponent } from '../../Common/header/header.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
+import { HeaderComponent } from '../../Common/header/header.component';
 
 @Component({
   selector: 'app-add-medicine-kit',
@@ -19,6 +30,15 @@ import { FooterComponent } from '../../Common/footer/footer.component';
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
 export class AddMedicineKitComponent {
+  user$: Observable<UserDTO | null>;
+  userRelationships$: Observable<UserDTO[] | null>;
+
+  loadingAuth$: Observable<boolean>;
+  errorAuth$: Observable<string | null>;
+
+  loadingMedicine$: Observable<boolean>;
+  errorMedicine$: Observable<string | null>;
+
   medicineKitName: FormControl;
   medicineKitNote: FormControl;
   ownerId: FormControl;
@@ -27,7 +47,11 @@ export class AddMedicineKitComponent {
 
   medicineKit: MedicineKitDTO;
 
-  constructor() {
+  isPatient: boolean;
+
+  userId: number;
+
+  constructor(private store: Store<GlobalStateDTO>) {
     this.medicineKit = {
       id: 0,
       owner: {
@@ -49,7 +73,49 @@ export class AddMedicineKitComponent {
     this.medicineKitForm = new FormGroup({
       medicineKitName: this.medicineKitName,
       medicineKitNote: this.medicineKitNote,
-      ownerId: this.ownerId
+      ownerId: this.ownerId,
+    });
+
+    this.user$ = this.store.select(authSelectors.selectUser);
+    this.userRelationships$ = this.store.select(
+      authSelectors.selectUserRelationships
+    );
+
+    this.loadingAuth$ = this.store.select(authSelectors.selectAuthLoading);
+    this.errorAuth$ = this.store.select(authSelectors.selectAuthError);
+
+    this.loadingMedicine$ = this.store.select(
+      medicineSelectors.selectMedicineLoading
+    );
+    this.errorMedicine$ = this.store.select(
+      medicineSelectors.selectMedicineError
+    );
+
+    this.isPatient = false;
+
+    this.userId = 0;
+  }
+
+  ngOnInit(): void {
+    this.user$.subscribe((user: UserDTO | null) => {
+      if (user) {
+        if (user.role === 'caretaker') {
+          this.store.dispatch(
+            userRelationshipActions.fetchCaretakerRelationships({
+              userId: user.id,
+            })
+          );
+        } else if (user.role === 'family member') {
+          this.store.dispatch(
+            userRelationshipActions.fetchFamilyMemberRelationships({
+              userId: user.id,
+            })
+          );
+        } else this.isPatient = true;
+
+        this.userId = user.id;
+        this.medicineKit.owner.id = user.id;
+      }
     });
   }
 
@@ -57,6 +123,7 @@ export class AddMedicineKitComponent {
     this.medicineKit.name = this.medicineKitName.value;
     this.medicineKit.note = this.medicineKitNote.value;
 
+    this.medicineKit.owner.id = this.ownerId.value;
 
     console.log(this.medicineKit);
   }
