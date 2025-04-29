@@ -10,8 +10,8 @@
   >
   </mat-progress-spinner>
 
-  <section class="options__container" *ngIf="!isPatient && (!(loadingMedicine$ | async) && !(loadingAuth$ | async))">
-    <mat-form-field class="options__selector" appearance="fill">
+  <section class="options__container">
+    <mat-form-field class="options__selector" *ngIf="!isPatient && (!(loadingMedicine$ | async) && !(loadingAuth$ | async))" appearance="fill">
       <mat-label>Filtra por pacientes</mat-label>
       <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">
         <mat-option
