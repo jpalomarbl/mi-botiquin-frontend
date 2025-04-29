@@ -128,6 +128,6 @@ export class MedicineKitsListComponent {
   }
 
   navigateAddMedicineKit(): void {
-    this.router.navigate(['addMedicineKit'])
+    this.router.navigate(['addMedicineKit']);
   }
 }
