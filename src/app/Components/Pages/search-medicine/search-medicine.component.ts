@@ -106,8 +106,15 @@ export class SearchMedicineComponent {
   }
 
   navigateAddMedicine(medicine: MedicineDTO) {
-    const medicineJSON = JSON.stringify(medicine);
     const medicineKitId = this.route.snapshot.params['medicineKitId'];
+
+    // Codificar el JSON UNA sola vez
+    const medicineJSON = encodeURIComponent(JSON.stringify(medicine));
+
+    console.log(
+      'URL generada:',
+      `/addMedicine/${medicineKitId}/${medicineJSON}`
+    );
 
     this.router.navigate([`/addMedicine/${medicineKitId}/${medicineJSON}`]);
   }
