@@ -16,8 +16,6 @@ export class MedicineKitEffects {
   constructor(
     private actions$: Actions,
     private medicineKitService: MedicineKitService,
-    private router: Router,
-    private store: Store
   ) {}
 
   fetchUserMedicineKits$ = createEffect(() =>
@@ -140,6 +138,7 @@ export class MedicineKitEffects {
                   reminder: null,
                   unit: '',
                   amount: 0,
+                  dose: medicine.dosis,
                   expirationDate: new Date(),
                   nregistro: medicine.nregistro,
                   formaFarmaceuticaSimplificada: medicine.formaFarmaceuticaSimplificada.nombre,
