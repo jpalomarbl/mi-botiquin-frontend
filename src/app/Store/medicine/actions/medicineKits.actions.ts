@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
 export const fetchUserMedicineKits = createAction(
   '[Medicine] Fetch User Medicine Kits From API',
@@ -34,7 +35,7 @@ export const fetchMedicineKitByIdError = createAction(
 
 export const deleteMedicineById = createAction(
   '[Medicine] Delete Medicine By Id',
-  props<{ medicineId: number, medicineKitId: number }>()
+  props<{ medicineId: number; medicineKitId: number }>()
 );
 
 export const deleteMedicineByIdSuccess = createAction(
@@ -77,12 +78,15 @@ export const fetchMedicinesCIMAError = createAction(
 
 export const addMedicine = createAction(
   '[Medicine] Insert medicine into DB',
-  props<{ medicine: MedicineDTO, addReminder: boolean }>()
+  props<{
+    medicine: MedicineDTO;
+    reminder?: ReminderDTO;
+    medicineKitId: number;
+  }>()
 );
 
 export const addMedicineSuccess = createAction(
-  '[Medicine] Insert medicine into DB Success',
-  props<{ medicine: MedicineDTO }>()
+  '[Medicine] Insert medicine into DB Success'
 );
 
 export const addMedicineError = createAction(

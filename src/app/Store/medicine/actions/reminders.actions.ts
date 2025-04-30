@@ -55,7 +55,7 @@ export const changeReminderStateError = createAction(
 
 export const addReminder = createAction(
   '[Medicine] Insert reminder into DB',
-  props<{ reminder: ReminderDTO }>()
+  props<{ reminder: ReminderDTO, medicineId: number }>()
 );
 
 export const addReminderSuccess = createAction(

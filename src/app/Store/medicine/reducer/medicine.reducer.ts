@@ -278,7 +278,7 @@ export const medicineReducer = createReducer(
 
   on(
     medicineKitActions.addMedicine,
-    (state, { medicine }) => ({
+    (state, { medicine, reminder, medicineKitId }) => ({
       ...state,
       loading: true,
       loaded: false,

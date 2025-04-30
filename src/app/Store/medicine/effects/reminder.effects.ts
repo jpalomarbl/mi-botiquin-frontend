@@ -192,4 +192,27 @@ export class ReminderEffects {
       )
     )
   );
+
+  addReminder$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(reminderActions.addReminder),
+        mergeMap(({ reminder, medicineId }) =>
+          this.reminderService.addReminder(reminder, medicineId).pipe(
+            map((response: ReminderDTO) => {
+              console.log(response);
+
+              return reminderActions.addReminderSuccess({ reminder: response });
+
+            }),
+            catchError((error) =>
+              of(
+                reminderActions.addReminderError({
+                  error: error.error.error || 'Fetch user medicine kits failed',
+                })
+              )
+            )
+          )
+        )
+      )
+    );
 }
