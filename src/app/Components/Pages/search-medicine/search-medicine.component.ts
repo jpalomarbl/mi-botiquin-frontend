@@ -12,9 +12,9 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
-import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -117,12 +117,15 @@ export class SearchMedicineComponent {
     this.lastClickTime = now;
 
     const medicineItem: MedicineDTO = {
-      ...medicine
-    }
+      ...medicine,
+    };
 
     const medicineKitId = this.route.snapshot.params['medicineKitId'];
 
-    medicineItem.unit = this.medicineKitService.getMedicineUnits(medicine.viaAdmininstracion!, medicine.formaFarmaceuticaSimplificada!)
+    medicineItem.unit = this.medicineKitService.getMedicineUnit(
+      medicine.viaAdmininstracion!,
+      medicine.formaFarmaceuticaSimplificada!
+    );
 
     const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
 
