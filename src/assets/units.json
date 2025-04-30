@@ -1,0 +1,40 @@
+{
+  "oftalmica": {
+    "colirios": ["Viales", "Frasco gotero"],
+    "pomadas": ["Tubos", "Unidosis"],
+    "implantes": ["Unidades"]
+  },
+  "otica": {
+    "gotas": ["Frasco gotero", "Viales"],
+    "pomadas": ["Tubos"]
+  },
+  "nasal": {
+    "sprays": ["Frasco dosificador", "Unidosis"],
+    "gotas": ["Frasco cuentagotas"]
+  },
+  "oral": {
+    "comprimidos": ["Unidades"],
+    "capsulas": ["Unidades"],
+    "jarabes": ["Mililitros", "Dosis"],
+    "sobres": ["Unidades"]
+  },
+  "topica": {
+    "pomadas": ["Tubos", "Gramos"],
+    "cremas": ["Tubos", "Gramos"],
+    "geles": ["Tubos", "Gramos"],
+    "parches": ["Unidades"]
+  },
+  "parenteral": {
+    "inyectables": ["Ampollas", "Viales", "Jeringas precargadas"],
+    "implantes": ["Unidades"]
+  },
+  "rectal": {
+    "supositorios": ["Unidades"],
+    "enemas": ["Mililitros"]
+  },
+  "vaginal": {
+    "ovulos": ["Unidades"],
+    "cremas": ["Gramos"],
+    "anillos": ["Unidades"]
+  }
+}
