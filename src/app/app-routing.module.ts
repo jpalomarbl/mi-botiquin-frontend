@@ -13,11 +13,13 @@ import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-det
 import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 import { SearchMedicineComponent } from './Components/Pages/search-medicine/search-medicine.component';
 import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
+import { AuthGuard } from './Guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -38,47 +40,58 @@ const routes: Routes = [
   },
   {
     path: 'remindersList/forwards/:daysDisplaced',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'remindersList/backwards/:daysDisplaced',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'remindersList',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'remindersList/:userId/forwards/:daysDisplaced',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'remindersList/:userId/backwards/:daysDisplaced',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'remindersList/:userId',
-    component: RemindersListComponent
+    component: RemindersListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'medicineKitsList',
-    component: MedicineKitsListComponent
+    component: MedicineKitsListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'medicineKitDetails/:medicineKitId',
-    component: MedicineKitDetailsComponent
+    component: MedicineKitDetailsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'addMedicineKit',
-    component: AddMedicineKitComponent
+    component: AddMedicineKitComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'searchMedicine/:medicineKitId',
-    component: SearchMedicineComponent
+    component: SearchMedicineComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'addMedicine/:medicineKitId/:medicine',
-    component: AddMedicineComponent
+    component: AddMedicineComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '**',

@@ -64,8 +64,8 @@ export class AuthService {
     );
   }
 
-  checkSession(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/check-session`, {
+  checkSession(): Observable<UserDTO> {
+    return this.http.get<UserDTO>(`${this.apiUrl}/check-session`, {
       withCredentials: true,
     });
   }
