@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
+import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
-import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -25,15 +25,13 @@ export class MedicineKitEffects {
       mergeMap(({ userId, role }) =>
         this.medicineKitService.fetchUserMedicineKits(userId, role).pipe(
           map((response: any) => {
-            const medicineKits = response.map(
-              (row: MedicineKitDTO) => ({
-                id: row.id,
-                owner: row.owner,
-                name: row.name,
-                note: row.note,
-                medicines: row.medicines,
-              })
-            );
+            const medicineKits = response.map((row: MedicineKitDTO) => ({
+              id: row.id,
+              owner: row.owner,
+              name: row.name,
+              note: row.note,
+              medicines: row.medicines,
+            }));
 
             return medicineKitActions.fetchUserMedicineKitsSuccess({
               medicineKits: medicineKits[0]
@@ -133,22 +131,30 @@ export class MedicineKitEffects {
       mergeMap(({ medicineName }) =>
         this.medicineKitService.fetchMedicinesCIMA(medicineName).pipe(
           map((response) => {
-            const medicines: MedicineDTO[] = response.resultados.map((medicine: any) => ({
-              id: 0,
-              name: medicine.nombre,
-              reminder: null,
-              unit: medicine.formaFarmaceuticaSimplificada.nombre,
-              amount: 0,
-              expirationDate: new Date(),
-              nregistro: medicine.nregistro
-            }))
+            const medicines: MedicineDTO[] = response.resultados.map(
+              (medicine: any) => {
+                return {
+                  id: 0,
+                  name: medicine.nombre,
+                  reminder: null,
+                  unit: '',
+                  amount: 0,
+                  expirationDate: new Date(),
+                  nregistro: medicine.nregistro,
+                  formaFarmaceuticaSimplificada: medicine.formaFarmaceuticaSimplificada.nombre,
+                  viaAdeministracion: medicine.viasAdministracion[0].nombre
+                };
+              }
+            );
 
-            return medicineKitActions.fetchMedicinesCIMASuccess( { medicines: medicines });
+            return medicineKitActions.fetchMedicinesCIMASuccess({
+              medicines: medicines,
+            });
           }),
           catchError((error) =>
             of(
               medicineKitActions.fetchMedicinesCIMAError({
-                error: error.error.error || 'Fetch user medicine kits failed',
+                error: error.error || 'Fetch user medicine kits failed',
               })
             )
           )
