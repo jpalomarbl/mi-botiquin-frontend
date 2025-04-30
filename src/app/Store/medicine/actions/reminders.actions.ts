@@ -52,3 +52,18 @@ export const changeReminderStateError = createAction(
   '[Medicine] Mark Reminder As Consumed Error',
   props<{ error: string }>()
 );
+
+export const addReminder = createAction(
+  '[Medicine] Insert reminder into DB',
+  props<{ reminder: ReminderDTO }>()
+);
+
+export const addReminderSuccess = createAction(
+  '[Medicine] Insert reminder into DB Success',
+  props<{ reminder: ReminderDTO }>()
+);
+
+export const addReminderError = createAction(
+  '[Medicine] Insert reminder into DB Error',
+  props<{ error: string }>()
+);

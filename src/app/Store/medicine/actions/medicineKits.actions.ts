@@ -74,3 +74,18 @@ export const fetchMedicinesCIMAError = createAction(
   '[Medicine] Fetch Medicines From CIMA REST API Error',
   props<{ error: string }>()
 );
+
+export const addMedicine = createAction(
+  '[Medicine] Insert medicine into DB',
+  props<{ medicine: MedicineDTO, addReminder: boolean }>()
+);
+
+export const addMedicineSuccess = createAction(
+  '[Medicine] Insert medicine into DB Success',
+  props<{ medicine: MedicineDTO }>()
+);
+
+export const addMedicineError = createAction(
+  '[Medicine] Insert medicine into DB Error',
+  props<{ error: string }>()
+);
