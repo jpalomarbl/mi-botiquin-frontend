@@ -142,7 +142,7 @@ export class MedicineKitEffects {
                   expirationDate: new Date(),
                   nregistro: medicine.nregistro,
                   formaFarmaceuticaSimplificada: medicine.formaFarmaceuticaSimplificada.nombre,
-                  viaAdeministracion: medicine.viasAdministracion[0].nombre
+                  viaAdmininstracion: medicine.viasAdministracion[0].nombre
                 };
               }
             );

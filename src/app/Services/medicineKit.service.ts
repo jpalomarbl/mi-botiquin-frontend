@@ -8,6 +8,12 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
+interface UnitsJSON {
+  [via: string]: {
+    [formato: string]: string[];
+  };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -114,5 +120,15 @@ export class MedicineKitService {
 
   fetchMedicinesCIMA(medicineName: string): Observable<any> {
     return this.http.get<any>(`https://cima.aemps.es/cima/rest/medicamentos?nombre=${medicineName}`);
+  }
+
+  getMedicineUnits(viaAdmininstracion: string, formaFarmaceuticaSimplificada: string): string {
+    this.http.get<UnitsJSON>('/assets/units.json').subscribe((data: UnitsJSON) => {
+      console.log("FORMA", formaFarmaceuticaSimplificada)
+      console.log(data[viaAdmininstracion]);
+      return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
+    })
+
+    return 'Error';
   }
 }

@@ -14,6 +14,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
+import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -54,13 +55,16 @@ export class SearchMedicineComponent {
   medicinesSearch: MedicineDTO[];
   medicinesSearch$: Observable<MedicineDTO[]>;
 
+  lastClickTime: number;
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private store: Store<GlobalStateDTO>,
     private actions$: Actions,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private medicineKitService: MedicineKitService
   ) {
     this.medicineName = '';
     this.medicinesSearch = [];
@@ -74,6 +78,8 @@ export class SearchMedicineComponent {
     this.medicinesSearch$ = this.store.select(
       medicineKitSelectors.selectMedicinesSearch
     );
+
+    this.lastClickTime = 0;
   }
 
   ngOnInit(): void {
@@ -106,15 +112,19 @@ export class SearchMedicineComponent {
   }
 
   navigateAddMedicine(medicine: MedicineDTO) {
+    const now = Date.now();
+    if (now - this.lastClickTime < 500) return; // Evita múltiples clics en 500ms
+    this.lastClickTime = now;
+
+    const medicineItem: MedicineDTO = {
+      ...medicine
+    }
+
     const medicineKitId = this.route.snapshot.params['medicineKitId'];
 
-    // Codificar el JSON UNA sola vez
-    const medicineJSON = encodeURIComponent(JSON.stringify(medicine));
+    medicineItem.unit = this.medicineKitService.getMedicineUnits(medicine.viaAdmininstracion!, medicine.formaFarmaceuticaSimplificada!)
 
-    console.log(
-      'URL generada:',
-      `/addMedicine/${medicineKitId}/${medicineJSON}`
-    );
+    const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
 
     this.router.navigate([`/addMedicine/${medicineKitId}/${medicineJSON}`]);
   }

@@ -1,40 +1,96 @@
 {
-  "oftalmica": {
-    "colirios": ["Viales", "Frasco gotero"],
-    "pomadas": ["Tubos", "Unidosis"],
-    "implantes": ["Unidades"]
+  "VÍA ORAL": {
+    "COMPRIMIDO": ["Comprimidos"],
+    "SOLUCION/SUSPENSION ORAL": ["Frascos", "Botellas"],
+    "CAPSULA": ["Cápsulas"]
   },
-  "otica": {
-    "gotas": ["Frasco gotero", "Viales"],
-    "pomadas": ["Tubos"]
+  "VÍA INTRAVENOSA": {
+    "INYECTABLE PERFUSION": ["Viales", "Bolsas"],
+    "RADIOFARMACO": ["Viales"]
   },
-  "nasal": {
-    "sprays": ["Frasco dosificador", "Unidosis"],
-    "gotas": ["Frasco cuentagotas"]
+  "VÍA INTRAMUSCULAR": {
+    "INYECTABLE": ["Ampollas", "Jeringas", "Viales"]
   },
-  "oral": {
-    "comprimidos": ["Unidades"],
-    "capsulas": ["Unidades"],
-    "jarabes": ["Mililitros", "Dosis"],
-    "sobres": ["Unidades"]
+  "VÍA ÓTICA": {
+    "LÍQUIDO OTICO": ["Frascos"]
   },
-  "topica": {
-    "pomadas": ["Tubos", "Gramos"],
-    "cremas": ["Tubos", "Gramos"],
-    "geles": ["Tubos", "Gramos"],
-    "parches": ["Unidades"]
+  "VÍA INTRAOCULAR": {
+    "INYECTABLE": ["Ampollas", "Jeringas"]
   },
-  "parenteral": {
-    "inyectables": ["Ampollas", "Viales", "Jeringas precargadas"],
-    "implantes": ["Unidades"]
+  "USO CUTÁNEO": {
+    "CREMA": ["Tubos", "Botes"],
+    "LÍQUIDO USO TOPICO": ["Frascos", "Botellas"],
+    "EMULSION": ["Frascos", "Botes"],
+    "POMADA": ["Tubos", "Botes"],
+    "BARNIZ DE UÑAS": ["Frascos"],
+    "CHAMPU": ["Botellas"],
+    "GEL": ["Tubos", "Botes"],
+    "APÓSITO": ["Apósitos"],
+    "PASTA": ["Tubos"]
   },
-  "rectal": {
-    "supositorios": ["Unidades"],
-    "enemas": ["Mililitros"]
+  "VÍA OFTÁLMICA": {
+    "COLIRIO": ["Frascos"]
   },
-  "vaginal": {
-    "ovulos": ["Unidades"],
-    "cremas": ["Gramos"],
-    "anillos": ["Unidades"]
+  "VÍA INHALATORIA": {
+    "INHALACIÓN PULMONAR": ["Inhaladores"]
+  },
+  "VÍA RECTAL": {
+    "LÍQUIDO RECTAL": ["Envases"],
+    "SEMISOLIDO RECTAL": ["Tubos"]
+  },
+  "USO PERILESIONAL": {
+    "INYECTABLE": ["Ampollas", "Jeringas"]
+  },
+  "VÍA SUBCUTÁNEA": {
+    "INYECTABLE": ["Jeringas", "Viales"],
+    "IMPLANTE": ["Implantes"]
+  },
+  "VÍA BUCAL (BUCCAL USE)": {
+    "COMPRIMIDO BUCAL/PARA CHUPAR": ["Comprimidos"]
+  },
+  "USO BUCOFARÍNGEO": {
+    "COMPRIMIDO BUCAL/PARA CHUPAR": ["Comprimidos"]
+  },
+  "VÍA INTRATECAL": {
+    "INYECTABLE": ["Jeringas", "Viales"]
+  },
+  "VÍA EPIDURAL": {
+    "INYECTABLE": ["Jeringas", "Bolsas"]
+  },
+  "VÍA TRANSDÉRMICA": {
+    "PARCHE TRANSDERMICO": ["Parches"]
+  },
+  "VÍA VAGINAL": {
+    "DISPOSITIVO VAGINAL": ["Dispositivos"]
+  },
+  "VÍA INTRACAVERNOSA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "HEMODIÁLISIS": {
+    "INYECTABLE": ["Bolsas"]
+  },
+  "VÍA INTRAVÍTREA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA INTRAUTERINA": {
+    "DISPOSITIVO INTRAUTERINO": ["Dispositivos"]
+  },
+  "USO INTRACAMERAL": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA NASAL": {
+    "PRODUCTO USO NASAL": ["Frascos", "Sprays"]
+  },
+  "VÍA SUBLINGUAL": {
+    "COMPRIMIDO BUCODISPERSABLE/LIOTAB": ["Comprimidos"]
+  },
+  "VÍA INTRADÉRMICA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "USO DENTAL": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA INTRAARTICULAR": {
+    "INYECTABLE": ["Jeringas"]
   }
 }
