@@ -23,6 +23,9 @@ import { addMedicine } from 'src/app/Store/medicine/actions/medicineKits.actions
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
+// Pipes
+import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
+
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MAT_MOMENT_DATE_FORMATS,
@@ -44,6 +47,7 @@ import 'moment/locale/es';
     FormsModule,
     MatButtonModule,
     MatIconModule,
+    ShortenTextPipe
   ],
   templateUrl: './add-medicine.component.html',
   styleUrls: ['./add-medicine.component.scss'],
@@ -167,12 +171,6 @@ export class AddMedicineComponent {
         this.medicineUnitsArray.push(Object.entries(item[1])[0]);
       });
     });
-
-    // this.store.dispatch(medicineKitActions.addMedicine({ medicine: medicine, reminder: reminder, medicineKitId: 2}));
-
-    // this.reminderService.addReminder(this.reminder, 30).subscribe((response) => {
-    //   console.log(response)
-    // })
   }
 
   submitForms(): void {
@@ -199,7 +197,7 @@ export class AddMedicineComponent {
       let finish = new Date();
 
       if (this.finishDate.value) {
-        finish = this.finishDate.value;
+        finish = new Date(this.finishDate.value);
 
         if (this.finishTime.value) {
           finish.setHours(+this.finishTime.value.slice(0, 2));
@@ -210,6 +208,8 @@ export class AddMedicineComponent {
       reminder.start = start;
       reminder.finish = finish;
 
+      console.log(medicine);
+
       this.store.dispatch(
         addMedicine({
           medicine: medicine,
@@ -218,6 +218,7 @@ export class AddMedicineComponent {
         })
       );
     } else {
+      console.log(medicine);
       this.store.dispatch(
         addMedicine({
           medicine: this.medicine,

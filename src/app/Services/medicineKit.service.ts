@@ -127,8 +127,6 @@ export class MedicineKitService {
       'application/x-www-form-urlencoded'
     );
 
-    console.log(medicine)
-
     const body = new URLSearchParams();
     body.set('medicineKitId', medicineKitId.toString());
     body.set('name', medicine.name);

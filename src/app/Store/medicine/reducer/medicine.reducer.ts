@@ -30,7 +30,7 @@ export const medicineReducer = createReducer(
     (state, { reminders }) => ({
       ...state,
       reminders: reminders
-        ? [...state.reminders, ...reminders]
+        ? [...(state.reminders || []), ...reminders]
         : state.reminders,
       loading: false,
       loaded: true,
@@ -119,18 +119,15 @@ export const medicineReducer = createReducer(
   })),
 
   // Add reminder to DB
-  on(
-    reminderActions.addReminder,
-    (state, { reminder }) => ({
-      ...state,
-      loading: true,
-      loaded: false,
-      error: null
-    })
-  ),
+  on(reminderActions.addReminder, (state, { reminder }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
   on(reminderActions.addReminderSuccess, (state, { reminder }) => ({
     ...state,
-    reminders: [...state.reminders, reminder],
+    reminders: [...(state.reminders || []), reminder],
     loading: false,
     loaded: true,
     error: null,
@@ -184,7 +181,7 @@ export const medicineReducer = createReducer(
       if (newIndex < 0) {
         return {
           ...state,
-          medicineKits: [...state.medicineKits, medicineKit],
+          medicineKits: [...(state.medicineKits || []), medicineKit],
         };
       }
 
@@ -235,13 +232,15 @@ export const medicineReducer = createReducer(
   })),
 
   // Add new mediicne kit
-  on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => ({
-    ...state,
-    medicineKits: [...state.medicineKits, medicineKit],
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
+  on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => {
+    return {
+      ...state,
+      medicineKits: [...(state.medicineKits || []), medicineKit],
+      loading: true,
+      loaded: false,
+      error: null,
+    };
+  }),
   on(medicineKitActions.addMedicineKitSuccess, (state) => ({
     ...state,
     loading: false,
@@ -282,7 +281,7 @@ export const medicineReducer = createReducer(
       ...state,
       loading: true,
       loaded: false,
-      error: null
+      error: null,
     })
   ),
   on(medicineKitActions.addMedicineSuccess, (state) => ({
@@ -296,5 +295,5 @@ export const medicineReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  })),
+  }))
 );

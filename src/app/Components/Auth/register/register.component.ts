@@ -8,10 +8,12 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 import { loginOAuth, register } from 'src/app/Store/auth/actions/auth.actions';
 import { environment } from 'src/app/environment/environment';
 
+import { HeaderComponent } from '../../Common/header/header.component';
+
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, HeaderComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
@@ -30,11 +32,11 @@ export class RegisterComponent {
 
   constructor(private store: Store, private router: Router) {
     this.userData = {
-      email: 'patient4@mail.com',
-      password: 'password1234',
-      firstName: 'John',
-      lastName: 'Doe',
-      role: 'patient',
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      role: '',
     };
 
     this.email = new FormControl(this.userData.email);
@@ -64,6 +66,8 @@ export class RegisterComponent {
     };
 
     this.store.dispatch(register({ userData: this.userData }));
+
+    this.router.navigate(['/']);
   }
 
   submitRegisterGoogle(): void {

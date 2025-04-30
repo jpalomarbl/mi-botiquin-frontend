@@ -1,6 +1,6 @@
 <custom-header></custom-header>
 
-<div class="add-medicine">
+<div class="search-medicine">
   <form class="form" [formGroup]="medicineForm">
     <h1 class="form__title">Añadir un medicamento</h1>
     <mat-form-field class="form__field" appearance="fill">
@@ -16,10 +16,17 @@
 
   <section class="medicines-list" *ngIf="medicinesSearch.length > 0">
     <mat-list class="medicines-list" role="list">
-      <!-- <mat-list-item *ngFor="let medicine of medicinesSearch" role="listitem">Item 1</mat-list-item> -->
-
+      <mat-progress-spinner
+        class="search-medicine__spinner"
+        [ngClass]="{ 'search-medicine__spinner--not-hidden': loading$ | async }"
+        color="primary"
+        mode="indeterminate"
+        value="50"
+      >
+      </mat-progress-spinner>
       <cdk-virtual-scroll-viewport
         class="medicines-list__viewport"
+        *ngIf="!(loading$ | async)"
         itemSize="50"
       >
         <mat-list-item

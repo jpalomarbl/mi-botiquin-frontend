@@ -2,7 +2,7 @@
 
 <div class="add-medicine">
   <h2 class="add-medicine__title">
-    {{ medicine.name }}
+    {{ medicine.name | shortenText: 50 }}
   </h2>
 
   <section class="buttons">
@@ -97,7 +97,7 @@
         />
       </mat-form-field>
 
-      <p class="reminder-form__medicine-unit">{{ medicine.unit }}</p>
+      <span class="reminder-form__medicine-unit">{{ unitMedicine.value }}</span>
 
       <mat-form-field class="reminder-form__field--frequency" appearance="fill">
         <mat-label>Cada</mat-label>
@@ -114,9 +114,9 @@
           [formControl]="frequencyUnit"
           [(value)]="reminder.frequencyUnit"
         >
-          <mat-option value="minutos">Minutos</mat-option>
-          <mat-option value="horas">Horas</mat-option>
-          <mat-option value="días">Días</mat-option>
+          <mat-option value="minutes">Minutos</mat-option>
+          <mat-option value="hours">Horas</mat-option>
+          <mat-option value="days">Días</mat-option>
         </mat-select>
       </mat-form-field>
 

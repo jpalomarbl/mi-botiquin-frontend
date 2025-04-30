@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { of, take } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
 import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
@@ -53,13 +53,16 @@ export class ReminderEffects {
                 medicineKitName: row.medicineKitName,
                 ownerId: row.ownerId,
                 ownerFirstName: row.ownerFirstName,
-                ownerLastName: row.ownerLastName
+                ownerLastName: row.ownerLastName,
               }));
 
             return reminderActions.fetchUserRemindersForTodaySuccess({
-              reminders: reminders.length > 0
-                ? reminders.filter((reminder: ReminderDTO) => reminder !== null)
-                : null,
+              reminders:
+                reminders.length > 0
+                  ? reminders.filter(
+                      (reminder: ReminderDTO) => reminder !== null
+                    )
+                  : null,
             });
           }),
           catchError((error) =>
@@ -78,6 +81,7 @@ export class ReminderEffects {
   fetchAllUserReminders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserReminders),
+      take(1),
       debounceTime(300),
       mergeMap(({ userId, day }) =>
         this.reminderService.fetchAllUserReminders(userId).pipe(
@@ -85,27 +89,38 @@ export class ReminderEffects {
             const reminders = response
               .filter((row: ReminderDTO) => {
                 const dayAfter = new Date(day);
+                console.log('Processing reminder:', row);
                 dayAfter.setDate(dayAfter.getDate() + 1);
+                console.log('Processing reminder:', row);
                 const finishDate = new Date(row.finish!);
+                console.log('Processing reminder:', row);
                 const nextDose = this.reminderService.getNextDoseTime(row, day);
+                console.log('Processing reminder:', row);
+                console.log('Next dose:', nextDose);
+                console.log('Day after:', dayAfter);
+                console.log('Finish date:', finishDate);
 
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
                   nextDose.getTime() < finishDate.getTime()
                 );
               })
-              .map((row: ReminderDTO) => ({
-                id: row.id,
-                frequency: row.frequency,
-                frequencyUnit: row.frequencyUnit,
-                start: new Date(row.start),
-                finish: new Date(row.finish!),
-                amount: row.amount,
-                medicineId: row.medicineId,
-                medicineUnit: row.medicineUnit,
-                medicineName: row.medicineName,
-                medicineKitName: row.medicineKitName,
-              }));
+              .map((row: ReminderDTO) => {
+                console.log(row);
+
+                return {
+                  id: row.id,
+                  frequency: row.frequency,
+                  frequencyUnit: row.frequencyUnit,
+                  start: new Date(row.start),
+                  finish: new Date(row.finish!),
+                  amount: row.amount,
+                  medicineId: row.medicineId,
+                  medicineUnit: row.medicineUnit,
+                  medicineName: row.medicineName,
+                  medicineKitName: row.medicineKitName,
+                };
+              });
 
             // const organizedReminders: Array<[Date, ReminderDTO[]] | null> =
             //   this.reminderService.organizeReminders(reminders, day);
@@ -194,25 +209,22 @@ export class ReminderEffects {
   );
 
   addReminder$ = createEffect(() =>
-      this.actions$.pipe(
-        ofType(reminderActions.addReminder),
-        mergeMap(({ reminder, medicineId }) =>
-          this.reminderService.addReminder(reminder, medicineId).pipe(
-            map((response: ReminderDTO) => {
-              console.log(response);
-
-              return reminderActions.addReminderSuccess({ reminder: response });
-
-            }),
-            catchError((error) =>
-              of(
-                reminderActions.addReminderError({
-                  error: error.error.error || 'Fetch user medicine kits failed',
-                })
-              )
+    this.actions$.pipe(
+      ofType(reminderActions.addReminder),
+      mergeMap(({ reminder, medicineId }) =>
+        this.reminderService.addReminder(reminder, medicineId).pipe(
+          map((response: ReminderDTO) => {
+            return reminderActions.addReminderSuccess({ reminder: response });
+          }),
+          catchError((error) =>
+            of(
+              reminderActions.addReminderError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
             )
           )
         )
       )
-    );
+    )
+  );
 }

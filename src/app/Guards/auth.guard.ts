@@ -45,8 +45,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     this.store.dispatch(checkSession());
-
-    console.log('AUTH');
+    console.log("HOLA")
 
     return race(
       // Caso exitoso

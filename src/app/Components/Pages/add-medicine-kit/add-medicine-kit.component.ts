@@ -123,7 +123,16 @@ export class AddMedicineKitComponent {
         } else this.isPatient = true;
 
         this.userId = user.id;
-        this.medicineKit.owner.id = user.id;
+
+        const updatedMedicineKit = {
+          ...this.medicineKit,
+          owner: {
+            ...this.medicineKit.owner,
+            id: user.id
+          }
+        };
+
+        this.medicineKit = updatedMedicineKit;
 
         if (!this.isPatient) this.ownerId.addValidators(Validators.required);
       }
@@ -131,10 +140,17 @@ export class AddMedicineKitComponent {
   }
 
   submitMedicineKit(): void {
-    this.medicineKit.name = this.medicineKitName.value;
-    this.medicineKit.note = this.medicineKitNote.value;
+    const updatedMedicineKit = {
+      ...this.medicineKit,
+      name: this.medicineKitName.value,
+      note: this.medicineKitNote.value,
+      owner: {
+        ...this.medicineKit.owner,
+        id: this.ownerId.value !== 0 ? this.ownerId.value : this.userId
+      }
+    };
 
-    this.medicineKit.owner.id = this.ownerId.value;
+    this.medicineKit = updatedMedicineKit;
 
     this.store.dispatch(addMedicineKit({ medicineKit: this.medicineKit }));
 

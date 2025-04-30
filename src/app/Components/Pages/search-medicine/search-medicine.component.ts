@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
+import { selectMedicineLoading } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -27,6 +28,7 @@ import { MedicineDTO } from 'src/app/Models/medicine.dto';
 // Angular material
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 //Pipes
 import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
@@ -40,6 +42,7 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     FormsModule,
     ScrollingModule,
     MatListModule,
+    MatProgressSpinnerModule,
     CommonModule,
     ShortenTextPipe,
   ],
@@ -47,6 +50,8 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
   styleUrls: ['./search-medicine.component.scss'],
 })
 export class SearchMedicineComponent {
+  loading$: Observable<boolean>;
+
   medicine: FormControl;
   medicineForm: FormGroup;
 
@@ -66,6 +71,8 @@ export class SearchMedicineComponent {
     private route: ActivatedRoute,
     private medicineKitService: MedicineKitService
   ) {
+    this.loading$ = this.store.select(selectMedicineLoading);
+
     this.medicineName = '';
     this.medicinesSearch = [];
 
@@ -93,8 +100,6 @@ export class SearchMedicineComponent {
         this.medicinesSearch$.subscribe((medicines: MedicineDTO[]) => {
           this.medicinesSearch = medicines;
         });
-
-        console.log(this.medicinesSearch);
       });
 
     this.medicine.valueChanges

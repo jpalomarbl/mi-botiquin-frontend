@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, take } from 'rxjs/operators';
 
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
@@ -32,6 +32,7 @@ export class MedicineKitEffects {
               medicines: row.medicines,
             }));
 
+
             return medicineKitActions.fetchUserMedicineKitsSuccess({
               medicineKits: medicineKits[0]
                 ? medicineKits.filter(
@@ -49,6 +50,13 @@ export class MedicineKitEffects {
           )
         )
       )
+    )
+  );
+
+  fetchUserMedicineKitsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.fetchUserMedicineKits),
+      take(1)
     )
   );
 
@@ -108,8 +116,6 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKit }) =>
         this.medicineKitService.addMedicineKit(medicineKit).pipe(
           map((response: any) => {
-            console.log(response);
-
             return medicineKitActions.addMedicineKitSuccess();
           }),
           catchError((error) =>
@@ -169,8 +175,6 @@ export class MedicineKitEffects {
       mergeMap(({ medicine, reminder, medicineKitId }) =>
         this.medicineKitService.addMedicine(medicine, medicineKitId).pipe(
           map((response: MedicineDTO) => {
-            console.log(response);
-
             if(reminder)
               return reminderKitActions.addReminder({ reminder: reminder, medicineId: response.id! })
             else

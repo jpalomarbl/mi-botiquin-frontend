@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -45,6 +46,7 @@ import { ReminderDTO } from 'src/app/Models/reminder.dto';
     MatProgressSpinnerModule,
     MatButtonModule,
     NextDosePipe,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -130,7 +132,7 @@ export class HomeComponent {
     this.actions$
       .pipe(
         ofType(reminderActions.fetchUserRemindersForTodaySuccess),
-        take(1) // Para autodesuscribirse después de ejecutarse una vez
+        take(1)
       )
       .subscribe(() => {
         // Código a ejecutar después de eliminar
@@ -142,10 +144,9 @@ export class HomeComponent {
     this.actions$
       .pipe(
         ofType(medicineKitActions.fetchUserMedicineKitsSuccess),
-        take(1) // Para autodesuscribirse después de ejecutarse una vez
+        take(1)
       )
       .subscribe(() => {
-        // Código a ejecutar después de eliminar
         this.medicineKits$.subscribe((medicineKits) => {
           this.medicineKits = medicineKits;
         });

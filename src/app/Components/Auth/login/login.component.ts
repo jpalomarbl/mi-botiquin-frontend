@@ -7,12 +7,12 @@ import { environment } from 'src/app/environment/environment';
 import { LoginDTO } from 'src/app/Models/auth.dto';
 import { FormsModule } from 'src/app/Modules/forms.module';
 import { login, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
-// import { selectAuthLoading } from '../../auth/selectors/auth.selectors';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -28,8 +28,8 @@ export class LoginComponent {
 
   constructor(private store: Store, private router: Router) {
     this.credentials = {
-      email: 'john.doe@example.com',
-      password: 'password1234',
+      email: '',
+      password: '',
     };
 
     this.email = new FormControl(this.credentials.email);

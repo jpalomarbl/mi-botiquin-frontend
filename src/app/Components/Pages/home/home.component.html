@@ -33,50 +33,45 @@
     <!-- Reminders list is only shown when there are reminders for today -->
     <mat-list
       class="reminders__list"
-      *ngIf="todaysReminders$ | async; else noReminders"
+      *ngIf="reminders.length > 0; else noReminders"
     >
-      <ng-container *ngIf="todaysReminders$ | async; else noReminders">
-        <ng-container *ngFor="let reminder of todaysReminders$ | async; index as i">
-          <mat-list-item
-            class="reminders__list-item"
-            *ngIf="i < 2"
+      <ng-container
+        *ngFor="let reminder of todaysReminders$ | async; index as i"
+      >
+        <mat-list-item class="reminders__list-item" *ngIf="i < 2">
+          <span matListItemTitle>{{ reminder.medicineName }}</span>
+
+          <span matListItemLine
+            >{{ reminder.amount }} {{ reminder.medicineUnit }} -
+            {{
+              reminder.start
+                | nextDose
+                  : reminder.finish!
+                  : reminder.frequency
+                  : reminder.frequencyUnit
+                | date : "shortTime"
+            }}
+          </span>
+
+          <span
+            matListItemLine
+            *ngIf="user !== null && !isPatient && reminder.ownerId !== user.id"
           >
-            <span matListItemTitle>{{ reminder.medicineName }}</span>
+            Recordatorio de {{ reminder.ownerFirstName }}
+            {{ reminder.ownerLastName }}
+          </span>
 
-            <span matListItemLine
-              >{{ reminder.amount }} {{ reminder.medicineUnit }} -
-              {{
-                reminder.start
-                  | nextDose
-                    : reminder.finish!
-                    : reminder.frequency
-                    : reminder.frequencyUnit
-                  | date : "shortTime"
-              }}
-            </span>
-
-            <span
-              matListItemLine
-              *ngIf="
-                user !== null && !isPatient && reminder.ownerId !== user.id
-              "
-            >
-              Recordatorio de {{ reminder.ownerFirstName }}
-              {{ reminder.ownerLastName }}
-            </span>
-
-            <span
-              matListItemLine
-              *ngIf="
-                user !== null &&
-                (user.role === 'caretaker' || user.role === 'family member') &&
-                reminder.ownerId === user.id
-              "
-            >
-              Este recordatorio es tuyo
-            </span>
-          </mat-list-item>
-        </ng-container>
+          <span
+            matListItemLine
+            *ngIf="
+              user !== null &&
+              (user.role === 'caretaker' || user.role === 'family member') &&
+              reminder.ownerId === user.id
+            "
+          >
+            Este recordatorio es tuyo
+          </span>
+        </mat-list-item>
       </ng-container>
 
       <button
@@ -123,48 +118,47 @@
       *ngIf="medicineKits$ | async; else noMedicineKits"
     >
       <!-- Every medicine kit is shown in a list item with a title, a note and an arrow button -->
-      <ng-container *ngFor="let medicineKit of medicineKits$ | async; index as i">
-        <div
-        class="medicine-kits__list-item-container"
-        *ngIf="i < 2"
+      <ng-container
+        *ngFor="let medicineKit of medicineKits$ | async; index as i"
       >
-        <!-- Information -->
-        <mat-list-item>
-          <span matListItemTitle>{{ medicineKit.name }}</span>
+        <div class="medicine-kits__list-item-container" *ngIf="i < 2">
+          <!-- Information -->
+          <mat-list-item>
+            <span matListItemTitle>{{ medicineKit.name }}</span>
 
-          <span matListItemLine>{{ medicineKit.note }}</span>
+            <span matListItemLine>{{ medicineKit.note }}</span>
 
-          <span
-            matListItemLine
-            *ngIf="
-              user !== null && !isPatient && medicineKit.owner.id !== user.id
-            "
+            <span
+              matListItemLine
+              *ngIf="
+                user !== null && !isPatient && medicineKit.owner.id !== user.id
+              "
+            >
+              Botiquín de {{ medicineKit.owner.firstName }}
+              {{ medicineKit.owner.lastName }}
+            </span>
+
+            <span
+              matListItemLine
+              *ngIf="
+                user !== null &&
+                (user.role === 'caretaker' || user.role === 'family member') &&
+                medicineKit.owner.id === user.id
+              "
+            >
+              Este botiquín es tuyo
+            </span>
+          </mat-list-item>
+
+          <!-- Button -->
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="navigateMedicineKitDetails(medicineKit.id)"
           >
-            Botiquín de {{ medicineKit.owner.firstName }}
-            {{ medicineKit.owner.lastName }}
-          </span>
-
-          <span
-            matListItemLine
-            *ngIf="
-              user !== null &&
-              (user.role === 'caretaker' || user.role === 'family member') &&
-              medicineKit.owner.id === user.id
-            "
-          >
-            Este botiquín es tuyo
-          </span>
-        </mat-list-item>
-
-        <!-- Button -->
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="navigateMedicineKitDetails(medicineKit.id)"
-        >
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
       </ng-container>
 
       <button
@@ -182,7 +176,7 @@
       <div class="reminders__no-items-container">
         <p class="reminders__no-items-message">No tienes ningún botiquín.</p>
 
-        <a href="" routerLink="">Crea uno</a>
+        <a [routerLink]="['/addMedicineKit']">Crea uno</a>
       </div>
     </ng-template>
   </section>

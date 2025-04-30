@@ -40,6 +40,10 @@ export class ReminderService {
       }
     );
 
+    response.subscribe((res) => {
+      console.log(res)
+    })
+
     return response;
   }
 
@@ -108,6 +112,7 @@ export class ReminderService {
 
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
     const startDate = new Date(reminder.start);
+
     const frequency = reminder.frequency;
     const frequencyUnit = reminder.frequencyUnit;
     const lastDose = this.getLastDoseTime(
@@ -142,9 +147,10 @@ export class ReminderService {
     frequency: number,
     frequencyUnit: string
   ): Date {
+
     // Calcular la diferencia total en milisegundos
     const diffMs = currentTime.getTime() - startTime.getTime();
-
+    console.log(frequencyUnit)
     // Convertir a la unidad de frecuencia correspondiente
     let diffUnits: number;
     switch (frequencyUnit) {
