@@ -118,6 +118,30 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
+  // Add reminder to DB
+  on(
+    reminderActions.addReminder,
+    (state, { reminder }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null
+    })
+  ),
+  on(reminderActions.addReminderSuccess, (state, { reminder }) => ({
+    ...state,
+    reminders: [...state.reminders, reminder],
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(reminderActions.addReminderError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Get all medicine kits from user
   on(medicineKitActions.fetchUserMedicineKits, (state) => ({
     ...state,
@@ -246,6 +270,28 @@ export const medicineReducer = createReducer(
     error: null,
   })),
   on(medicineKitActions.fetchMedicinesCIMAError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
+  on(
+    medicineKitActions.addMedicine,
+    (state, { medicine }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null
+    })
+  ),
+  on(medicineKitActions.addMedicineSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(medicineKitActions.addMedicineError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
