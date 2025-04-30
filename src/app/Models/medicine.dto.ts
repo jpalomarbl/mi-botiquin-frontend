@@ -9,4 +9,6 @@ export interface MedicineDTO {
   dose: number;
   expirationDate: Date;
   nregistro: number;
+  formaFarmaceuticaSimplificada?: string;
+  viaAdmininstracion?: string;
 };
