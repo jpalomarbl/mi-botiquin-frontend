@@ -140,8 +140,6 @@ export class AddMedicineComponent {
       Object.entries(array).forEach((item) => {
         this.medicineUnitsArray.push(Object.entries(item[1])[0]);
       });
-
-      console.log(this.medicineUnitsArray);
     });
   }
 

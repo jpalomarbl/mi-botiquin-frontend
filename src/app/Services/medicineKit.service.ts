@@ -122,14 +122,14 @@ export class MedicineKitService {
   getMedicineUnit(
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string
-  ): string {
-    this.http
+  ): Observable<string> {
+    return this.http
       .get<UnitsJsonDTO>('/assets/units.json')
-      .subscribe((data: UnitsJsonDTO) => {
-        return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
-      });
-
-    return 'Error';
+      .pipe(
+        map((data: UnitsJsonDTO) => {
+          return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
+        })
+      )
   }
 
   getMedicineUnitsArray(): Observable<UnitsJsonDTO> {

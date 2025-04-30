@@ -122,13 +122,17 @@ export class SearchMedicineComponent {
 
     const medicineKitId = this.route.snapshot.params['medicineKitId'];
 
-    medicineItem.unit = this.medicineKitService.getMedicineUnit(
-      medicine.viaAdmininstracion!,
-      medicine.formaFarmaceuticaSimplificada!
-    );
+    this.medicineKitService
+      .getMedicineUnit(
+        medicine.viaAdmininstracion!,
+        medicine.formaFarmaceuticaSimplificada!
+      )
+      .subscribe((unit: string) => {
+        medicineItem.unit = unit;
 
-    const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
+        const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
 
-    this.router.navigate([`/addMedicine/${medicineKitId}/${medicineJSON}`]);
+        this.router.navigate([`/addMedicine/${medicineKitId}/${medicineJSON}`]);
+      });
   }
 }
