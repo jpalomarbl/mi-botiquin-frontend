@@ -83,6 +83,29 @@ export class ReminderService {
     }
   }
 
+  addReminder(
+    reminder: ReminderDTO,
+    medicineId: number
+  ): Observable<ReminderDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('frequency', reminder.frequency.toString());
+    body.set('frequencyUnit', reminder.frequencyUnit);
+    body.set('start', reminder.start.toString());
+    body.set('finish', reminder.finish.toString());
+    body.set('amount', reminder.amount.toString());
+    body.set('medicineId', medicineId.toString());
+
+    return this.http.post<any>(`${this.apiUrlReminder}`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
     const startDate = new Date(reminder.start);
     const frequency = reminder.frequency;

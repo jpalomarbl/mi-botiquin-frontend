@@ -8,6 +8,8 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { UnitsJsonDTO } from '../Models/unitJson.dto';
+import { MedicineDTO } from '../Models/medicine.dto';
+import { ReminderDTO } from '../Models/reminder.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -117,6 +119,29 @@ export class MedicineKitService {
     return this.http.get<any>(
       `https://cima.aemps.es/cima/rest/medicamentos?nombre=${medicineName}`
     );
+  }
+
+  addMedicine(medicine: MedicineDTO, medicineKitId: number): Observable<MedicineDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    console.log(medicine)
+
+    const body = new URLSearchParams();
+    body.set('medicineKitId', medicineKitId.toString());
+    body.set('name', medicine.name);
+    body.set('expirationDate', medicine.expirationDate.toString());
+    body.set('amount', medicine.amount.toString());
+    body.set('unit', medicine.unit);
+    body.set('nregistro', medicine.nregistro.toString());
+    body.set('dose', medicine.dose.toString());
+
+    return this.http.post<any>(`${this.apiUrlMedicine}`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
+    });
   }
 
   getMedicineUnit(
