@@ -1,9 +1,9 @@
 import { ReminderDTO } from "./reminder.dto";
 
 export interface MedicineDTO {
-  id: number;
+  id?: number;
   name: string;
-  reminder: ReminderDTO;
+  reminder?: ReminderDTO;
   unit: string;
   amount: number;
   dose: number;
