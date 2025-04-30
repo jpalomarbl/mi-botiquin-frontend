@@ -83,7 +83,7 @@
     </div>
     <form
       class="reminder-form"
-      *ngIf="!addReminder"
+      *ngIf="addReminder"
       [formGroup]="reminderForm"
       (ngSubmit)="submitForms()"
     >
@@ -143,7 +143,7 @@
         appearance="fill"
       >
         <mat-label>A las</mat-label>
-        <input matInput type="time" [formControl]="startTime" required />
+        <input matInput type="time" [formControl]="startTime" />
       </mat-form-field>
 
       <mat-form-field
@@ -169,13 +169,22 @@
         appearance="fill"
       >
         <mat-label>A las</mat-label>
-        <input matInput type="time" [formControl]="finishTime" required />
+        <input matInput type="time" [formControl]="finishTime" />
       </mat-form-field>
     </form>
   </section>
 
-  <button class="submit-button" mat-raised-button color="primary">
-    Añadir medicamento <span *ngIf="!addReminder"> y recordatorio</span>
+  <button
+    class="submit-button"
+    (click)="submitForms()"
+    mat-raised-button
+    color="primary"
+    [disabled]="
+      (addReminder && (medicineForm.invalid || reminderForm.invalid)) ||
+      (!addReminder && medicineForm.invalid)
+    "
+  >
+    Añadir medicamento <span *ngIf="addReminder"> y recordatorio</span>
   </button>
 </div>
 
