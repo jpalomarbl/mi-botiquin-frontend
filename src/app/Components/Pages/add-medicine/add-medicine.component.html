@@ -36,8 +36,8 @@
         <mat-datepicker touchUi #expirationDatePicker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field medicine-form__field--amount appearance="fill">
-        <mat-label>Cantidad de reserva</mat-label>
+      <mat-form-field class="medicine-form__field--amount" appearance="fill">
+        <mat-label>Reserva</mat-label>
         <input
           type="number"
           [formControl]="amountMedicine"
@@ -46,7 +46,10 @@
         />
       </mat-form-field>
 
-      <mat-form-field medicine-form__field--medicine-unit appearance="fill">
+      <mat-form-field
+        class="medicine-form__field--medicine-unit"
+        appearance="fill"
+      >
         <mat-label>Unidad</mat-label>
         <mat-select [formControl]="unitMedicine">
           <mat-optgroup
@@ -66,14 +69,25 @@
   </section>
 
   <section>
-    <h3 class="reminder-form__title">Recordatorio</h3>
+    <div class="reminder-form__title">
+      <h3 class="reminder-form__title-text">Recordatorio</h3>
+
+      <button
+        class="reminder-form__button"
+        (click)="addReminder = !addReminder"
+        mat-mini-fab
+        color="primary"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
     <form
       class="reminder-form"
       *ngIf="!addReminder"
       [formGroup]="reminderForm"
       (ngSubmit)="submitForms()"
     >
-      <mat-form-field class="reminder-form--amount" appearance="fill">
+      <mat-form-field class="reminder-form__field--amount" appearance="fill">
         <mat-label>Tomar</mat-label>
         <input
           type="number"
@@ -85,7 +99,7 @@
 
       <p class="reminder-form__medicine-unit">{{ medicine.unit }}</p>
 
-      <mat-form-field class="reminder-form--frequency" appearance="fill">
+      <mat-form-field class="reminder-form__field--frequency" appearance="fill">
         <mat-label>Cada</mat-label>
         <input
           type="number"
@@ -95,7 +109,7 @@
         />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="reminder-form__field--frequency-unit">
         <mat-select
           [formControl]="frequencyUnit"
           [(value)]="reminder.frequencyUnit"
@@ -106,7 +120,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="reminder-form--start-date" appearance="fill">
+      <mat-form-field
+        class="reminder-form__field--start-date"
+        appearance="fill"
+      >
         <mat-label>Desde</mat-label>
         <input
           matInput
@@ -121,12 +138,18 @@
         <mat-datepicker touchUi #startDatePicker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field class="reminder-form--start-time" appearance="fill">
+      <mat-form-field
+        class="reminder-form__field--start-time"
+        appearance="fill"
+      >
         <mat-label>A las</mat-label>
         <input matInput type="time" [formControl]="startTime" required />
       </mat-form-field>
 
-      <mat-form-field class="reminder-form--finish-date" appearance="fill">
+      <mat-form-field
+        class="reminder-form__field--finish-date"
+        appearance="fill"
+      >
         <mat-label>Hasta</mat-label>
         <input
           matInput
@@ -141,16 +164,19 @@
         <mat-datepicker touchUi #finishDatePicker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field class="reminder-form--finish-date" appearance="fill">
+      <mat-form-field
+        class="reminder-form__field--finish-time"
+        appearance="fill"
+      >
         <mat-label>A las</mat-label>
         <input matInput type="time" [formControl]="finishTime" required />
       </mat-form-field>
     </form>
-
-    <button class="reminder-form__button" mat-raised-button color="primary">Añadir recordatorio</button>
   </section>
 
-  <button class="submit-button" mat-raised-button color="primary">Añadir medicamento <span *ngIf="addReminder"> y recordatorio</span></button>
+  <button class="submit-button" mat-raised-button color="primary">
+    Añadir medicamento <span *ngIf="!addReminder"> y recordatorio</span>
+  </button>
 </div>
 
 <custom-footer></custom-footer>
