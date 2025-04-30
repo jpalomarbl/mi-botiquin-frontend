@@ -1,0 +1,10 @@
+
+    Oftálmica
+    Ótica
+    Nasal
+    Oral
+    Tópica
+    Parenteral
+    Rectal
+    Vaginal
+
