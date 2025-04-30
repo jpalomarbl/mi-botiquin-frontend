@@ -29,7 +29,7 @@ export class ReminderEffects {
                 const dayAfter = new Date();
                 dayAfter.setDate(dayAfter.getDate() + 1);
                 dayAfter.setHours(0, 0, 0, 0);
-                const finishDate = new Date(row.finish);
+                const finishDate = new Date(row.finish!);
                 const nextDose = this.reminderService.getNextDoseTime(
                   row,
                   today
@@ -45,7 +45,7 @@ export class ReminderEffects {
                 frequency: row.frequency,
                 frequencyUnit: row.frequencyUnit,
                 start: new Date(row.start),
-                finish: new Date(row.finish),
+                finish: new Date(row.finish!),
                 amount: row.amount,
                 medicineId: row.medicineId,
                 medicineUnit: row.medicineUnit,
@@ -86,7 +86,7 @@ export class ReminderEffects {
               .filter((row: ReminderDTO) => {
                 const dayAfter = new Date(day);
                 dayAfter.setDate(dayAfter.getDate() + 1);
-                const finishDate = new Date(row.finish);
+                const finishDate = new Date(row.finish!);
                 const nextDose = this.reminderService.getNextDoseTime(row, day);
 
                 return (
@@ -99,7 +99,7 @@ export class ReminderEffects {
                 frequency: row.frequency,
                 frequencyUnit: row.frequencyUnit,
                 start: new Date(row.start),
-                finish: new Date(row.finish),
+                finish: new Date(row.finish!),
                 amount: row.amount,
                 medicineId: row.medicineId,
                 medicineUnit: row.medicineUnit,

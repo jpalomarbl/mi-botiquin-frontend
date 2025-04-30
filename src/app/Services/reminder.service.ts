@@ -96,7 +96,7 @@ export class ReminderService {
     body.set('frequency', reminder.frequency.toString());
     body.set('frequencyUnit', reminder.frequencyUnit);
     body.set('start', reminder.start.toString());
-    body.set('finish', reminder.finish.toString());
+    body.set('finish', reminder.finish!.toString());
     body.set('amount', reminder.amount.toString());
     body.set('medicineId', medicineId.toString());
 

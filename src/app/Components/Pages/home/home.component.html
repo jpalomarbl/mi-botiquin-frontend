@@ -48,7 +48,7 @@
               {{
                 reminder.start
                   | nextDose
-                    : reminder.finish
+                    : reminder.finish!
                     : reminder.frequency
                     : reminder.frequencyUnit
                   | date : "shortTime"

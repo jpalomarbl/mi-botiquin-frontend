@@ -3,7 +3,7 @@ export interface ReminderDTO {
   frequency: number;
   frequencyUnit: string;
   start: Date;
-  finish: Date;
+  finish?: Date;
   amount: number;
   medicineId?: number;
   medicineUnit: string;
