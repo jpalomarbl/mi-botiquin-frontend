@@ -80,7 +80,7 @@ export class AddMedicineComponent {
   medicineKitId: number;
 
   addReminder: boolean;
-  medicineUnitsArray: Array<[string, string[]]>;
+  medicineUnitsArray: Array<[string, string[]]>[];
 
   expirationDate: FormControl;
   amountMedicine: FormControl;
@@ -177,7 +177,7 @@ export class AddMedicineComponent {
   ngOnInit(): void {
     this.medicineKitService.getMedicineUnitsArray().subscribe((array) => {
       Object.entries(array).forEach((item) => {
-        this.medicineUnitsArray.push(Object.entries(item[1])[0]);
+        this.medicineUnitsArray.push(Object.entries(item[1]));
       });
     });
   }
