@@ -1,4 +1,7 @@
 .add-medicine {
+  display: flex;
+  flex-direction: column;
+  
   padding-inline: 10vw;
   padding-top: 5dvh;
 
@@ -116,7 +119,8 @@
     font-size: 1rem;
   }
 
-  &__button {
+  &__button,
+  &__submit-button {
     margin-inline: auto;
   }
 }
