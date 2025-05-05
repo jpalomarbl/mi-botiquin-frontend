@@ -2,6 +2,7 @@
   [title]="
     (medicineKit$ | async) ? (medicineKit$ | async)!.name : 'Tu botiquín'
   "
+  backButtonDirection="/"
 ></custom-header>
 
 <div class="medicine-kit" *ngIf="medicineKit$ | async">
