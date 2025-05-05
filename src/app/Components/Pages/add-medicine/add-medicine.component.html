@@ -2,7 +2,7 @@
 
 <div class="add-medicine">
   <h2 class="add-medicine__title">
-    {{ medicine.name | shortenText: 50 }}
+    {{ medicine.name | shortenText : 50 }}
   </h2>
 
   <section class="buttons">
@@ -23,17 +23,19 @@
         appearance="fill"
       >
         <mat-label>Fecha de caducidad</mat-label>
+
         <input
           matInput
-          [matDatepicker]="expirationDatePicker"
           [formControl]="expirationDate"
+          [matDatepicker]="dp2"
+          placeholder="Select a Date"
+          (click)="openDatePicker(dp2)"
         />
-        <mat-hint>DD/MM/AAAA</mat-hint>
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="expirationDatePicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker touchUi #expirationDatePicker></mat-datepicker>
+        <mat-hint>MM/AAAA</mat-hint>
+
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+
+        <mat-datepicker touchUi #dp2 startView="multi-year" (monthSelected)="closeDatePicker($event, dp2)"></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="medicine-form__field--amount" appearance="fill">

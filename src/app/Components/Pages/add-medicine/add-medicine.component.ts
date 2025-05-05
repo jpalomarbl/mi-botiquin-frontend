@@ -28,7 +28,6 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import {
@@ -47,7 +46,7 @@ import 'moment/locale/es';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    ShortenTextPipe
+    ShortenTextPipe,
   ],
   templateUrl: './add-medicine.component.html',
   styleUrls: ['./add-medicine.component.scss'],
@@ -58,7 +57,17 @@ import 'moment/locale/es';
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        display: {
+          dateInput: 'MM/yyyy',
+          monthYearLabel: 'MMM yyyy',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM yyyy',
+        },
+      },
+    },
   ],
 })
 export class AddMedicineComponent {
@@ -178,7 +187,7 @@ export class AddMedicineComponent {
       ...this.medicine,
       expirationDate: this.expirationDate.value,
       amount: this.amountMedicine.value,
-      unit: this.unitMedicine.value
+      unit: this.unitMedicine.value,
     };
 
     if (this.addReminder) {
@@ -228,5 +237,14 @@ export class AddMedicineComponent {
     }
 
     this.router.navigate(['medicineKitDetails/' + this.medicineKitId]);
+  }
+
+  openDatePicker(dp: any) {
+    dp.open();
+  }
+
+  closeDatePicker(eventData: any, dp?: any) {
+    // get month and year from eventData and close datepicker, thus not allowing user to select date
+    dp.close();
   }
 }
