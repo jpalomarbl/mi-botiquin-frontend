@@ -196,12 +196,5 @@
     Añadir medicamento <span *ngIf="addReminder"> y recordatorio</span>
   </button>
 </div>
-<p>
-  {{
-    (addReminder && (medicineForm.invalid || reminderForm.invalid)) ||
-      (!addReminder && medicineForm.invalid)
-  }}
-  {{ addReminder }}
-</p>
 
 <custom-footer></custom-footer>
