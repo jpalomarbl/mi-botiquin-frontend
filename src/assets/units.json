@@ -2,41 +2,53 @@
   "VÍA ORAL": {
     "COMPRIMIDO": ["Comprimidos"],
     "SOLUCION/SUSPENSION ORAL": ["Frascos", "Botellas"],
-    "CAPSULA": ["Cápsulas"]
+    "SOLUCIÓN/SUSPENSIÓN ORAL": ["Frascos", "Botellas"],
+    "CAPSULA": ["Cápsulas"],
+    "CÁPSULA": ["Cápsulas"]
   },
   "VÍA INTRAVENOSA": {
     "INYECTABLE PERFUSION": ["Viales", "Bolsas"],
-    "RADIOFARMACO": ["Viales"]
+    "INYECTABLE PERFUSIÓN": ["Viales", "Bolsas"],
+    "RADIOFARMACO": ["Viales"],
+    "RADIOFÁRMACO": ["Viales"]
   },
   "VÍA INTRAMUSCULAR": {
     "INYECTABLE": ["Ampollas", "Jeringas", "Viales"]
   },
   "VÍA ÓTICA": {
-    "LÍQUIDO OTICO": ["Frascos"]
+    "LIQUIDO OTICO": ["Frascos"],
+    "LÍQUIDO ÓTICO": ["Frascos"]
   },
   "VÍA INTRAOCULAR": {
     "INYECTABLE": ["Ampollas", "Jeringas"]
   },
   "USO CUTÁNEO": {
     "CREMA": ["Tubos", "Botes"],
-    "LÍQUIDO USO TOPICO": ["Frascos", "Botellas"],
+    "LIQUIDO USO TOPICO": ["Frascos", "Botellas"],
+    "LÍQUIDO USO TÓPICO": ["Frascos", "Botellas"],
     "EMULSION": ["Frascos", "Botes"],
+    "EMULSIÓN": ["Frascos", "Botes"],
     "POMADA": ["Tubos", "Botes"],
     "BARNIZ DE UÑAS": ["Frascos"],
     "CHAMPU": ["Botellas"],
+    "CHAMPÚ": ["Botellas"],
     "GEL": ["Tubos", "Botes"],
     "APÓSITO": ["Apósitos"],
+    "APOSITO": ["Apósitos"],
     "PASTA": ["Tubos"]
   },
   "VÍA OFTÁLMICA": {
     "COLIRIO": ["Frascos"]
   },
   "VÍA INHALATORIA": {
+    "INHALACION PULMONAR": ["Inhaladores"],
     "INHALACIÓN PULMONAR": ["Inhaladores"]
   },
   "VÍA RECTAL": {
+    "LIQUIDO RECTAL": ["Envases"],
     "LÍQUIDO RECTAL": ["Envases"],
-    "SEMISOLIDO RECTAL": ["Tubos"]
+    "SEMISOLIDO RECTAL": ["Tubos"],
+    "SEMISÓLIDO RECTAL": ["Tubos"]
   },
   "USO PERILESIONAL": {
     "INYECTABLE": ["Ampollas", "Jeringas"]
@@ -58,7 +70,8 @@
     "INYECTABLE": ["Jeringas", "Bolsas"]
   },
   "VÍA TRANSDÉRMICA": {
-    "PARCHE TRANSDERMICO": ["Parches"]
+    "PARCHE TRANSDERMICO": ["Parches"],
+    "PARCHE TRANSDÉRMICO": ["Parches"]
   },
   "VÍA VAGINAL": {
     "DISPOSITIVO VAGINAL": ["Dispositivos"]
