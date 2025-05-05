@@ -183,6 +183,8 @@ export class AddMedicineComponent {
   }
 
   submitForms(): void {
+    console.log("Amount", this.amountMedicine.value)
+
     let medicine = {
       ...this.medicine,
       expirationDate: this.expirationDate.value,
@@ -227,10 +229,10 @@ export class AddMedicineComponent {
         })
       );
     } else {
-      console.log(medicine);
+      console.log(this.medicine);
       this.store.dispatch(
         addMedicine({
-          medicine: this.medicine,
+          medicine: medicine,
           medicineKitId: this.medicineKitId,
         })
       );
