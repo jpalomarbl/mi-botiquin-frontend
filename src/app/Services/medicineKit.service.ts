@@ -10,6 +10,7 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { UnitsJsonDTO } from '../Models/unitJson.dto';
 import { MedicineDTO } from '../Models/medicine.dto';
 import { ReminderDTO } from '../Models/reminder.dto';
+import { finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +19,15 @@ export class MedicineKitService {
   private apiUrlMedicineKit = environment.api_url + '/medicineKit';
   private apiUrlMedicine = environment.api_url + '/medicine';
   user$ = this.store.select(selectUser);
+  medicineUnits: UnitsJsonDTO | null;
 
-  constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {}
+  constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {
+    this.medicineUnits = null;
+
+    this.getMedicineUnitsArray().subscribe((response) => {
+      this.medicineUnits = response;
+    })
+  }
 
   fetchUserMedicineKits(
     userId: number,
@@ -146,13 +154,17 @@ export class MedicineKitService {
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string
   ): Observable<string> {
-    return this.http
+    if (this.medicineUnits) {
+      return of(this.medicineUnits[viaAdmininstracion][formaFarmaceuticaSimplificada][0]);
+    } else {
+      return this.http
       .get<UnitsJsonDTO>('/assets/units.json')
       .pipe(
         map((data: UnitsJsonDTO) => {
           return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
         })
       )
+    }
   }
 
   getMedicineUnitsArray(): Observable<UnitsJsonDTO> {
