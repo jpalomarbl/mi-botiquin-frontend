@@ -1,0 +1,96 @@
+{
+  "VÍA ORAL": {
+    "COMPRIMIDO": ["Comprimidos"],
+    "SOLUCIÓN/SUSPENSIÓN ORAL": ["Frascos", "Botellas"],
+    "CÁPSULA": ["Cápsulas"]
+  },
+  "VÍA INTRAVENOSA": {
+    "INYECTABLE PERFUSIÓN": ["Viales", "Bolsas"],
+    "RADIOFÁRMACO": ["Viales"]
+  },
+  "VÍA INTRAMUSCULAR": {
+    "INYECTABLE": ["Ampollas", "Jeringas", "Viales"]
+  },
+  "VÍA ÓTICA": {
+    "LÍQUIDO ÓTICO": ["Frascos"]
+  },
+  "VÍA INTRAOCULAR": {
+    "INYECTABLE": ["Ampollas", "Jeringas"]
+  },
+  "USO CUTÁNEO": {
+    "CREMA": ["Tubos", "Botes"],
+    "LÍQUIDO USO TÓPICO": ["Frascos", "Botellas"],
+    "EMULSIÓN": ["Frascos", "Botes"],
+    "POMADA": ["Tubos", "Botes"],
+    "BARNIZ DE UÑAS": ["Frascos"],
+    "CHAMPÚ": ["Botellas"],
+    "GEL": ["Tubos", "Botes"],
+    "APÓSITO": ["Apósitos"],
+    "PASTA": ["Tubos"]
+  },
+  "VÍA OFTÁLMICA": {
+    "COLIRIO": ["Frascos"]
+  },
+  "VÍA INHALATORIA": {
+    "INHALACIÓN PULMONAR": ["Inhaladores"]
+  },
+  "VÍA RECTAL": {
+    "LÍQUIDO RECTAL": ["Envases"],
+    "SEMISÓLIDO RECTAL": ["Tubos"]
+  },
+  "USO PERILESIONAL": {
+    "INYECTABLE": ["Ampollas", "Jeringas"]
+  },
+  "VÍA SUBCUTÁNEA": {
+    "INYECTABLE": ["Jeringas", "Viales"],
+    "IMPLANTE": ["Implantes"]
+  },
+  "VÍA BUCAL (BUCCAL USE)": {
+    "COMPRIMIDO BUCAL/PARA CHUPAR": ["Comprimidos"]
+  },
+  "USO BUCOFARÍNGEO": {
+    "COMPRIMIDO BUCAL/PARA CHUPAR": ["Comprimidos"]
+  },
+  "VÍA INTRATECAL": {
+    "INYECTABLE": ["Jeringas", "Viales"]
+  },
+  "VÍA EPIDURAL": {
+    "INYECTABLE": ["Jeringas", "Bolsas"]
+  },
+  "VÍA TRANSDÉRMICA": {
+    "PARCHE TRANSDÉRMICO": ["Parches"]
+  },
+  "VÍA VAGINAL": {
+    "DISPOSITIVO VAGINAL": ["Dispositivos"]
+  },
+  "VÍA INTRACAVERNOSA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "HEMODIÁLISIS": {
+    "INYECTABLE": ["Bolsas"]
+  },
+  "VÍA INTRAVÍTREA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA INTRAUTERINA": {
+    "DISPOSITIVO INTRAUTERINO": ["Dispositivos"]
+  },
+  "USO INTRACAMERAL": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA NASAL": {
+    "PRODUCTO USO NASAL": ["Frascos", "Sprays"]
+  },
+  "VÍA SUBLINGUAL": {
+    "COMPRIMIDO BUCODISPERSABLE/LIOTAB": ["Comprimidos"]
+  },
+  "VÍA INTRADÉRMICA": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "USO DENTAL": {
+    "INYECTABLE": ["Jeringas"]
+  },
+  "VÍA INTRAARTICULAR": {
+    "INYECTABLE": ["Jeringas"]
+  }
+}
