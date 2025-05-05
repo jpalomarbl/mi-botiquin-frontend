@@ -1,9 +1,8 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
-import { RouterLink } from '@angular/router';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -14,13 +13,13 @@ import {
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
+import { Actions, ofType } from '@ngrx/effects';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
 } from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
-import { Actions, ofType } from '@ngrx/effects';
 
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -46,7 +45,7 @@ import { ReminderDTO } from 'src/app/Models/reminder.dto';
     MatProgressSpinnerModule,
     MatButtonModule,
     NextDosePipe,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -66,7 +65,11 @@ export class HomeComponent {
   user: UserDTO | null;
   isPatient: boolean;
 
-  constructor(private store: Store<GlobalStateDTO>, private router: Router, private actions$: Actions) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private router: Router,
+    private actions$: Actions
+  ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
 
@@ -92,9 +95,18 @@ export class HomeComponent {
       .pipe(filter((user) => user !== null))
       .subscribe((user: UserDTO | null) => {
         if (user) {
+          // this.store.dispatch(
+          //   reminderActions.fetchUserRemindersForToday({
+          //     userId: user.id,
+          //   })
+          // );
+          const today = new Date();
+          today.setHours(0, 0, 0);
+
           this.store.dispatch(
-            reminderActions.fetchUserRemindersForToday({
+            reminderActions.fetchAllUserReminders({
               userId: user.id,
+              day: today,
             })
           );
 
@@ -130,10 +142,7 @@ export class HomeComponent {
     });
 
     this.actions$
-      .pipe(
-        ofType(reminderActions.fetchUserRemindersForTodaySuccess),
-        take(1)
-      )
+      .pipe(ofType(reminderActions.fetchUserRemindersForTodaySuccess), take(1))
       .subscribe(() => {
         // Código a ejecutar después de eliminar
         this.todaysReminders$.subscribe((reminders) => {
@@ -142,15 +151,16 @@ export class HomeComponent {
       });
 
     this.actions$
-      .pipe(
-        ofType(medicineKitActions.fetchUserMedicineKitsSuccess),
-        take(1)
-      )
+      .pipe(ofType(medicineKitActions.fetchUserMedicineKitsSuccess), take(1))
       .subscribe(() => {
         this.medicineKits$.subscribe((medicineKits) => {
           this.medicineKits = medicineKits;
         });
       });
+
+    this.todaysReminders$.subscribe((reminders) => {
+      console.log("REMINDERS", reminders)
+    })
   }
 
   navigateRemindersList(): void {

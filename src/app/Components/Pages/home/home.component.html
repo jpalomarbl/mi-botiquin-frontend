@@ -33,7 +33,11 @@
     <!-- Reminders list is only shown when there are reminders for today -->
     <mat-list
       class="reminders__list"
-      *ngIf="reminders.length > 0; else noReminders"
+      *ngIf="
+        (todaysReminders$ | async) !== null &&
+          (todaysReminders$ | async)!.length > 0;
+        else noReminders
+      "
     >
       <ng-container
         *ngFor="let reminder of todaysReminders$ | async; index as i"
@@ -55,7 +59,11 @@
 
           <span
             matListItemLine
-            *ngIf="user !== null && !isPatient && reminder.ownerId !== user.id"
+            *ngIf="
+              (user$ | async) !== null &&
+              !isPatient &&
+              reminder.ownerId !== (user$ | async)!.id
+            "
           >
             Recordatorio de {{ reminder.ownerFirstName }}
             {{ reminder.ownerLastName }}
@@ -64,9 +72,10 @@
           <span
             matListItemLine
             *ngIf="
-              user !== null &&
-              (user.role === 'caretaker' || user.role === 'family member') &&
-              reminder.ownerId === user.id
+              (user$ | async) !== null &&
+              ((user$ | async)!.role === 'caretaker' ||
+                (user$ | async)!.role === 'family member') &&
+              reminder.ownerId === (user$ | async)!.id
             "
           >
             Este recordatorio es tuyo
