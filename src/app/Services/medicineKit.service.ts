@@ -156,16 +156,21 @@ export class MedicineKitService {
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string
   ): Observable<string> {
-    if (this.medicineUnits) {
-      return of(this.medicineUnits[viaAdmininstracion][formaFarmaceuticaSimplificada][0]);
-    } else {
-      return this.http
-      .get<UnitsJsonDTO>('/assets/units.json')
-      .pipe(
-        map((data: UnitsJsonDTO) => {
-          return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
-        })
-      )
+    console.log(viaAdmininstracion, formaFarmaceuticaSimplificada)
+    try {
+      if (this.medicineUnits) {
+        return of(this.medicineUnits[viaAdmininstracion][formaFarmaceuticaSimplificada][0]);
+      } else {
+        return this.http
+        .get<UnitsJsonDTO>('/assets/units.json')
+        .pipe(
+          map((data: UnitsJsonDTO) => {
+            return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
+          })
+        )
+      }
+    } catch (error) {
+      return of('');
     }
   }
 
