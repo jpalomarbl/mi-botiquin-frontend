@@ -84,7 +84,7 @@
         *cdkVirtualFor="let pair of organizedReminders$ | async; index as i"
       >
         <h3 class="reminders-list__time-title">
-          {{ pair![0] | date : "shortTime" }}
+          {{ pair![0] | date : "HH:mm" }}
         </h3>
 
         <mat-card
