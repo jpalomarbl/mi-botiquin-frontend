@@ -24,7 +24,9 @@ export class MedicineKitService {
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {
     this.medicineUnits = null;
 
-    this.getMedicineUnitsArray().subscribe((response) => {
+    const unitsObservable = this.http.get<UnitsJsonDTO>('/assets/units.json')
+
+    unitsObservable.subscribe((response) => {
       this.medicineUnits = response;
     })
   }
