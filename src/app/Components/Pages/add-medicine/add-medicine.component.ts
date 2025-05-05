@@ -183,7 +183,7 @@ export class AddMedicineComponent {
   }
 
   submitForms(): void {
-    console.log("Amount", this.amountMedicine.value)
+    console.log("Date", this.expirationDate.value)
 
     let medicine = {
       ...this.medicine,
@@ -220,6 +220,7 @@ export class AddMedicineComponent {
       reminder.finish = finish;
 
       console.log(medicine);
+      console.log(reminder);
 
       this.store.dispatch(
         addMedicine({
@@ -246,7 +247,9 @@ export class AddMedicineComponent {
   }
 
   closeDatePicker(eventData: any, dp?: any) {
-    // get month and year from eventData and close datepicker, thus not allowing user to select date
+    // Get month and year from eventData and close datepicker, thus not allowing user to select date
+    this.expirationDate.setValue(eventData._d);
+
     dp.close();
   }
 }
