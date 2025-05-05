@@ -168,6 +168,6 @@ export class MedicineKitService {
   }
 
   getMedicineUnitsArray(): Observable<UnitsJsonDTO> {
-    return this.http.get<UnitsJsonDTO>('/assets/units.json');
+    return this.http.get<UnitsJsonDTO>('/assets/unitsSelect.json');
   }
 }
