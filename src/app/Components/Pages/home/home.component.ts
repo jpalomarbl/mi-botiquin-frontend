@@ -24,12 +24,12 @@ import {
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
+import { ErrorService } from 'src/app/Services/error.service';
 
 // Pipes
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 
 // Components
-import { ErrorDialogComponent } from '../../Common/error-dialog/error-dialog.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
@@ -72,7 +72,8 @@ export class HomeComponent {
     private store: Store<GlobalStateDTO>,
     private router: Router,
     private actions$: Actions,
-    public errorDialog: MatDialog
+    public errorDialog: MatDialog,
+    private errorService: ErrorService
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
@@ -100,11 +101,6 @@ export class HomeComponent {
       .pipe(filter((user) => user !== null))
       .subscribe((user: UserDTO | null) => {
         if (user) {
-          // this.store.dispatch(
-          //   reminderActions.fetchUserRemindersForToday({
-          //     userId: user.id,
-          //   })
-          // );
           const today = new Date();
           today.setHours(0, 0, 0);
 
@@ -172,7 +168,7 @@ export class HomeComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.openErrorDialog(error.error);
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 
@@ -186,13 +182,5 @@ export class HomeComponent {
 
   navigateMedicineKitDetails(medicineKitId: number): void {
     this.router.navigate(['medicineKitDetails/' + medicineKitId.toString()]);
-  }
-
-  openErrorDialog(errorMsg: string): void {
-    this.errorDialog.open(ErrorDialogComponent, {
-      data: {
-        errorMsg: errorMsg,
-      },
-    });
   }
 }
