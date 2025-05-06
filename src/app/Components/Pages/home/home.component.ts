@@ -22,10 +22,12 @@ import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
+import { ErrorDialogComponent } from '../../Common/error-dialog/error-dialog.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -46,6 +48,7 @@ import { ReminderDTO } from 'src/app/Models/reminder.dto';
     MatButtonModule,
     NextDosePipe,
     RouterLink,
+    MatDialogModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -55,6 +58,7 @@ export class HomeComponent {
   userRelationships$: Observable<UserDTO[] | null>;
 
   loading$: Observable<boolean>;
+  error$: Observable<string | null>;
 
   todaysReminders$: Observable<ReminderDTO[]>;
   medicineKits$: Observable<MedicineKitDTO[]>;
@@ -68,12 +72,14 @@ export class HomeComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private router: Router,
-    private actions$: Actions
+    private actions$: Actions,
+    public errorDialog: MatDialog
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
 
     this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
+    this.error$ = this.store.select(medicineSelectors.selectMedicineError);
 
     this.todaysReminders$ = this.store.select(
       medicineSelectors.selectReminders
@@ -142,7 +148,7 @@ export class HomeComponent {
     });
 
     this.actions$
-      .pipe(ofType(reminderActions.fetchUserRemindersForTodaySuccess), take(1))
+      .pipe(ofType(reminderActions.fetchAllUserRemindersSuccess), take(1))
       .subscribe(() => {
         // Código a ejecutar después de eliminar
         this.todaysReminders$.subscribe((reminders) => {
@@ -157,6 +163,18 @@ export class HomeComponent {
           this.medicineKits = medicineKits;
         });
       });
+
+    this.actions$
+      .pipe(
+        ofType(
+          reminderActions.fetchAllUserRemindersError,
+          medicineKitActions.fetchUserMedicineKitsError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.openErrorDialog(error.error);
+      });
   }
 
   navigateRemindersList(): void {
@@ -169,5 +187,13 @@ export class HomeComponent {
 
   navigateMedicineKitDetails(medicineKitId: number): void {
     this.router.navigate(['medicineKitDetails/' + medicineKitId.toString()]);
+  }
+
+  openErrorDialog(errorMsg: string): void {
+    this.errorDialog.open(ErrorDialogComponent, {
+      data: {
+        errorMsg: errorMsg,
+      },
+    });
   }
 }
