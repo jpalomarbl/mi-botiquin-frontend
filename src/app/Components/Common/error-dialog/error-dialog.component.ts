@@ -2,13 +2,13 @@
 import { Component, Inject } from '@angular/core';
 
 // Angular Material
-import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-error-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [AngularMaterialModule],
   templateUrl: './error-dialog.component.html',
   styleUrls: ['./error-dialog.component.scss']
 })

@@ -26,11 +26,8 @@ import { ErrorDialogComponent } from '../../Common/error-dialog/error-dialog.com
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
+import { MatDialog } from '@angular/material/dialog';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 
@@ -42,13 +39,9 @@ import { ReminderDTO } from 'src/app/Models/reminder.dto';
     AsyncPipe,
     HeaderComponent,
     FooterComponent,
-    MatListModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
+    AngularMaterialModule,
     NextDosePipe,
     RouterLink,
-    MatDialogModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

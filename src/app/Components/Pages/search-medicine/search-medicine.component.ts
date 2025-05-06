@@ -26,10 +26,7 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 // Angular material
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 //Pipes
 import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
@@ -40,9 +37,7 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     HeaderComponent,
     FooterComponent,
     FormsModule,
-    ScrollingModule,
-    MatListModule,
-    MatProgressSpinnerModule,
+    AngularMaterialModule,
     CommonModule,
     ShortenTextPipe,
   ],

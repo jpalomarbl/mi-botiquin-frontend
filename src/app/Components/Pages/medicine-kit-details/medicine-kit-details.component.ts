@@ -7,11 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
 
 // Angular material
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Data models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -38,11 +34,7 @@ import { AsyncPipe } from '@angular/common';
     HeaderComponent,
     FooterComponent,
     AsyncPipe,
-    MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    ScrollingModule,
-    MatCardModule,
+    AngularMaterialModule,
     CommonModule,
   ],
   templateUrl: './medicine-kit-details.component.html',

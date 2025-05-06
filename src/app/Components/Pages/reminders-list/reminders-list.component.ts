@@ -25,11 +25,12 @@ import {
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+// import { ScrollingModule } from '@angular/cdk/scrolling';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Custom modules
 import { FormsModule } from 'src/app/Modules/forms.module';
@@ -58,11 +59,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
     HeaderComponent,
     FooterComponent,
     FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    ScrollingModule,
+    AngularMaterialModule,
     DateFormatPipe,
     ShortenTextPipe,
     DatePipe,

@@ -3,11 +3,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Angular material
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-
 // Custom modules
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Components
@@ -44,8 +41,7 @@ import 'moment/locale/es';
     HeaderComponent,
     FooterComponent,
     FormsModule,
-    MatButtonModule,
-    MatIconModule,
+    AngularMaterialModule,
     ShortenTextPipe,
   ],
   templateUrl: './add-medicine.component.html',

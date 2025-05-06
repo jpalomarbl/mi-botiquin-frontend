@@ -7,12 +7,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 // Angular material
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -41,12 +36,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
     HeaderComponent,
     FooterComponent,
     CommonModule,
-    MatSelectModule,
-    MatCardModule,
-    ScrollingModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
+    AngularMaterialModule,
   ],
   templateUrl: './medicine-kits-list.component.html',
   styleUrls: ['./medicine-kits-list.component.scss'],
