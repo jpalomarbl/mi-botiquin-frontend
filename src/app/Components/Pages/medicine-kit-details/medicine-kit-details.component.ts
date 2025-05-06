@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
 
 // Angular material
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Data models
@@ -17,6 +18,7 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
@@ -55,7 +57,9 @@ export class MedicineKitDetailsComponent {
     private store: Store<GlobalStateDTO>,
     private route: ActivatedRoute,
     private actions$: Actions,
-    private router: Router
+    private router: Router,
+    private errorService: ErrorService,
+    public errorDialog: MatDialog
   ) {
     this.medicineKitId = +this.route.snapshot.params['medicineKitId'];
 
@@ -87,12 +91,25 @@ export class MedicineKitDetailsComponent {
         }
       });
     }
+
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.fetchMedicineKitByIdError,
+          medicineKitActions.deleteMedicineByIdError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
+      });
   }
 
   orderMedicineKits(sortingMethod: number): void {
     const sorted: MedicineDTO[] = [...this.medicines];
 
-    if (sortingMethod === 1) this.sortedMedicines = sorted.sort(this.compareDates);
+    if (sortingMethod === 1)
+      this.sortedMedicines = sorted.sort(this.compareDates);
     else this.sortedMedicines = this.medicines;
   }
 
