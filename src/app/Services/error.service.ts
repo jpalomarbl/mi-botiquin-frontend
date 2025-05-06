@@ -7,10 +7,10 @@ import { ErrorDialogComponent } from '../Components/Common/error-dialog/error-di
 })
 export class ErrorService {
 
-  constructor(public errorDialog: MatDialog) { }
+  constructor() { }
 
-  openErrorDialog(errorMsg: string): void {
-      this.errorDialog.open(ErrorDialogComponent, {
+  openErrorDialog(errorMsg: string, errorDialog: MatDialog): void {
+      errorDialog.open(ErrorDialogComponent, {
         data: {
           errorMsg: errorMsg,
         },
