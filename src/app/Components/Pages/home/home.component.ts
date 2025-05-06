@@ -13,6 +13,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
@@ -24,7 +25,6 @@ import {
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
-import { ErrorService } from 'src/app/Services/error.service';
 
 // Pipes
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
