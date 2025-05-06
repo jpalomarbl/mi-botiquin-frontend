@@ -12,6 +12,7 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -26,7 +27,9 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 // Angular material
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
+
 //Pipes
 import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
@@ -64,7 +67,9 @@ export class SearchMedicineComponent {
     private actions$: Actions,
     private router: Router,
     private route: ActivatedRoute,
-    private medicineKitService: MedicineKitService
+    private medicineKitService: MedicineKitService,
+    private errorService: ErrorService,
+    public errorDialog: MatDialog
   ) {
     this.loading$ = this.store.select(selectMedicineLoading);
 
@@ -103,6 +108,17 @@ export class SearchMedicineComponent {
         this.store.dispatch(
           medicineKitActions.fetchMedicinesCIMA({ medicineName: value })
         );
+      });
+
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.fetchMedicinesCIMAError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 
