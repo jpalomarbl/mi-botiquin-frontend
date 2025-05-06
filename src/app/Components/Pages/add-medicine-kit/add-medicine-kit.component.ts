@@ -3,9 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Rxjs
-import { Observable } from 'rxjs';
+import { ofType } from '@ngrx/effects';
+import { Observable, take } from 'rxjs';
 
 // Custom modules
+import { MatDialog } from '@angular/material/dialog';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Models
@@ -14,10 +17,15 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
 // Store
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
-import { addMedicineKit } from 'src/app/Store/medicine/actions/medicineKits.actions';
+import {
+  addMedicineKit,
+  addMedicineKitError,
+} from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
@@ -27,7 +35,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 @Component({
   selector: 'app-add-medicine-kit',
   standalone: true,
-  imports: [FormsModule, HeaderComponent, FooterComponent],
+  imports: [FormsModule, HeaderComponent, FooterComponent, AngularMaterialModule],
   templateUrl: './add-medicine-kit.component.html',
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
@@ -53,7 +61,13 @@ export class AddMedicineKitComponent {
 
   userId: number | null;
 
-  constructor(private store: Store<GlobalStateDTO>, private router: Router) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private router: Router,
+    private errorService: ErrorService,
+    private actions$: Actions,
+    public errorDialog: MatDialog
+  ) {
     this.medicineKit = {
       id: 0,
       owner: {
@@ -128,8 +142,8 @@ export class AddMedicineKitComponent {
           ...this.medicineKit,
           owner: {
             ...this.medicineKit.owner,
-            id: user.id
-          }
+            id: user.id,
+          },
         };
 
         this.medicineKit = updatedMedicineKit;
@@ -137,6 +151,19 @@ export class AddMedicineKitComponent {
         if (!this.isPatient) this.ownerId.addValidators(Validators.required);
       }
     });
+
+    this.actions$
+      .pipe(
+        ofType(
+          userRelationshipActions.fetchCaretakerRelationshipsError,
+          userRelationshipActions.fetchFamilyMemberRelationshipsError,
+          addMedicineKitError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
+      });
   }
 
   submitMedicineKit(): void {
@@ -146,8 +173,8 @@ export class AddMedicineKitComponent {
       note: this.medicineKitNote.value,
       owner: {
         ...this.medicineKit.owner,
-        id: this.ownerId.value !== 0 ? this.ownerId.value : this.userId
-      }
+        id: this.ownerId.value !== 0 ? this.ownerId.value : this.userId,
+      },
     };
 
     this.medicineKit = updatedMedicineKit;
