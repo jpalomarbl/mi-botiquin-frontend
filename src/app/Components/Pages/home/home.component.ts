@@ -1,35 +1,41 @@
+// Angular
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
 
+// Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
+import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
-import {
-  selectUser,
-  selectUserRelationships,
-} from 'src/app/Store/auth/selectors/auth.selectors';
-import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
-
+// Store
 import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
 } from 'src/app/Store/auth/actions/userRelationships.actions';
+import {
+  selectUser,
+  selectUserRelationships,
+} from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
+// Pipes
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
+
+// Components
 import { ErrorDialogComponent } from '../../Common/error-dialog/error-dialog.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
+// Custom modules
 import { MatDialog } from '@angular/material/dialog';
-import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
-import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 @Component({
   selector: 'app-home',
