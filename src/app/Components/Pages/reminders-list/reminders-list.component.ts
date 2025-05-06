@@ -5,13 +5,18 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Ngrx, Rxjs and Redux
-import { distinctUntilChanged, filter, Observable } from 'rxjs';
+import { distinctUntilChanged, filter, Observable, take } from 'rxjs';
+import { ofType } from '@ngrx/effects';
 
 // Store
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import {
   fetchCaretakerRelationships,
+  fetchCaretakerRelationshipsError,
   fetchFamilyMemberRelationships,
+  fetchFamilyMemberRelationshipsError,
 } from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import {
@@ -20,16 +25,14 @@ import {
 } from 'src/app/Store/auth/selectors/auth.selectors';
 import {
   changeReminderState,
+  changeReminderStateError,
   fetchAllUserReminders,
+  fetchAllUserRemindersError,
 } from 'src/app/Store/medicine/actions/reminders.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
-// import { ScrollingModule } from '@angular/cdk/scrolling';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Custom modules
@@ -44,9 +47,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
-
-// Custom services
-import { ReminderService } from 'src/app/Services/reminder.service';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
@@ -112,7 +112,9 @@ export class RemindersListComponent {
     private store: Store<GlobalStateDTO>,
     private router: Router,
     private route: ActivatedRoute,
-    private reminderService: ReminderService
+    private errorService: ErrorService,
+    private actions$: Actions,
+    public errorDialog: MatDialog
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
@@ -178,6 +180,20 @@ export class RemindersListComponent {
     // this.store.dispatch(
     //   fetchAllUserConsumptions({ userId: 2, day: new Date() })
     // );
+
+    this.actions$
+      .pipe(
+        ofType(
+          changeReminderStateError,
+          fetchAllUserRemindersError,
+          fetchCaretakerRelationshipsError,
+          fetchFamilyMemberRelationshipsError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
+      });
   }
 
   navigateToPreviousDay() {
