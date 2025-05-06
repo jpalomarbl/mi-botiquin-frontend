@@ -1,6 +1,7 @@
 // Angular
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Custom modules
@@ -12,9 +13,15 @@ import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
 // Store
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
+import { ErrorService } from 'src/app/Services/error.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
-import { addMedicine } from 'src/app/Store/medicine/actions/medicineKits.actions';
+import {
+  addMedicine,
+  addMedicineError,
+} from 'src/app/Store/medicine/actions/medicineKits.actions';
 
 // Models
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
@@ -96,7 +103,10 @@ export class AddMedicineComponent {
     private route: ActivatedRoute,
     private medicineKitService: MedicineKitService,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private errorService: ErrorService,
+    private actions$: Actions,
+    public errorDialog: MatDialog
   ) {
     this.medicine = JSON.parse(
       decodeURIComponent(this.route.snapshot.params['medicine'])
@@ -175,6 +185,10 @@ export class AddMedicineComponent {
       Object.entries(array).forEach((item) => {
         this.medicineUnitsArray.push(Object.entries(item[1]));
       });
+    });
+
+    this.actions$.pipe(ofType(addMedicineError), take(1)).subscribe((error) => {
+      this.errorService.openErrorDialog(error.error, this.errorDialog);
     });
   }
 
