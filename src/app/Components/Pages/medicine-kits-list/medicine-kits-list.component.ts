@@ -3,14 +3,18 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-// Rxjs and Redux
-import { Observable } from 'rxjs';
+// Rxjs
+import { Observable, take } from 'rxjs';
+import { ofType } from '@ngrx/effects';
 
 // Angular material
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Store
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ErrorService } from 'src/app/Services/error.service';
 import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import {
   selectAuthLoading,
@@ -53,7 +57,13 @@ export class MedicineKitsListComponent {
 
   isPatient: boolean;
 
-  constructor(private store: Store<GlobalStateDTO>, private router: Router) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private router: Router,
+    private errorService: ErrorService,
+    private actions$: Actions,
+    public errorDialog: MatDialog
+  ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
 
@@ -73,6 +83,19 @@ export class MedicineKitsListComponent {
 
   ngOnInit(): void {
     this.loadData(this.userId);
+
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.fetchUserMedicineKitsError,
+          userRelationshipActions.fetchCaretakerRelationshipsError,
+          userRelationshipActions.fetchFamilyMemberRelationshipsError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.errorService.openErrorDialog(error.error, this.errorDialog);
+      });
   }
 
   loadData(userId: number, role: string = 'patient'): void {
