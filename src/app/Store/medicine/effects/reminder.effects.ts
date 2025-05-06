@@ -89,16 +89,9 @@ export class ReminderEffects {
             const reminders = response
               .filter((row: ReminderDTO) => {
                 const dayAfter = new Date(day);
-                console.log('Processing reminder:', row);
                 dayAfter.setDate(dayAfter.getDate() + 1);
-                console.log('Processing reminder:', row);
                 const finishDate = new Date(row.finish!);
-                console.log('Processing reminder:', row);
                 const nextDose = this.reminderService.getNextDoseTime(row, day);
-                console.log('Processing reminder:', row);
-                console.log('Next dose:', nextDose);
-                console.log('Day after:', dayAfter);
-                console.log('Finish date:', finishDate);
 
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
@@ -106,8 +99,6 @@ export class ReminderEffects {
                 );
               })
               .map((row: ReminderDTO) => {
-                console.log(row);
-
                 return {
                   id: row.id,
                   frequency: row.frequency,

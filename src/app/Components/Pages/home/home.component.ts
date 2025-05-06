@@ -157,10 +157,6 @@ export class HomeComponent {
           this.medicineKits = medicineKits;
         });
       });
-
-    this.todaysReminders$.subscribe((reminders) => {
-      console.log("REMINDERS", reminders)
-    })
   }
 
   navigateRemindersList(): void {

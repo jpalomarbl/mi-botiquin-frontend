@@ -137,8 +137,6 @@ export class MedicineKitService {
       'application/x-www-form-urlencoded'
     );
 
-    console.log(medicine.unit)
-
     const body = new URLSearchParams();
     body.set('medicineKitId', medicineKitId.toString());
     body.set('name', medicine.name);
@@ -158,7 +156,6 @@ export class MedicineKitService {
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string
   ): Observable<string> {
-    console.log(viaAdmininstracion, formaFarmaceuticaSimplificada)
     try {
       if (this.medicineUnits) {
         return of(this.medicineUnits[viaAdmininstracion][formaFarmaceuticaSimplificada][0]);

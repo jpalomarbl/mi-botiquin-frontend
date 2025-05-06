@@ -40,10 +40,6 @@ export class ReminderService {
       }
     );
 
-    response.subscribe((res) => {
-      console.log(res)
-    })
-
     return response;
   }
 
@@ -150,7 +146,7 @@ export class ReminderService {
 
     // Calcular la diferencia total en milisegundos
     const diffMs = currentTime.getTime() - startTime.getTime();
-    console.log(frequencyUnit)
+    
     // Convertir a la unidad de frecuencia correspondiente
     let diffUnits: number;
     switch (frequencyUnit) {
