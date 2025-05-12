@@ -1,0 +1,17 @@
+import { createAction, props } from '@ngrx/store';
+import { NotificationDTO } from 'src/app/Models/notification.dto';
+
+export const fetchUserUnreadNotifications = createAction(
+  '[Auth] Fetch Users Unread Notifications From API',
+  props<{ userId: number }>()
+);
+
+export const fetchCaretakerRelationshipsSuccess = createAction(
+  '[Auth] Fetch Users Unread Notifications From API Success',
+  props<{ notifications: NotificationDTO[] }>()
+);
+
+export const fetchCaretakerRelationshipsError = createAction(
+  '[Auth] Fetch Users Unread Notifications From API Error',
+  props<{ error: string }>()
+);

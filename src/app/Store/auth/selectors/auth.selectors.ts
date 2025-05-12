@@ -28,3 +28,8 @@ export const selectAuthError = createSelector(
   selectAuthState,
   (state: AuthStateDTO) => state.error
 );
+
+export const selectUserNotifications = createSelector(
+  selectAuthState,
+  (state: AuthStateDTO) => state.notifications
+);

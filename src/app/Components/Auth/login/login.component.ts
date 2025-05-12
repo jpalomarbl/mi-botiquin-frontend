@@ -8,6 +8,7 @@ import { LoginDTO } from 'src/app/Models/auth.dto';
 import { FormsModule } from 'src/app/Modules/forms.module';
 import { login, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
 import { RouterLink } from '@angular/router';
+import { WebSocketService } from 'src/app/Services/web-socket.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent {
   // loading$: Observable<boolean>;
   // error$: Observable<string | null>;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, private router: Router, private webSocketService: WebSocketService) {
     this.credentials = {
       email: '',
       password: '',
@@ -41,6 +42,10 @@ export class LoginComponent {
 
     // this.loading$ = this.store.select(selectAuthLoading);
     // this.error$ = this.store.select(selectors.selectAuthError);
+  }
+
+  ngOnInit(): void {
+    this.webSocketService.closeSocket();
   }
 
   submitLogin(): void {

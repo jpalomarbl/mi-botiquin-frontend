@@ -10,4 +10,24 @@
     <mat-icon fontIcon="arrow_back"></mat-icon>
   </button>
   <h1 class="header__title">{{ title }}</h1>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    [disabled]="notifications.length === 0"
+    aria-label="Example icon-button with a menu"
+  >
+    <mat-icon *ngIf="notifications.length > 0"
+      >notifications_unread</mat-icon
+    >
+    <mat-icon *ngIf="notifications.length === 0"
+      >notifications</mat-icon
+    >
+  </button>
+  <mat-menu class="notification-menu" #menu="matMenu">
+    <div class="notification-menu__item" mat-menu-item *ngFor="let notification of notifications">
+      <!-- <mat-icon class="notification-menu__icon">event_note</mat-icon> -->
+      <span class="notification-menu__text">{{ notification.medicineName }} ha caducado.</span>
+    </div>
+  </mat-menu>
 </header>

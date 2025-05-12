@@ -19,3 +19,17 @@
     margin-right: auto;
   }
 }
+
+.notification-menu {
+  &__item:nth-child(even) {
+    background-color: rgb(185, 185, 185);
+  }
+
+  &__text {
+    display: block;
+
+    margin-block: 1vh;
+
+    font-size: .9rem;
+  }
+}

@@ -1,14 +1,27 @@
-import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, take } from 'rxjs';
 
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { fetchUserUnreadNotifications } from 'src/app/Store/auth/actions/notification.actions';
+import {
+  selectUser,
+  selectUserNotifications,
+} from 'src/app/Store/auth/selectors/auth.selectors';
+
+import { WebSocketService } from 'src/app/Services/web-socket.service';
+
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
+
+import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { NotificationDTO } from 'src/app/Models/notification.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'custom-header',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, CommonModule],
+  imports: [AngularMaterialModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
@@ -18,7 +31,47 @@ export class HeaderComponent {
 
   @Input() title: string = 'Mi Botiquín';
 
-  constructor(private router: Router) {}
+  notifications: NotificationDTO[];
+  notifications$: Observable<NotificationDTO[] | null>;
+  user$: Observable<UserDTO | null>;
+
+  constructor(
+    private router: Router,
+    private store: Store<GlobalStateDTO>,
+    public webSocketService: WebSocketService
+  ) {
+    this.notifications = [];
+    this.notifications$ = this.store.select(selectUserNotifications);
+    this.user$ = this.store.select(selectUser);
+  }
+
+  ngOnInit(): void {
+    this.webSocketService.notifications$
+    .pipe(take(1))
+    .subscribe((notifications) => {
+      this.notifications = [...this.notifications, ...notifications];
+      console.log('Notificaciones actualizadas:', notifications);
+    });
+
+    this.user$
+    .pipe(take(1))
+    .subscribe((user: UserDTO | null) => {
+      if (user) {
+        this.store.dispatch(fetchUserUnreadNotifications({ userId: user.id }));
+      }
+
+      this.notifications$
+      .subscribe(
+        (notifications: NotificationDTO[] | null) => {
+          this.notifications = [
+            ...this.notifications,
+            ...(notifications || []),
+          ];
+          console.log('Notificaciones actualizadas:', notifications);
+        }
+      );
+    });
+  }
 
   backButtonRedirect() {
     if (this.backButtonDirection === 'back') {

@@ -5,12 +5,20 @@ import * as AuthActions from './Store/auth/actions/auth.actions';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'frontend-project';
 
   constructor(private store: Store) {
+
+  }
+
+  ngOnInit(): void {
     this.store.dispatch(AuthActions.checkSession());
   }
+
+  // sendMessage(message: any) {
+  //   this.socket$.next(message);
+  // }
 }

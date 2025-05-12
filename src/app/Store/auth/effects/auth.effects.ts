@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { UserRelationshipsService } from 'src/app/Services/user-relationships.service';
 import * as AuthActions from '../actions/auth.actions';
 import * as userRelationshipActions from '../actions/userRelationships.actions';
+import * as notificationActions from '../actions/notification.actions';
+import { NotificationDTO } from 'src/app/Models/notification.dto';
 
 @Injectable()
 export class AuthEffects {
@@ -193,5 +195,27 @@ export class AuthEffects {
         )
       ),
     { dispatch: false }
+  );
+
+    fetcUsersUnreadNotifications$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(notificationActions.fetchUserUnreadNotifications),
+      mergeMap(({ userId }) =>
+        this.authService.fetchUsersUnreadNotifications(userId).pipe(
+          map((response: NotificationDTO[]) => {
+            return notificationActions.fetchCaretakerRelationshipsSuccess({
+              notifications: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              notificationActions.fetchCaretakerRelationshipsError({
+                error: error.error || 'Fetch relationships failed',
+              })
+            )
+          )
+        )
+      )
+    )
   );
 }

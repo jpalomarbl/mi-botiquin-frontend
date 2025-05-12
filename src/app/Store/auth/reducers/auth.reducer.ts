@@ -2,10 +2,12 @@ import { createReducer, on } from '@ngrx/store';
 import { AuthStateDTO } from 'src/app/Models/authState.dto';
 import * as AuthActions from '../actions/auth.actions';
 import * as userRelationshipActions from '../actions/userRelationships.actions';
+import * as notificationActions from '../actions/notification.actions';
 
 export const initialState: AuthStateDTO = {
   user: null,
   relationships: null,
+  notifications: null,
   loading: false,
   loaded: false,
   error: null,
@@ -134,6 +136,27 @@ export const authReducer = createReducer(
     error: null,
   })),
   on(userRelationshipActions.fetchFamilyMemberRelationshipsError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
+  // Fetch user's unread notifications
+  on(notificationActions.fetchUserUnreadNotifications, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(notificationActions.fetchCaretakerRelationshipsSuccess, (state, { notifications }) => ({
+    ...state,
+    notifications: notifications,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(notificationActions.fetchCaretakerRelationshipsError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
