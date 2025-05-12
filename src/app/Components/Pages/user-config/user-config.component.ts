@@ -10,6 +10,10 @@ import { Store } from '@ngrx/store';
 import { updateUser } from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
+// Components
+import { HeaderComponent } from '../../Common/header/header.component';
+import { FooterComponent } from '../../Common/footer/footer.component';
+
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -17,7 +21,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-user-config',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './user-config.component.html',
   styleUrls: ['./user-config.component.scss'],
 })

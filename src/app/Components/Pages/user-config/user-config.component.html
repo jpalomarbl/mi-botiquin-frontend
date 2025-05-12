@@ -1,6 +1,13 @@
+<custom-header></custom-header>
+
 <div class="user-config">
-  <h1>Datos personales</h1>
-  <form class="loginForm" [formGroup]="userForm" (ngSubmit)="submitUserConfig()">
+  <form
+    class="user-config__form"
+    [formGroup]="userForm"
+    (ngSubmit)="submitUserConfig()"
+  >
+    <h1 class="user-config__title">Datos personales</h1>
+
     <mat-form-field appearance="fill">
       <mat-label>Nombre</mat-label>
       <input
@@ -53,3 +60,5 @@
     <button mat-button>Guardar</button>
   </form>
 </div>
+
+<custom-footer></custom-footer>

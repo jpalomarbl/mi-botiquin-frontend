@@ -1,0 +1,19 @@
+.user-config {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 10vh;
+  }
+
+  &__title {
+    margin-bottom: 5vh;
+
+    text-align: center;
+  }
+}
