@@ -1,8 +1,9 @@
 // Angular
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Modules
+import { passwordsMatch } from 'src/app/Directives/passwordsMatch.validator';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
@@ -11,8 +12,8 @@ import { updateUser } from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
 // Components
-import { HeaderComponent } from '../../Common/header/header.component';
 import { FooterComponent } from '../../Common/footer/footer.component';
+import { HeaderComponent } from '../../Common/header/header.component';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -52,11 +53,16 @@ export class UserConfigComponent {
     this.confirmPasswordString = '';
     this.originalRole = '';
 
-    this.firstName = new FormControl(this.user.firstName);
+    this.firstName = new FormControl(this.user.firstName, [
+      Validators.required,
+    ]);
     this.lastName = new FormControl(this.user.lastName);
-    this.role = new FormControl(this.user.role);
-    this.password = new FormControl(this.passwordString);
+    this.role = new FormControl(this.user.role, [Validators.required]);
     this.confirmPassword = new FormControl(this.confirmPasswordString);
+    this.password = new FormControl(this.passwordString, [
+      passwordsMatch(this.confirmPassword),
+    ]);
+
     this.userForm = new FormGroup({
       password: this.password,
       confirmPassword: this.confirmPassword,
@@ -81,8 +87,8 @@ export class UserConfigComponent {
 
   submitUserConfig(): void {
     const userData: UserDTO = {
-      ...this.user
-    }
+      ...this.user,
+    };
 
     userData.firstName = this.firstName.value;
     userData.lastName = this.lastName.value;
