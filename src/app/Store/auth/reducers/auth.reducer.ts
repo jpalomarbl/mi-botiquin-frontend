@@ -100,6 +100,27 @@ export const authReducer = createReducer(
     error: error,
   })),
 
+  // Update user
+  on(AuthActions.updateUser, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(AuthActions.updateUserSuccess, (state, { user }) => ({
+    ...state,
+    user: user,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(AuthActions.updateUserError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Fetch caretaker relationships
   on(userRelationshipActions.fetchCaretakerRelationships, (state) => ({
     ...state,

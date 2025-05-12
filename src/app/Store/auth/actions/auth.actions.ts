@@ -60,3 +60,18 @@ export const checkSessionError = createAction(
   '[Auth] Check Session Error',
   props<{ error: string }>()
 );
+
+export const updateUser = createAction(
+  '[Auth] Update User',
+  props<{ user: UserDTO; password: string }>()
+);
+
+export const updateUserSuccess = createAction(
+  '[Auth] Update User Success',
+  props<{ user: UserDTO }>()
+);
+
+export const updateUserError = createAction(
+  '[Auth] Update User Error',
+  props<{ error: string }>()
+);

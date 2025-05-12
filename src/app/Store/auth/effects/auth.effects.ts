@@ -142,6 +142,24 @@ export class AuthEffects {
     )
   );
 
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.updateUser),
+      mergeMap(({ user, password }) =>
+        this.authService.updateUser(user, password).pipe(
+          map((user: UserDTO) => AuthActions.updateUserSuccess({ user })),
+          catchError((error) =>
+            of(
+              AuthActions.checkSessionError({
+                error: error.error || 'Session check failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   fetchCaretakerRelationships$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userRelationshipActions.fetchCaretakerRelationships),
