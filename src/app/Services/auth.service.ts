@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/app/environment/environment';
 
 import { LoginDTO, RegisterDTO } from '../Models/auth.dto';
-import { UserDTO } from '../Models/user.dto';
 import { NotificationDTO } from '../Models/notification.dto';
+import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -51,10 +51,14 @@ export class AuthService {
       body.set('lastName', userData.lastName);
     }
 
-    return this.http.post<UserDTO>(`${this.authUrl}/register`, body.toString(), {
-      withCredentials: true,
-      headers: headers,
-    });
+    return this.http.post<UserDTO>(
+      `${this.authUrl}/register`,
+      body.toString(),
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
   }
 
   logout(): Observable<any> {
@@ -82,14 +86,39 @@ export class AuthService {
 
   getWsJwtToken(): Observable<string> {
     return this.http.get<string>(`${this.authUrl}/ws-token`, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
   fetchUsersUnreadNotifications(userId: number): Observable<NotificationDTO[]> {
     return this.http.get<NotificationDTO[]>(`${this.notificationUrl}/user`, {
       withCredentials: true,
       params: { userId: userId.toString() },
+    });
+  }
+
+  updateUser(user: UserDTO, password: string): Observable<UserDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('email', user.email);
+    body.set('password', password);
+    body.set('firstName', user.firstName);
+    body.set('role', user.role);
+    body.set('userId', user.id.toString());
+
+    if (user.lastName) {
+      body.set('lastName', user.lastName);
+    } else {
+      body.set('lastName', '');
+    }
+
+    return this.http.put<UserDTO>(`${this.authUrl}/user/update`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
     });
   }
 }
