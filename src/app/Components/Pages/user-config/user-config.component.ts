@@ -27,10 +27,12 @@ export class UserConfigComponent {
   firstName: FormControl;
   lastName: FormControl;
   password: FormControl;
+  confirmPassword: FormControl;
   role: FormControl;
   userForm: FormGroup;
 
   passwordString: string;
+  confirmPasswordString: string;
   originalRole: string;
 
   constructor(private store: Store<GlobalStateDTO>) {
@@ -43,14 +45,17 @@ export class UserConfigComponent {
     };
 
     this.passwordString = '';
+    this.confirmPasswordString = '';
     this.originalRole = '';
 
     this.firstName = new FormControl(this.user.firstName);
     this.lastName = new FormControl(this.user.lastName);
     this.role = new FormControl(this.user.role);
     this.password = new FormControl(this.passwordString);
+    this.confirmPassword = new FormControl(this.confirmPasswordString);
     this.userForm = new FormGroup({
       password: this.password,
+      confirmPassword: this.confirmPassword,
       firstName: this.firstName,
       lastName: this.lastName,
       role: this.role,
