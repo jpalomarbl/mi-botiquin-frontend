@@ -7,25 +7,25 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
 import { Store } from '@ngrx/store';
+import { updateUser } from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
 // Models
-import { UserDTO } from 'src/app/Models/user.dto';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-user-config',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './user-config.component.html',
-  styleUrls: ['./user-config.component.scss']
+  styleUrls: ['./user-config.component.scss'],
 })
 export class UserConfigComponent {
   user: UserDTO;
 
   firstName: FormControl;
   lastName: FormControl;
-  email: FormControl;
   password: FormControl;
   role: FormControl;
   userForm: FormGroup;
@@ -39,7 +39,7 @@ export class UserConfigComponent {
       email: '',
       firstName: '',
       lastName: '',
-      role: ''
+      role: '',
     };
 
     this.passwordString = '';
@@ -48,14 +48,12 @@ export class UserConfigComponent {
     this.firstName = new FormControl(this.user.firstName);
     this.lastName = new FormControl(this.user.lastName);
     this.role = new FormControl(this.user.role);
-    this.email = new FormControl(this.user.email);
     this.password = new FormControl(this.passwordString);
     this.userForm = new FormGroup({
-      email: this.email,
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      role: this.role
+      role: this.role,
     });
   }
 
@@ -67,20 +65,22 @@ export class UserConfigComponent {
 
         this.firstName.setValue(user.firstName);
         this.lastName.setValue(user.lastName);
-        this.email.setValue(user.email);
         this.role.setValue(user.role);
       }
     });
   }
 
   submitUserConfig(): void {
-    this.user.email = this.email.value;
     this.user.firstName = this.firstName.value;
     this.user.lastName = this.lastName.value;
     this.user.role = this.role.value;
     this.passwordString = this.password.value;
 
-
-    // Handle form submission logic here
+    this.store.dispatch(
+      updateUser({
+        user: this.user,
+        password: this.passwordString,
+      })
+    );
   }
 }
