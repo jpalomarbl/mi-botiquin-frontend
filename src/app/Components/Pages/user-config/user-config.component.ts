@@ -80,14 +80,18 @@ export class UserConfigComponent {
   }
 
   submitUserConfig(): void {
-    this.user.firstName = this.firstName.value;
-    this.user.lastName = this.lastName.value;
-    this.user.role = this.role.value;
+    const userData: UserDTO = {
+      ...this.user
+    }
+
+    userData.firstName = this.firstName.value;
+    userData.lastName = this.lastName.value;
+    userData.role = this.role.value;
     this.passwordString = this.password.value;
 
     this.store.dispatch(
       updateUser({
-        user: this.user,
+        user: userData,
         password: this.passwordString,
       })
     );
