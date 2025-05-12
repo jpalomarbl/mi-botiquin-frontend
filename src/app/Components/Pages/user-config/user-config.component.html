@@ -16,6 +16,16 @@
         matInput
         placeholder="Ana María"
       />
+      <div
+        class="form__errors"
+        *ngIf="firstName.errors && firstName.dirty && firstName.touched"
+      >
+        <mat-error
+          class="form__error-message"
+          *ngIf="firstName.errors?.['required']"
+          >Debes tener al menos un nombre.
+        </mat-error>
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -46,6 +56,16 @@
         matInput
         placeholder="*********"
       />
+      <div
+        class="form__errors"
+        *ngIf="userForm.errors?.['passwordsMatch'] && (confirmPassword.dirty || confirmPassword.touched)"
+      >
+        <mat-error
+          class="form__error-message"
+          *ngIf="userForm.errors?.['passwordsMatch']"
+          >Las contraseñas no coinciden.
+        </mat-error>
+      </div>
     </mat-form-field>
 
     <mat-form-field>
@@ -57,7 +77,7 @@
       </mat-select>
     </mat-form-field>
 
-    <button mat-button>Guardar</button>
+    <button mat-button [disabled]="userForm.invalid">Guardar</button>
   </form>
 </div>
 

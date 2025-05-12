@@ -1,14 +1,20 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-export function passwordsMatch(otherPasswordControl: AbstractControl): ValidatorFn {
-    // Validation functions must return a ValidatorFn object
-    return(control: AbstractControl): ValidationErrors | null => {
-        const forbidden = control.value !== otherPasswordControl.value;
+export function passwordsMatch(passwordControlName: string, confirmPasswordControlName: string): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const passwordControl = formGroup.get(passwordControlName);
+    const confirmPasswordControl = formGroup.get(confirmPasswordControlName);
 
-        // If the input and the regex match, the input will be invalid
-        // and the function will return the ValidationErrors object invalidKeyWord.
-        // And if they don't, the input is valid, so the function returns null.
+    if (!passwordControl || !confirmPasswordControl) {
+      return null;
+    }
 
-        return forbidden ? {invalidKeyWord: {value: control.value}} : null;
-    };
+    if (passwordControl.value !== confirmPasswordControl.value) {
+      confirmPasswordControl.setErrors({ passwordsMatch: true });
+      return { passwordsMatch: true };
+    } else {
+      confirmPasswordControl.setErrors(null);
+      return null;
+    }
+  };
 }

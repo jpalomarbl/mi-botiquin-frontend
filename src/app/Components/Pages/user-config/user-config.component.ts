@@ -59,17 +59,18 @@ export class UserConfigComponent {
     this.lastName = new FormControl(this.user.lastName);
     this.role = new FormControl(this.user.role, [Validators.required]);
     this.confirmPassword = new FormControl(this.confirmPasswordString);
-    this.password = new FormControl(this.passwordString, [
-      passwordsMatch(this.confirmPassword),
-    ]);
+    this.password = new FormControl(this.passwordString);
 
-    this.userForm = new FormGroup({
-      password: this.password,
-      confirmPassword: this.confirmPassword,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      role: this.role,
-    });
+    this.userForm = new FormGroup(
+      {
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        role: this.role,
+      },
+      { validators: passwordsMatch('password', 'confirmPassword') }
+    );
   }
 
   ngOnInit(): void {
