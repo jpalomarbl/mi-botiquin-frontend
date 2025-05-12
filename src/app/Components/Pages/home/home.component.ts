@@ -13,7 +13,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import {
   fetchCaretakerRelationships,
   fetchFamilyMemberRelationships,
@@ -73,7 +73,7 @@ export class HomeComponent {
     private router: Router,
     private actions$: Actions,
     public errorDialog: MatDialog,
-    private errorService: ErrorService
+    private dialogService: DialogService
   ) {
     this.user$ = this.store.select(selectUser);
     this.userRelationships$ = this.store.select(selectUserRelationships);
@@ -168,7 +168,7 @@ export class HomeComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.errorService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 

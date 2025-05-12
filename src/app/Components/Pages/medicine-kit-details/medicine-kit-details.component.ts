@@ -18,7 +18,7 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
@@ -58,7 +58,7 @@ export class MedicineKitDetailsComponent {
     private route: ActivatedRoute,
     private actions$: Actions,
     private router: Router,
-    private errorService: ErrorService,
+    private dialogService: DialogService,
     public errorDialog: MatDialog
   ) {
     this.medicineKitId = +this.route.snapshot.params['medicineKitId'];
@@ -101,7 +101,7 @@ export class MedicineKitDetailsComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.errorService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 

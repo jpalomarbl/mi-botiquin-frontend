@@ -16,7 +16,7 @@ import { HeaderComponent } from '../../Common/header/header.component';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import {
   addMedicine,
@@ -104,7 +104,7 @@ export class AddMedicineComponent {
     private medicineKitService: MedicineKitService,
     private store: Store,
     private router: Router,
-    private errorService: ErrorService,
+    private dialogService: DialogService,
     private actions$: Actions,
     public errorDialog: MatDialog
   ) {
@@ -188,7 +188,7 @@ export class AddMedicineComponent {
     });
 
     this.actions$.pipe(ofType(addMedicineError), take(1)).subscribe((error) => {
-      this.errorService.openErrorDialog(error.error, this.errorDialog);
+      this.dialogService.openErrorDialog(error.error, this.errorDialog);
     });
   }
 

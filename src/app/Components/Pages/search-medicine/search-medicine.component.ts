@@ -12,7 +12,7 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -68,7 +68,7 @@ export class SearchMedicineComponent {
     private router: Router,
     private route: ActivatedRoute,
     private medicineKitService: MedicineKitService,
-    private errorService: ErrorService,
+    private dialogService: DialogService,
     public errorDialog: MatDialog
   ) {
     this.loading$ = this.store.select(selectMedicineLoading);
@@ -111,14 +111,9 @@ export class SearchMedicineComponent {
       });
 
     this.actions$
-      .pipe(
-        ofType(
-          medicineKitActions.fetchMedicinesCIMAError
-        ),
-        take(1)
-      )
+      .pipe(ofType(medicineKitActions.fetchMedicinesCIMAError), take(1))
       .subscribe((error) => {
-        this.errorService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 

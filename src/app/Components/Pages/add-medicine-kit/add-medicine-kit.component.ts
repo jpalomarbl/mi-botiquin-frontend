@@ -19,7 +19,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 // Store
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import {
@@ -35,7 +35,12 @@ import { HeaderComponent } from '../../Common/header/header.component';
 @Component({
   selector: 'app-add-medicine-kit',
   standalone: true,
-  imports: [FormsModule, HeaderComponent, FooterComponent, AngularMaterialModule],
+  imports: [
+    FormsModule,
+    HeaderComponent,
+    FooterComponent,
+    AngularMaterialModule,
+  ],
   templateUrl: './add-medicine-kit.component.html',
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
@@ -64,7 +69,7 @@ export class AddMedicineKitComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private router: Router,
-    private errorService: ErrorService,
+    private dialogService: DialogService,
     private actions$: Actions,
     public errorDialog: MatDialog
   ) {
@@ -162,7 +167,7 @@ export class AddMedicineKitComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.errorService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
   }
 

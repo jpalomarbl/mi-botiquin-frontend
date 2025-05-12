@@ -29,7 +29,7 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Services
-import { ErrorService } from 'src/app/Services/error.service';
+import { DialogService } from 'src/app/Services/dialog.service';
 import { WebSocketService } from 'src/app/Services/web-socket.service';
 
 @Component({
@@ -53,7 +53,7 @@ export class LoginComponent {
     private router: Router,
     private webSocketService: WebSocketService,
     private actions$: Actions,
-    private errorService: ErrorService,
+    private dialogService: DialogService,
     public errorDialog: MatDialog
   ) {
     this.credentials = {
@@ -75,7 +75,7 @@ export class LoginComponent {
     this.webSocketService.closeSocket();
 
     this.actions$.pipe(ofType(loginError)).subscribe((error) => {
-      this.errorService.openErrorDialog(error.error, this.errorDialog);
+      this.dialogService.openErrorDialog(error.error, this.errorDialog);
     });
   }
 
