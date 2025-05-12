@@ -1,8 +1,20 @@
-<div class="loginContainer">
-  <h1>Login</h1>
-  <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+<div class="login">
+  <!-- Spinner shows only when data is loading to store -->
+  <mat-progress-spinner
+    class="login__spinner"
+    [ngClass]="{ 'login__spinner--not-hidden': loading$ | async }"
+    color="primary"
+    mode="indeterminate"
+    value="50"
+  >
+  </mat-progress-spinner>
+
+  <!-- Form disapears when page is loading info to store -->
+  <form *ngIf="!(loading$ | async)" class="login-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+    <h1 class="login-form__title">Login</h1>
+
     <mat-form-field appearance="fill">
-      <mat-label>Email: </mat-label>
+      <mat-label>Email</mat-label>
       <input
         type="text"
         [formControl]="email"
@@ -12,7 +24,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Password: </mat-label>
+      <mat-label>Password</mat-label>
       <input
         type="password"
         [formControl]="password"
@@ -24,6 +36,7 @@
     <button mat-button>Login</button>
   </form>
 
+  <!-- OAuth -->
   <button mat-button (click)="submitLoginGoogle()">Login with Google</button>
 
   <a class="register-link" routerLink="/register">No tengo cuenta</a>

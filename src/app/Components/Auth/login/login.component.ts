@@ -2,30 +2,35 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { environment } from 'src/app/environment/environment';
 
 // Store
-import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { login, loginError, loginOAuth } from 'src/app/Store/auth/actions/auth.actions';
+import { Store } from '@ngrx/store';
+import {
+  login,
+  loginError,
+  loginOAuth,
+} from 'src/app/Store/auth/actions/auth.actions';
+import { selectAuthLoading } from 'src/app/Store/auth/selectors/auth.selectors';
 
 // Rxjs
-import { Observable, take } from 'rxjs';
 import { ofType } from '@ngrx/effects';
+import { Observable } from 'rxjs';
 
 // Models
 import { LoginDTO } from 'src/app/Models/auth.dto';
+import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 
 // Custom modules
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Services
-import { WebSocketService } from 'src/app/Services/web-socket.service';
 import { ErrorService } from 'src/app/Services/error.service';
+import { WebSocketService } from 'src/app/Services/web-socket.service';
 
 @Component({
   selector: 'app-login',
@@ -41,10 +46,16 @@ export class LoginComponent {
   password: FormControl;
   loginForm: FormGroup;
 
-  // loading$: Observable<boolean>;
-  // error$: Observable<string | null>;
+  loading$: Observable<boolean>;
 
-  constructor(private store: Store, private router: Router, private webSocketService: WebSocketService, private actions$: Actions, private errorService: ErrorService, public errorDialog: MatDialog) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private router: Router,
+    private webSocketService: WebSocketService,
+    private actions$: Actions,
+    private errorService: ErrorService,
+    public errorDialog: MatDialog
+  ) {
     this.credentials = {
       email: '',
       password: '',
@@ -57,16 +68,15 @@ export class LoginComponent {
       password: this.password,
     });
 
-    // this.loading$ = this.store.select(selectAuthLoading);
-    // this.error$ = this.store.select(selectors.selectAuthError);
+    this.loading$ = this.store.select(selectAuthLoading);
   }
 
   ngOnInit(): void {
     this.webSocketService.closeSocket();
 
     this.actions$.pipe(ofType(loginError)).subscribe((error) => {
-          this.errorService.openErrorDialog(error.error, this.errorDialog);
-        });
+      this.errorService.openErrorDialog(error.error, this.errorDialog);
+    });
   }
 
   submitLogin(): void {

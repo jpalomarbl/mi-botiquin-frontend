@@ -1,14 +1,34 @@
-.loginContainer {
+.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+
+  &__spinner {
+    display: none;
+
+    &--not-hidden {
+      display: block;
+
+      margin: 0;
+
+      position: fixed;
+      top: 40dvh;
+      left: 50%;
+
+      transform: translate(-50%, 0);
+    }
+  }
 }
 
-.loginForm {
+.login-form {
   display: flex;
   flex-direction: column;
+
+  &__title {
+    text-align: center;
+  }
 }
 
 .register-link {
