@@ -59,7 +59,9 @@ export class WebSocketService {
 
               this.socket$!.onmessage = (event) => {
                 const rawMessage = JSON.parse(event.data);
+
                 let message: any;
+
                 if (rawMessage.type === 'expired') {
                   message = {
                     type: rawMessage.type,
@@ -78,19 +80,14 @@ export class WebSocketService {
                     requesterRole: rawMessage.requesterRole,
                   };
                 }
-
-                if (
-                  message.type === 'expired' ||
-                  message.type === 'relationship request'
-                ) {
                   // Obtenemos el valor actual, añadimos el nuevo mensaje y emitimos
                   const currentNotifications =
                     this.notificationsSubject.getValue();
+
                   this.notificationsSubject.next([
                     ...currentNotifications,
                     message,
                   ]);
-                }
               };
 
               this.socket$!.onopen = () =>
