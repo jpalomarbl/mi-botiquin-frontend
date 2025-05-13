@@ -14,6 +14,7 @@ import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add
 import { SearchMedicineComponent } from './Components/Pages/search-medicine/search-medicine.component';
 import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 import { UserConfigComponent } from './Components/Pages/user-config/user-config.component';
+import { RelationshipsComponent } from './Components/Pages/relationships/relationships.component';
 import { AuthGuard } from './Guards/auth.guard';
 
 const routes: Routes = [
@@ -96,7 +97,13 @@ const routes: Routes = [
   },
   {
     path: 'userConfig',
-    component: UserConfigComponent
+    component: UserConfigComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'relationships',
+    component: RelationshipsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
