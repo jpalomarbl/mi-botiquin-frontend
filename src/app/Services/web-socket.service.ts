@@ -13,8 +13,12 @@ import { selectUser } from '../Store/auth/selectors/auth.selectors';
 import { AuthService } from './auth.service';
 
 // Models
+import {
+  expirationNotificationDTO,
+  NotificationDTO,
+  relationshipRequestNotificationDTO,
+} from 'src/app/Models/notification.dto';
 import { GlobalStateDTO } from '../Models/globalState.dto';
-import { expirationNotificationDTO } from '../Models/notification.dto';
 import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
@@ -22,9 +26,13 @@ import { UserDTO } from '../Models/user.dto';
 })
 export class WebSocketService {
   private socket$: WebSocket | null;
-  private notificationsSubject: BehaviorSubject<expirationNotificationDTO[]>;
+  private notificationsSubject: BehaviorSubject<
+    Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
+  >;
 
-  public notifications$: Observable<expirationNotificationDTO[]>;
+  public notifications$: Observable<
+    Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
+  >;
 
   constructor(
     private authService: AuthService,
@@ -32,7 +40,7 @@ export class WebSocketService {
   ) {
     this.socket$ = null;
     this.notificationsSubject = new BehaviorSubject<
-      expirationNotificationDTO[]
+      Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
     >([]);
     this.notifications$ = this.notificationsSubject.asObservable();
 
@@ -51,15 +59,30 @@ export class WebSocketService {
 
               this.socket$!.onmessage = (event) => {
                 const rawMessage = JSON.parse(event.data);
-                const message: expirationNotificationDTO = {
-                  type: rawMessage.type,
-                  id1: rawMessage.medicineId,
-                  medicineName: rawMessage.medicineName,
-                  id2: rawMessage.medicineKitId,
-                  medicineKitName: rawMessage.medicineKitName,
-                };
+                let message: any;
+                if (rawMessage.type === 'expired') {
+                  message = {
+                    type: rawMessage.type,
+                    id1: rawMessage.medicineId,
+                    medicineName: rawMessage.medicineName,
+                    id2: rawMessage.medicineKitId,
+                    medicineKitName: rawMessage.medicineKitName,
+                  };
+                } else if (rawMessage.type === 'relationship request') {
+                  message = {
+                    type: rawMessage.type,
+                    id1: rawMessage.senderId,
+                    id2: rawMessage.receiverId,
+                    requesterFirstName: rawMessage.requesterFirstName,
+                    requesterLastName: rawMessage.requesterLastName,
+                    requesterRole: rawMessage.requesterRole,
+                  };
+                }
 
-                if (message.type === 'expired') {
+                if (
+                  message.type === 'expired' ||
+                  message.type === 'relationship request'
+                ) {
                   // Obtenemos el valor actual, añadimos el nuevo mensaje y emitimos
                   const currentNotifications =
                     this.notificationsSubject.getValue();
@@ -77,6 +100,15 @@ export class WebSocketService {
             });
         }
       });
+  }
+
+  sendMessage(message: NotificationDTO): void {
+    if (this.socket$ && this.socket$.readyState === WebSocket.OPEN) {
+      const messageToSend = JSON.stringify(message);
+      this.socket$.send(messageToSend);
+    } else {
+      console.error('WebSocket is not connected. Cannot send message.');
+    }
   }
 
   closeSocket(): void {
