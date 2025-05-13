@@ -183,4 +183,8 @@ export class HomeComponent {
   navigateMedicineKitDetails(medicineKitId: number): void {
     this.router.navigate(['medicineKitDetails/' + medicineKitId.toString()]);
   }
+
+  navigateRelationships(): void {
+    this.router.navigate(['relationships']);
+  }
 }
