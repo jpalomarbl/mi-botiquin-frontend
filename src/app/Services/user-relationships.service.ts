@@ -34,4 +34,11 @@ export class UserRelationshipsService {
       params: { familyMemberId: userId.toString() },
     });
   }
+
+  searchUsers(searchTerm: string): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/search`, {
+      withCredentials: true,
+      params: { searchTerm: searchTerm },
+    });
+  }
 }
