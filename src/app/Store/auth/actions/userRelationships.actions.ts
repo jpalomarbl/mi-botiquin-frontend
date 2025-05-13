@@ -45,3 +45,18 @@ export const fetchFamilyMemberRelationshipsError = createAction(
   '[Auth] Fetch Family Member Relationships From API Error',
   props<{ error: string }>()
 );
+
+export const searchUsers = createAction(
+  '[Auth] Search Users From API',
+  props<{ searchTerm: string }>()
+);
+
+export const searchUsersSuccess = createAction(
+  '[Auth] Search Users From API Success',
+  props<{ searchResults: UserDTO[] }>()
+);
+
+export const searchUsersError = createAction(
+  '[Auth] Search Users From API Error',
+  props<{ error: string }>()
+);
