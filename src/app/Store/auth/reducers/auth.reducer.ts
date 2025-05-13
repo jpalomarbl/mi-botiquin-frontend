@@ -121,6 +121,27 @@ export const authReducer = createReducer(
     error: error,
   })),
 
+  // Fetch Patient relationships
+  on(userRelationshipActions.fetchPatientRelationships, (state) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchPatientRelationshipsSuccess, (state, { relationships }) => ({
+    ...state,
+    relationships: relationships,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(userRelationshipActions.fetchPatientRelationshipsError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Fetch caretaker relationships
   on(userRelationshipActions.fetchCaretakerRelationships, (state) => ({
     ...state,

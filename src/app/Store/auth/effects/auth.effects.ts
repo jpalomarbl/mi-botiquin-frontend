@@ -160,6 +160,28 @@ export class AuthEffects {
     )
   );
 
+  fetchPatientRelationships$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.fetchPatientRelationships),
+      mergeMap(({ userId }) =>
+        this.userRelationshipService.fetchPatientRelationships(userId).pipe(
+          map((response: UserDTO[]) => {
+            return userRelationshipActions.fetchPatientRelationshipsSuccess({
+              relationships: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              userRelationshipActions.fetchPatientRelationshipsError({
+                error: error.error || 'Fetch relationships failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   fetchCaretakerRelationships$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userRelationshipActions.fetchCaretakerRelationships),
