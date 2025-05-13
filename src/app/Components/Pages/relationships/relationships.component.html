@@ -59,7 +59,7 @@
         />
       </mat-form-field>
 
-      <button mat-button type="submit">Buscar</button>
+      <button mat-button [disabled]="searchForm.invalid" type="submit">Buscar</button>
     </form>
 
     <mat-list
@@ -109,7 +109,7 @@
             </span>
 
             <span class="relationships-list__list-item-email">
-              {{ user.email }}
+              {{ user.email | censorEmail}}
             </span>
           </div>
 
@@ -128,7 +128,7 @@
       <p class="relationships-list__no-relationships" *ngIf="userRole === 'patient'">
         No tienes cuidadores o familiares añadidos.
       </p>
-      
+
       <p class="relationships-list__no-relationships" *ngIf="userRole !== 'patient'">
         No tienes pacientes añadidos.
     </ng-template>

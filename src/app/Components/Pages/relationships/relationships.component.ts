@@ -13,8 +13,11 @@ import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
+// Pipes
+import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
+
 // Custom modules
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
@@ -30,6 +33,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
     FooterComponent,
     FormsModule,
     AngularMaterialModule,
+    CensorEmailPipe
   ],
   templateUrl: './relationships.component.html',
   styleUrls: ['./relationships.component.scss'],
@@ -66,7 +70,7 @@ export class RelationshipsComponent {
     this.patientSearchString = '';
     this.userRole = '';
 
-    this.patientSearch = new FormControl(this.patientSearchString);
+    this.patientSearch = new FormControl(this.patientSearchString, Validators.required);
     this.searchForm = new FormGroup({
       patientSearch: this.patientSearch,
     });
