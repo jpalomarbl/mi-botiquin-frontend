@@ -6,7 +6,10 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/app/environment/environment';
 
 import { LoginDTO, RegisterDTO } from '../Models/auth.dto';
-import { NotificationDTO } from '../Models/notification.dto';
+import {
+  expirationNotificationDTO,
+  relationshipRequestNotificationDTO,
+} from '../Models/notification.dto';
 import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
@@ -90,8 +93,14 @@ export class AuthService {
     });
   }
 
-  fetchUsersUnreadNotifications(userId: number): Observable<NotificationDTO[]> {
-    return this.http.get<NotificationDTO[]>(`${this.notificationUrl}/user`, {
+  fetchUsersUnreadNotifications(
+    userId: number
+  ): Observable<
+    Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
+  > {
+    return this.http.get<
+      Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
+    >(`${this.notificationUrl}/user`, {
       withCredentials: true,
       params: { userId: userId.toString() },
     });
@@ -116,9 +125,13 @@ export class AuthService {
       body.set('lastName', '');
     }
 
-    return this.http.put<UserDTO>(`${this.authUrl}/user/update`, body.toString(), {
-      withCredentials: true,
-      headers: headers,
-    });
+    return this.http.put<UserDTO>(
+      `${this.authUrl}/user/update`,
+      body.toString(),
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
   }
 }

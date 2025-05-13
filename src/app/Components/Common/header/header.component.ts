@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
@@ -15,7 +15,10 @@ import { WebSocketService } from 'src/app/Services/web-socket.service';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
-import { NotificationDTO } from 'src/app/Models/notification.dto';
+import {
+  expirationNotificationDTO,
+  relationshipRequestNotificationDTO,
+} from 'src/app/Models/notification.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
@@ -31,8 +34,12 @@ export class HeaderComponent {
 
   @Input() title: string = 'Mi Botiquín';
 
-  notifications: NotificationDTO[];
-  notifications$: Observable<NotificationDTO[] | null>;
+  notifications: Array<
+    expirationNotificationDTO | relationshipRequestNotificationDTO
+  >;
+  notifications$: Observable<Array<
+    expirationNotificationDTO | relationshipRequestNotificationDTO
+  > | null>;
   user$: Observable<UserDTO | null>;
 
   constructor(
@@ -47,22 +54,23 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.webSocketService.notifications$
-    .pipe(take(1))
-    .subscribe((notifications) => {
-      this.notifications = [...this.notifications, ...notifications];
-      console.log('Notificaciones actualizadas:', notifications);
-    });
+      .pipe(take(1))
+      .subscribe((notifications) => {
+        this.notifications = [...this.notifications, ...notifications];
+        console.log('Notificaciones actualizadas:', notifications);
+      });
 
-    this.user$
-    .pipe(take(1))
-    .subscribe((user: UserDTO | null) => {
+    this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
       if (user) {
         this.store.dispatch(fetchUserUnreadNotifications({ userId: user.id }));
       }
 
-      this.notifications$
-      .subscribe(
-        (notifications: NotificationDTO[] | null) => {
+      this.notifications$.subscribe(
+        (
+          notifications: Array<
+            expirationNotificationDTO | relationshipRequestNotificationDTO
+          > | null
+        ) => {
           this.notifications = [
             ...this.notifications,
             ...(notifications || []),
@@ -79,5 +87,17 @@ export class HeaderComponent {
     } else {
       this.router.navigate([this.backButtonDirection]);
     }
+  }
+
+  get expirationNotifications(): Array<expirationNotificationDTO> {
+    return this.notifications.filter(
+      (notification) => notification.type === 'expired'
+    ) as Array<expirationNotificationDTO>;
+  }
+
+  get relationshipRequestNotifications(): Array<relationshipRequestNotificationDTO> {
+    return this.notifications.filter(
+      (notification) => notification.type === 'relationship request'
+    ) as Array<relationshipRequestNotificationDTO>;
   }
 }

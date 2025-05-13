@@ -5,7 +5,10 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
-import { NotificationDTO } from 'src/app/Models/notification.dto';
+import {
+  expirationNotificationDTO,
+  relationshipRequestNotificationDTO,
+} from 'src/app/Models/notification.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserRelationshipsService } from 'src/app/Services/user-relationships.service';
@@ -245,26 +248,22 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(userRelationshipActions.searchUsers),
       mergeMap(({ searchTerm }) =>
-        this.userRelationshipService
-          .searchUsers(searchTerm)
-          .pipe(
-            map((response: UserDTO[]) => {
-              console.log('searchUsers response', response);
+        this.userRelationshipService.searchUsers(searchTerm).pipe(
+          map((response: UserDTO[]) => {
+            console.log('searchUsers response', response);
 
-              return userRelationshipActions.searchUsersSuccess(
-                {
-                  searchResults: response,
-                }
-              );
-            }),
-            catchError((error) =>
-              of(
-                userRelationshipActions.searchUsersError({
-                  error: error.error || 'Fetch relationships failed',
-                })
-              )
+            return userRelationshipActions.searchUsersSuccess({
+              searchResults: response,
+            });
+          }),
+          catchError((error) =>
+            of(
+              userRelationshipActions.searchUsersError({
+                error: error.error || 'Fetch relationships failed',
+              })
             )
           )
+        )
       )
     )
   );
@@ -274,11 +273,17 @@ export class AuthEffects {
       ofType(notificationActions.fetchUserUnreadNotifications),
       mergeMap(({ userId }) =>
         this.authService.fetchUsersUnreadNotifications(userId).pipe(
-          map((response: NotificationDTO[]) => {
-            return notificationActions.fetchCaretakerRelationshipsSuccess({
-              notifications: response,
-            });
-          }),
+          map(
+            (
+              response: Array<
+                expirationNotificationDTO | relationshipRequestNotificationDTO
+              >
+            ) => {
+              return notificationActions.fetchCaretakerRelationshipsSuccess({
+                notifications: response,
+              });
+            }
+          ),
           catchError((error) =>
             of(
               notificationActions.fetchCaretakerRelationshipsError({

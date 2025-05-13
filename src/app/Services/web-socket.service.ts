@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 
 // Models
 import { GlobalStateDTO } from '../Models/globalState.dto';
-import { NotificationDTO } from '../Models/notification.dto';
+import { expirationNotificationDTO } from '../Models/notification.dto';
 import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
@@ -22,17 +22,19 @@ import { UserDTO } from '../Models/user.dto';
 })
 export class WebSocketService {
   private socket$: WebSocket | null;
-  private notificationsSubject: BehaviorSubject<NotificationDTO[]>;
+  private notificationsSubject: BehaviorSubject<expirationNotificationDTO[]>;
 
-  public notifications$: Observable<NotificationDTO[]>;
+  public notifications$: Observable<expirationNotificationDTO[]>;
 
   constructor(
     private authService: AuthService,
     private store: Store<GlobalStateDTO>
   ) {
     this.socket$ = null;
-    this.notificationsSubject = new BehaviorSubject<NotificationDTO[]>([]);
-    this.notifications$ = this.notificationsSubject.asObservable();;
+    this.notificationsSubject = new BehaviorSubject<
+      expirationNotificationDTO[]
+    >([]);
+    this.notifications$ = this.notificationsSubject.asObservable();
 
     this.store
       .select(selectUser)
@@ -48,7 +50,14 @@ export class WebSocketService {
               );
 
               this.socket$!.onmessage = (event) => {
-                const message: NotificationDTO = JSON.parse(event.data);
+                const rawMessage = JSON.parse(event.data);
+                const message: expirationNotificationDTO = {
+                  type: rawMessage.type,
+                  id1: rawMessage.medicineId,
+                  medicineName: rawMessage.medicineName,
+                  id2: rawMessage.medicineKitId,
+                  medicineKitName: rawMessage.medicineKitName,
+                };
 
                 if (message.type === 'expired') {
                   // Obtenemos el valor actual, añadimos el nuevo mensaje y emitimos
