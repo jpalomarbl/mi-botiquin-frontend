@@ -5,13 +5,13 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
+import { NotificationDTO } from 'src/app/Models/notification.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserRelationshipsService } from 'src/app/Services/user-relationships.service';
 import * as AuthActions from '../actions/auth.actions';
-import * as userRelationshipActions from '../actions/userRelationships.actions';
 import * as notificationActions from '../actions/notification.actions';
-import { NotificationDTO } from 'src/app/Models/notification.dto';
+import * as userRelationshipActions from '../actions/userRelationships.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -208,20 +208,24 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(userRelationshipActions.fetchFamilyMemberRelationships),
       mergeMap(({ userId }) =>
-        this.userRelationshipService.fetchFamilyMemberRelationships(userId).pipe(
-          map((response: UserDTO[]) => {
-            return userRelationshipActions.fetchFamilyMemberRelationshipsSuccess({
-              relationships: response,
-            });
-          }),
-          catchError((error) =>
-            of(
-              userRelationshipActions.fetchFamilyMemberRelationshipsError({
-                error: error.error || 'Fetch relationships failed',
-              })
+        this.userRelationshipService
+          .fetchFamilyMemberRelationships(userId)
+          .pipe(
+            map((response: UserDTO[]) => {
+              return userRelationshipActions.fetchFamilyMemberRelationshipsSuccess(
+                {
+                  relationships: response,
+                }
+              );
+            }),
+            catchError((error) =>
+              of(
+                userRelationshipActions.fetchFamilyMemberRelationshipsError({
+                  error: error.error || 'Fetch relationships failed',
+                })
+              )
             )
           )
-        )
       )
     )
   );
@@ -237,7 +241,35 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-    fetcUsersUnreadNotifications$ = createEffect(() =>
+  searchUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.searchUsers),
+      mergeMap(({ searchTerm }) =>
+        this.userRelationshipService
+          .searchUsers(searchTerm)
+          .pipe(
+            map((response: UserDTO[]) => {
+              console.log('searchUsers response', response);
+
+              return userRelationshipActions.searchUsersSuccess(
+                {
+                  searchResults: response,
+                }
+              );
+            }),
+            catchError((error) =>
+              of(
+                userRelationshipActions.searchUsersError({
+                  error: error.error || 'Fetch relationships failed',
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  fetcUsersUnreadNotifications$ = createEffect(() =>
     this.actions$.pipe(
       ofType(notificationActions.fetchUserUnreadNotifications),
       mergeMap(({ userId }) =>

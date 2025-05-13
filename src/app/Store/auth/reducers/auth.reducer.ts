@@ -185,6 +185,27 @@ export const authReducer = createReducer(
     error: error,
   })),
 
+  // Search for users on DB
+  on(userRelationshipActions.searchUsers, (state, { searchTerm }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(userRelationshipActions.searchUsersSuccess, (state, { searchResults }) => ({
+    ...state,
+    usersSearchResults: searchResults,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(userRelationshipActions.searchUsersError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Fetch user's unread notifications
   on(notificationActions.fetchUserUnreadNotifications, (state) => ({
     ...state,

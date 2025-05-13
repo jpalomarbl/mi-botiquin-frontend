@@ -10,7 +10,6 @@ import {
   selectUser,
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
-
 import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 
 // Models
@@ -34,6 +33,8 @@ export class RelationshipsComponent {
   }
 
   ngOnInit(): void {
+    // this.store.dispatch(userRelationshipsActions.searchUsers({ searchTerm: 'test' }));
+
     this.user$.subscribe((user: UserDTO | null) => {
       if (user) {
         this.userRole = user.role;
