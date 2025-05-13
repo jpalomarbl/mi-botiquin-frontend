@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Modules
+import { MatDialog } from '@angular/material/dialog';
 import { passwordsMatch } from 'src/app/Directives/passwordsMatch.validator';
+import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
@@ -15,6 +17,9 @@ import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
+// Services
+import { DialogService } from 'src/app/Services/dialog.service';
+
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
@@ -22,7 +27,12 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-user-config',
   standalone: true,
-  imports: [FormsModule, HeaderComponent, FooterComponent],
+  imports: [
+    FormsModule,
+    HeaderComponent,
+    FooterComponent,
+    AngularMaterialModule,
+  ],
   templateUrl: './user-config.component.html',
   styleUrls: ['./user-config.component.scss'],
 })
@@ -40,7 +50,11 @@ export class UserConfigComponent {
   confirmPasswordString: string;
   originalRole: string;
 
-  constructor(private store: Store<GlobalStateDTO>) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private dialogService: DialogService,
+    public confirmationDialog: MatDialog
+  ) {
     this.user = {
       id: 0,
       email: '',
@@ -96,11 +110,18 @@ export class UserConfigComponent {
     userData.role = this.role.value;
     this.passwordString = this.password.value;
 
-    this.store.dispatch(
-      updateUser({
-        user: userData,
-        password: this.passwordString,
-      })
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Estás seguro de que deseas editar tus datos?',
+        message:
+          'Ten en cuenta que si cambias tu rol de "familiar" a cualquier otro, perderás cualquier relación previamente establecida con otro usuario.',
+        route: '/',
+        action: updateUser({
+          user: userData,
+          password: this.passwordString,
+        }),
+      },
+      this.confirmationDialog
     );
   }
 }

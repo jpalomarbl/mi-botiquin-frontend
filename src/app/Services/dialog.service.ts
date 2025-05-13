@@ -9,7 +9,7 @@ interface ConfirmationDialogConfig {
   title: string;
   message: string;
   route: string;
-  action?: (...args: any[]) => void;
+  action?: Action;
   actionArgs?: any;
 }
 

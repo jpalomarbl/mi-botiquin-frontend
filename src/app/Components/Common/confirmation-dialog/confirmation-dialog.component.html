@@ -1,7 +1,7 @@
 <h1 class="confirmation-dialog__title" mat-dialog-title>{{ title }}</h1>
 <div class="confirmation-dialog__content" mat-dialog-content>{{ message }}</div>
 <div mat-dialog-actions>
-  <button class="confirmation-dialog__button" mat-button (onclick)="navigate()">
+  <button class="confirmation-dialog__button" mat-button mat-dialog-close (click)="navigate()">
     Aceptar
   </button>
   <button class="confirmation-dialog__button" mat-button mat-dialog-close>
