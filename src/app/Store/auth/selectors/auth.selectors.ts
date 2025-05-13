@@ -33,3 +33,8 @@ export const selectUserNotifications = createSelector(
   selectAuthState,
   (state: AuthStateDTO) => state.notifications
 );
+
+export const selectUserSearchResults = createSelector(
+  selectAuthState,
+  (state: AuthStateDTO) => state.usersSearchResults
+);
