@@ -6,6 +6,7 @@ import * as notificationActions from '../actions/notification.actions';
 
 export const initialState: AuthStateDTO = {
   user: null,
+  usersSearchResults: null,
   relationships: null,
   notifications: null,
   loading: false,
