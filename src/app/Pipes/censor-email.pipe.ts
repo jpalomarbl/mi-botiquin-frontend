@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'censorEmail',
+  standalone: true
 })
 export class CensorEmailPipe implements PipeTransform {
   transform(email: string): string {
