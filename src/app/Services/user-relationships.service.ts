@@ -14,6 +14,13 @@ export class UserRelationshipsService {
 
   constructor(private http: HttpClient) {}
 
+  fetchPatientRelationships(userId: number): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/patient`, {
+      withCredentials: true,
+      params: { patientId: userId.toString() },
+    });
+  }
+
   fetchCaretakerRelationships(userId: number): Observable<UserDTO[]> {
     return this.http.get<UserDTO[]>(`${this.apiUrl}/caretaker`, {
       withCredentials: true,
