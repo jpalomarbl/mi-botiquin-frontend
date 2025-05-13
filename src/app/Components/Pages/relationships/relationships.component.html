@@ -1,1 +1,138 @@
-<p>relationships works!</p>
+<custom-header></custom-header>
+
+<mat-progress-spinner
+  class="relationships__spinner"
+  [ngClass]="{ 'relationships__spinner--not-hidden': loading$ | async }"
+  color="primary"
+  mode="indeterminate"
+  value="50"
+>
+</mat-progress-spinner>
+
+<div class="relationships" *ngIf="!(loading$ | async)">
+  <h1
+    class="relationships__title"
+    *ngIf="userRole === 'patient'; else titleNoPatient"
+  >
+    Gestiona tus cuidadores o familiares
+  </h1>
+  <ng-template #titleNoPatient>
+    <h1 class="relationships__title">Gestiona tus pacientes</h1>
+  </ng-template>
+
+  <section class="explanation">
+    <p
+      class="explanation__text"
+      *ngIf="userRole === 'patient'; else textNoPatient"
+    >
+      Aquí podrás gestionar los usuarios que pueden acceder a tu información
+      médica. Puedes añadir o eliminar cuidadores o familiares que necesiten
+      acceso a tus datos.
+    </p>
+
+    <ng-template #textNoPatient>
+      <p class="explanation__text">
+        Añade o elimina pacientes que requieran de tu acceso a sus datos
+        médicos. Los pacientes deben aceptar explíciamente una solicitud antes
+        de que puedas acceder a sus datos.
+      </p>
+    </ng-template>
+  </section>
+
+  <section class="relationships-search" *ngIf="userRole !== 'patient'">
+    <form
+      class="relationships-search__form"
+      [ngClass]="{
+        'relationships-search__form--add-margin':
+          userSearchResults!.length === 0
+      }"
+      [formGroup]="searchForm"
+      (ngSubmit)="searchUsers()"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Busca por nombre/email</mat-label>
+        <input
+          type="text"
+          [formControl]="patientSearch"
+          matInput
+          placeholder="email@email.com"
+        />
+      </mat-form-field>
+
+      <button mat-button type="submit">Buscar</button>
+    </form>
+
+    <mat-list
+      class="relationships-search__list"
+      role="list"
+      *ngIf="userSearchResults!.length > 0"
+    >
+      <cdk-virtual-scroll-viewport
+        class="relationships-search__viewport"
+        itemSize="50"
+      >
+        <mat-list-item
+          class="relationships-search__list-item"
+          *cdkVirtualFor="let user of userSearchResults"
+          role="listitem"
+        >
+          {{ user.firstName }} {{ user.lastName }}
+        </mat-list-item>
+      </cdk-virtual-scroll-viewport>
+    </mat-list>
+  </section>
+
+  <section class="relationships-list">
+    <h2
+      class="relationships-list__title"
+      *ngIf="userRole === 'patient'; else listTitleNoPatient"
+    >
+      Tus cuidadores o familiares
+    </h2>
+    <ng-template #listTitleNoPatient>
+      <h2 class="relationships-list__title">Tus pacientes</h2>
+    </ng-template>
+
+    <ul class="relationships-list__list" *ngIf="userRelationships!.length > 0; else noRelationhips">
+      <cdk-virtual-scroll-viewport
+        class="relationships-list__viewport"
+        itemSize="50"
+      >
+        <li
+          class="relationships-list__list-item"
+          *cdkVirtualFor="let user of userRelationships"
+          role="listitem"
+        >
+          <div class="relationships-list__list-item-text">
+            <span class="relationships-list__list-item-name">
+              {{ user.firstName }} {{ user.lastName }}
+            </span>
+
+            <span class="relationships-list__list-item-email">
+              {{ user.email }}
+            </span>
+          </div>
+
+          <button
+            class="relationships-list__list-item-button"
+            mat-icon-button
+            aria-label="Example icon button with a vertical three dot icon"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </li>
+      </cdk-virtual-scroll-viewport>
+    </ul>
+
+    <ng-template #noRelationhips>
+      <p class="relationships-list__no-relationships" *ngIf="userRole === 'patient'">
+        No tienes cuidadores o familiares añadidos.
+      </p>
+      
+      <p class="relationships-list__no-relationships" *ngIf="userRole !== 'patient'">
+        No tienes pacientes añadidos.
+    </ng-template>
+  </section>
+</div>
+
+<custom-footer></custom-footer>
