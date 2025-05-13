@@ -303,7 +303,7 @@ export class AuthEffects {
       ofType(notificationActions.sendRelationshipRequest),
       mergeMap(({ requesterId, receiverId }) =>
         this.webSocketService
-          .sendMessage({
+          .sendRelationshipRequest({
             type: 'relationship request',
             id1: requesterId,
             id2: receiverId,

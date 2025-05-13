@@ -1,6 +1,6 @@
 // Angular
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, of, take } from 'rxjs';
 
 // Env
 import { environment } from '../environment/environment';
@@ -102,12 +102,16 @@ export class WebSocketService {
       });
   }
 
-  sendMessage(message: NotificationDTO): void {
+  sendRelationshipRequest(message: NotificationDTO): Observable<boolean> {
     if (this.socket$ && this.socket$.readyState === WebSocket.OPEN) {
       const messageToSend = JSON.stringify(message);
       this.socket$.send(messageToSend);
+
+      return of(true);
     } else {
       console.error('WebSocket is not connected. Cannot send message.');
+
+      return of(false);
     }
   }
 
