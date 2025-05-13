@@ -3,6 +3,7 @@ import {
   expirationNotificationDTO,
   relationshipRequestNotificationDTO,
 } from 'src/app/Models/notification.dto';
+import { UserDTO } from 'src/app/Models/user.dto';
 export const fetchUserUnreadNotifications = createAction(
   '[Auth] Fetch Users Unread Notifications From API',
   props<{ userId: number }>()
@@ -18,6 +19,20 @@ export const fetchCaretakerRelationshipsSuccess = createAction(
 );
 
 export const fetchCaretakerRelationshipsError = createAction(
+  '[Auth] Fetch Users Unread Notifications From API Error',
+  props<{ error: string }>()
+);
+
+export const sendRelationshipRequest = createAction(
+  '[Auth] Send User Relationship Request to API',
+  props<{ requesterId: number, receiverId: number }>()
+);
+
+export const sendRelationshipRequestSuccess = createAction(
+  '[Auth] Fetch Users Unread Notifications From API Success'
+);
+
+export const sendRelationshipRequestError = createAction(
   '[Auth] Fetch Users Unread Notifications From API Error',
   props<{ error: string }>()
 );

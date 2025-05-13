@@ -226,4 +226,24 @@ export const authReducer = createReducer(
     loaded: true,
     error: error,
   })),
+
+  // Send relationship request
+  on(notificationActions.sendRelationshipRequest, (state, { requesterId, receiverId }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: null,
+  })),
+  on(notificationActions.sendRelationshipRequestSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: null,
+  })),
+  on(notificationActions.sendRelationshipRequestError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
 );

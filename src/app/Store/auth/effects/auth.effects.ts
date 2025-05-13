@@ -12,6 +12,7 @@ import {
 import { UserDTO } from 'src/app/Models/user.dto';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserRelationshipsService } from 'src/app/Services/user-relationships.service';
+import { WebSocketService } from 'src/app/Services/web-socket.service';
 import * as AuthActions from '../actions/auth.actions';
 import * as notificationActions from '../actions/notification.actions';
 import * as userRelationshipActions from '../actions/userRelationships.actions';
@@ -21,6 +22,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private webSocketService: WebSocketService,
     private router: Router,
     private store: Store,
     private userRelationshipService: UserRelationshipsService
@@ -292,6 +294,38 @@ export class AuthEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  sendRelationshipRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(notificationActions.sendRelationshipRequest),
+      mergeMap(({ requesterId, receiverId }) =>
+        this.webSocketService
+          .sendMessage({
+            type: 'relationship request',
+            id1: requesterId,
+            id2: receiverId,
+          })
+          .pipe(
+            map((result: boolean) => {
+              if (result) {
+                return notificationActions.sendRelationshipRequestSuccess()
+              } else {
+                return notificationActions.sendRelationshipRequestError({
+                  error: 'WebSocket is not connected. Cannot send message.'
+                })
+              }
+            }),
+            catchError((error) =>
+              of(
+                notificationActions.sendRelationshipRequestError({
+                  error: error.error || 'Fetch relationships failed',
+                })
+              )
+            )
+          )
       )
     )
   );
