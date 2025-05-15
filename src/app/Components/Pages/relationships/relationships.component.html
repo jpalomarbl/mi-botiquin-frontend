@@ -74,6 +74,7 @@
         <mat-list-item
           class="relationships-search__list-item"
           *cdkVirtualFor="let user of userSearchResults"
+          (click)="sendRelationshipRequest(user.id, user.firstName, user.email, user.lastName)"
           role="listitem"
         >
           {{ user.firstName }} {{ user.lastName }}
@@ -93,7 +94,7 @@
       <h2 class="relationships-list__title">Tus pacientes</h2>
     </ng-template>
 
-    <ul class="relationships-list__list" *ngIf="userRelationships!.length > 0; else noRelationhips">
+    <ul class="relationships-list__list" *ngIf="userRelationships && userRelationships.length > 0; else noRelationhips">
       <cdk-virtual-scroll-viewport
         class="relationships-list__viewport"
         itemSize="50"

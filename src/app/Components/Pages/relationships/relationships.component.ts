@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
+import { sendRelationshipRequest } from 'src/app/Store/auth/actions/notification.actions';
 import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 
@@ -13,11 +14,15 @@ import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import { FooterComponent } from '../../Common/footer/footer.component';
 import { HeaderComponent } from '../../Common/header/header.component';
 
+// Services
+import { DialogService } from 'src/app/Services/dialog.service';
+
 // Pipes
 import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
 
 // Custom modules
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
@@ -33,7 +38,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
     FooterComponent,
     FormsModule,
     AngularMaterialModule,
-    CensorEmailPipe
+    CensorEmailPipe,
   ],
   templateUrl: './relationships.component.html',
   styleUrls: ['./relationships.component.scss'],
@@ -45,6 +50,7 @@ export class RelationshipsComponent {
   loading$: Observable<boolean | null>;
 
   userRole: string;
+  userId: number;
   userSearchResults: UserDTO[] | null;
   userRelationships: UserDTO[] | null;
 
@@ -53,7 +59,11 @@ export class RelationshipsComponent {
   patientSearch: FormControl;
   searchForm: FormGroup;
 
-  constructor(private store: Store<GlobalStateDTO>) {
+  constructor(
+    private store: Store<GlobalStateDTO>,
+    private dialogService: DialogService,
+    public dialog: MatDialog
+  ) {
     this.userRelationships$ = this.store.select(
       authSelectors.selectUserRelationships
     );
@@ -69,8 +79,12 @@ export class RelationshipsComponent {
 
     this.patientSearchString = '';
     this.userRole = '';
+    this.userId = 0;
 
-    this.patientSearch = new FormControl(this.patientSearchString, Validators.required);
+    this.patientSearch = new FormControl(
+      this.patientSearchString,
+      Validators.required
+    );
     this.searchForm = new FormGroup({
       patientSearch: this.patientSearch,
     });
@@ -82,6 +96,7 @@ export class RelationshipsComponent {
     this.user$.subscribe((user: UserDTO | null) => {
       if (user) {
         this.userRole = user.role;
+        this.userId = user.id;
 
         if (user.role === 'caretaker') {
           this.store.dispatch(
@@ -128,5 +143,36 @@ export class RelationshipsComponent {
 
       this.userSearchResults = results;
     });
+  }
+
+  sendRelationshipRequest(
+    userId: number,
+    firstName: string,
+    email: string,
+    lastName?: string
+  ): void {
+    const censorEmailPipe = new CensorEmailPipe();
+    const censoredEmail = censorEmailPipe.transform(email);
+
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Enviar solicitud a ' + firstName + '?',
+        message:
+          '¿Estás seguro de que deseas enviar una solicitud de relación a ' +
+          firstName +
+          ' ' +
+          (lastName ? lastName : '') +
+          ' (' + censoredEmail + ')?',
+        route: '/',
+        action: sendRelationshipRequest({
+          requesterId: this.userId,
+          receiverId: userId,
+        }),
+      },
+      this.dialog
+    );
+
+    console.log("requesterId: ", this.userId);
+    console.log("receiverId: ", userId);
   }
 }
