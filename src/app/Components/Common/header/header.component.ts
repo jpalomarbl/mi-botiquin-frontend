@@ -1,4 +1,4 @@
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
@@ -90,14 +90,18 @@ export class HeaderComponent {
   }
 
   get expirationNotifications(): Array<expirationNotificationDTO> {
-    return this.notifications.filter(
-      (notification) => notification.type === 'expired'
-    ) as Array<expirationNotificationDTO>;
+    return this.notifications.length > 0
+      ? (this.notifications.filter(
+          (notification) => notification.type === 'expired'
+        ) as Array<expirationNotificationDTO>)
+      : [];
   }
 
   get relationshipRequestNotifications(): Array<relationshipRequestNotificationDTO> {
-    return this.notifications.filter(
-      (notification) => notification.type === 'relationship request'
-    ) as Array<relationshipRequestNotificationDTO>;
+    return this.notifications.length > 0
+      ? (this.notifications.filter(
+          (notification) => notification.type === 'relationship request'
+        ) as Array<relationshipRequestNotificationDTO>)
+      : [];
   }
 }
