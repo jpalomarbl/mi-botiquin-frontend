@@ -1,19 +1,30 @@
+// Angular
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
 
+// Store
 import { Store } from '@ngrx/store';
 import { fetchUserUnreadNotifications } from 'src/app/Store/auth/actions/notification.actions';
+import { acceptRelationshipRequest } from 'src/app/Store/auth/actions/userRelationships.actions';
 import {
   selectUser,
   selectUserNotifications,
 } from 'src/app/Store/auth/selectors/auth.selectors';
 
+// Services
+import { DialogService } from 'src/app/Services/dialog.service';
 import { WebSocketService } from 'src/app/Services/web-socket.service';
 
+// Pipes
+import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
+
+// Modules
+import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
+// Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import {
   expirationNotificationDTO,
@@ -45,7 +56,9 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private store: Store<GlobalStateDTO>,
-    public webSocketService: WebSocketService
+    public webSocketService: WebSocketService,
+    private dialogService: DialogService,
+    private dialog: MatDialog
   ) {
     this.notifications = [];
     this.notifications$ = this.store.select(selectUserNotifications);
@@ -89,6 +102,36 @@ export class HeaderComponent {
     }
   }
 
+  clickRelationshipRequestNotification(
+    notification: relationshipRequestNotificationDTO
+  ): void {
+    const censorEmailPipe = new CensorEmailPipe();
+    const censoredEmail = censorEmailPipe.transform(
+      notification.requesterEmail
+    );
+
+    console.log(notification)
+
+    this.dialogService.openConfirmationDialog(
+      {
+        title: 'Solicitud',
+        message: `¿Deseas aceptar la solicitud de amistad de ${
+          notification.requesterFirstName +
+          (notification.requesterLastName
+            ? ' ' + notification.requesterLastName
+            : '')
+        } (${censoredEmail})?`,
+        route: 'relationships',
+        action: acceptRelationshipRequest({
+          requesterId: notification.id1,
+          receiverId: notification.id2,
+          requesterRole: notification.requesterRole,
+        }),
+      },
+      this.dialog
+    );
+  }
+
   get expirationNotifications(): Array<expirationNotificationDTO> {
     return this.notifications.length > 0
       ? (this.notifications.filter(
@@ -100,7 +143,8 @@ export class HeaderComponent {
   get relationshipRequestNotifications(): Array<relationshipRequestNotificationDTO> {
     return this.notifications.length > 0
       ? (this.notifications.filter(
-          (notification) => notification && notification.type === 'relationship request'
+          (notification) =>
+            notification && notification.type === 'relationship request'
         ) as Array<relationshipRequestNotificationDTO>)
       : [];
   }
