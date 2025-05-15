@@ -92,7 +92,7 @@ export class HeaderComponent {
   get expirationNotifications(): Array<expirationNotificationDTO> {
     return this.notifications.length > 0
       ? (this.notifications.filter(
-          (notification) => notification.type === 'expired'
+          (notification) => notification && notification.type === 'expired'
         ) as Array<expirationNotificationDTO>)
       : [];
   }
@@ -100,7 +100,7 @@ export class HeaderComponent {
   get relationshipRequestNotifications(): Array<relationshipRequestNotificationDTO> {
     return this.notifications.length > 0
       ? (this.notifications.filter(
-          (notification) => notification.type === 'relationship request'
+          (notification) => notification && notification.type === 'relationship request'
         ) as Array<relationshipRequestNotificationDTO>)
       : [];
   }
