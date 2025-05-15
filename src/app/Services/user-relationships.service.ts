@@ -44,7 +44,9 @@ export class UserRelationshipsService {
   }
 
   acceptRelationshipRequest(
-    notification: relationshipRequestNotificationDTO
+    requesterId: number,
+    receiverId: number,
+    requesterRole: string
   ): Observable<UserDTO | null> {
     let route = '';
 
@@ -54,14 +56,14 @@ export class UserRelationshipsService {
     );
 
     const body = new URLSearchParams();
-    body.set('patientId', notification.id2.toString());
+    body.set('patientId', receiverId.toString());
 
-    if (notification.requesterRole === 'caretaker') {
-      body.set('caretakerId', notification.id1.toString());
+    if (requesterRole === 'caretaker') {
+      body.set('caretakerId', requesterId.toString());
 
       route = '/patient-caretaker';
-    } else if (notification.requesterRole === 'family member') {
-      body.set('familyMemberId', notification.id1.toString());
+    } else if (requesterRole === 'family member') {
+      body.set('familyMemberId', requesterId.toString());
 
       route = '/patient-familyMember';
     } else return of(null);
