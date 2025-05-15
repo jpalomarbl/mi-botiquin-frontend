@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { environment } from '../environment/environment';
 
+import { relationshipRequestNotificationDTO } from '../Models/notification.dto';
 import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
@@ -39,6 +40,35 @@ export class UserRelationshipsService {
     return this.http.get<UserDTO[]>(`${this.apiUrl}/search`, {
       withCredentials: true,
       params: { searchTerm: searchTerm },
+    });
+  }
+
+  acceptRelationshipRequest(
+    notification: relationshipRequestNotificationDTO
+  ): Observable<UserDTO | null> {
+    let route = '';
+
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('patientId', notification.id2.toString());
+
+    if (notification.requesterRole === 'caretaker') {
+      body.set('caretakerId', notification.id1.toString());
+
+      route = '/patient-caretaker';
+    } else if (notification.requesterRole === 'family member') {
+      body.set('familyMemberId', notification.id1.toString());
+
+      route = '/patient-familyMember';
+    } else return of(null);
+
+    return this.http.post<UserDTO>(this.apiUrl + route, body.toString(), {
+      withCredentials: true,
+      headers: headers,
     });
   }
 }
