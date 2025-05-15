@@ -41,7 +41,8 @@ export class ConfirmationDialogComponent {
       this.route === '/' ||
       this.route === 'remindersList' ||
       this.route === 'medicineKitsList' ||
-      this.route === 'userConfig'
+      this.route === 'userConfig' ||
+      this.route === 'relationships'
     ) {
       this.router.navigate([this.route]);
     }
