@@ -15,5 +15,6 @@ export interface expirationNotificationDTO extends NotificationDTO {
 export interface relationshipRequestNotificationDTO extends NotificationDTO {
   requesterFirstName: string;
   requesterLastName: string;
+  requesterEmail: string;
   requesterRole: string;
 }
