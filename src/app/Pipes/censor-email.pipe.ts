@@ -14,6 +14,8 @@ export class CensorEmailPipe implements PipeTransform {
 
     if (localPart.length <= 2) {
       return `${localPart.charAt(0)}****@${domain}`;
+    } else if (localPart.length >= 25) {
+      return `${localPart.charAt(0)}****${localPart.charAt(localPart.length - 1)}@${domain}`;
     }
 
     const firstChar = localPart.charAt(0);
