@@ -53,7 +53,7 @@ export class UserConfigComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private dialogService: DialogService,
-    public confirmationDialog: MatDialog
+    public dialog: MatDialog
   ) {
     this.user = {
       id: 0,
@@ -121,7 +121,7 @@ export class UserConfigComponent {
           password: this.passwordString,
         }),
       },
-      this.confirmationDialog
+      this.dialog
     );
   }
 }
