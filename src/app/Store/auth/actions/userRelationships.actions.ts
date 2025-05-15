@@ -60,3 +60,18 @@ export const searchUsersError = createAction(
   '[Auth] Search Users From API Error',
   props<{ error: string }>()
 );
+
+export const acceptRelationshipRequest = createAction(
+  '[Auth] Accept Relationship Request and insert relatinoship in DB',
+  props<{ requesterId: number, receiverId: number, requesterRole: string }>()
+);
+
+export const acceptRelationshipRequestSuccess = createAction(
+  '[Auth] Accept Relationship Request and insert relatinoship in DB Success',
+  props<{ relationship: UserDTO }>()
+);
+
+export const acceptRelationshipRequestError = createAction(
+  '[Auth] Accept Relationship Request and insert relatinoship in DB Error',
+  props<{ error: string }>()
+);

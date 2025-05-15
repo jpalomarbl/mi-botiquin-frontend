@@ -275,17 +275,37 @@ export class AuthEffects {
       ofType(notificationActions.fetchUserUnreadNotifications),
       mergeMap(({ userId }) =>
         this.authService.fetchUsersUnreadNotifications(userId).pipe(
-          map(
-            (
-              response: Array<
-                expirationNotificationDTO | relationshipRequestNotificationDTO
-              >
-            ) => {
-              return notificationActions.fetchCaretakerRelationshipsSuccess({
-                notifications: response,
-              });
-            }
-          ),
+          map((response: any) => {
+            let notifications: Array<
+              expirationNotificationDTO | relationshipRequestNotificationDTO
+            > = [];
+
+            response.forEach((notification: any) => {
+              if (notification.type === 'relationship request') {
+                notifications.push({
+                  type: notification.type,
+                  id1: notification.requesterId,
+                  id2: notification.receiverId,
+                  requesterFirstName: notification.requesterFirstName,
+                  requesterLastName: notification.requesterLastName,
+                  requesterEmail: notification.requesterEmail,
+                  requesterRole: notification.requesterRole
+                } as relationshipRequestNotificationDTO);
+              } else if (notification.type === 'expiration') {
+                notifications.push({
+                  type: notification.type,
+                  id1: notification.requesterId,
+                  id2: notification.receiverId,
+                  medicineName: notification.medicineName,
+                  medicineKitName: notification.medicineKitName
+                });
+              }
+            });
+
+            return notificationActions.fetchCaretakerRelationshipsSuccess({
+              notifications: notifications,
+            });
+          }),
           catchError((error) =>
             of(
               notificationActions.fetchCaretakerRelationshipsError({
@@ -311,11 +331,11 @@ export class AuthEffects {
           .pipe(
             map((result: boolean) => {
               if (result) {
-                return notificationActions.sendRelationshipRequestSuccess()
+                return notificationActions.sendRelationshipRequestSuccess();
               } else {
                 return notificationActions.sendRelationshipRequestError({
-                  error: 'WebSocket is not connected. Cannot send message.'
-                })
+                  error: 'WebSocket is not connected. Cannot send message.',
+                });
               }
             }),
             catchError((error) =>
@@ -327,6 +347,41 @@ export class AuthEffects {
             )
           )
       )
+    )
+  );
+
+  acceptRelationshipRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.acceptRelationshipRequest),
+      mergeMap(({ requesterId, receiverId, requesterRole }) => {
+        console.log(requesterId, receiverId, requesterRole);
+
+        return this.userRelationshipService
+          .acceptRelationshipRequest(requesterId, receiverId, requesterRole)
+          .pipe(
+            map((response: UserDTO | null) => {
+              if (response) {
+                console.log(response);
+                return userRelationshipActions.acceptRelationshipRequestSuccess(
+                  {
+                    relationship: response,
+                  }
+                );
+              } else {
+                return userRelationshipActions.acceptRelationshipRequestError({
+                  error: 'There was an error while accepting the request.',
+                });
+              }
+            }),
+            catchError((error) =>
+              of(
+                userRelationshipActions.acceptRelationshipRequestError({
+                  error: error.error || 'Fetch relationships failed',
+                })
+              )
+            )
+          );
+      })
     )
   );
 }

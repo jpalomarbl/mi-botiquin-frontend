@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthStateDTO } from 'src/app/Models/authState.dto';
 import * as AuthActions from '../actions/auth.actions';
-import * as userRelationshipActions from '../actions/userRelationships.actions';
 import * as notificationActions from '../actions/notification.actions';
+import * as userRelationshipActions from '../actions/userRelationships.actions';
 
 export const initialState: AuthStateDTO = {
   user: null,
@@ -129,19 +129,25 @@ export const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(userRelationshipActions.fetchPatientRelationshipsSuccess, (state, { relationships }) => ({
-    ...state,
-    relationships: relationships,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(userRelationshipActions.fetchPatientRelationshipsError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(
+    userRelationshipActions.fetchPatientRelationshipsSuccess,
+    (state, { relationships }) => ({
+      ...state,
+      relationships: relationships,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.fetchPatientRelationshipsError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
 
   // Fetch caretaker relationships
   on(userRelationshipActions.fetchCaretakerRelationships, (state) => ({
@@ -150,19 +156,25 @@ export const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(userRelationshipActions.fetchCaretakerRelationshipsSuccess, (state, { relationships }) => ({
-    ...state,
-    relationships: relationships,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(userRelationshipActions.fetchCaretakerRelationshipsError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(
+    userRelationshipActions.fetchCaretakerRelationshipsSuccess,
+    (state, { relationships }) => ({
+      ...state,
+      relationships: relationships,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.fetchCaretakerRelationshipsError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
 
   // Fetch family member relationships
   on(userRelationshipActions.fetchFamilyMemberRelationships, (state) => ({
@@ -171,19 +183,25 @@ export const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(userRelationshipActions.fetchFamilyMemberRelationshipsSuccess, (state, { relationships }) => ({
-    ...state,
-    relationships: relationships,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(userRelationshipActions.fetchFamilyMemberRelationshipsError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(
+    userRelationshipActions.fetchFamilyMemberRelationshipsSuccess,
+    (state, { relationships }) => ({
+      ...state,
+      relationships: relationships,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.fetchFamilyMemberRelationshipsError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
 
   // Search for users on DB
   on(userRelationshipActions.searchUsers, (state, { searchTerm }) => ({
@@ -192,14 +210,44 @@ export const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(userRelationshipActions.searchUsersSuccess, (state, { searchResults }) => ({
+  on(
+    userRelationshipActions.searchUsersSuccess,
+    (state, { searchResults }) => ({
+      ...state,
+      usersSearchResults: searchResults,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(userRelationshipActions.searchUsersError, (state, { error }) => ({
     ...state,
-    usersSearchResults: searchResults,
     loading: false,
     loaded: true,
-    error: null,
+    error: error,
   })),
-  on(userRelationshipActions.searchUsersError, (state, { error }) => ({
+
+  // Accept relationship request
+  on(
+    userRelationshipActions.acceptRelationshipRequest,
+    (state, { requesterId, receiverId, requesterRole }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.acceptRelationshipRequestSuccess,
+    (state, { relationship }) => ({
+      ...state,
+      relationships: [...(state.relationships || []), relationship],
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(userRelationshipActions.acceptRelationshipRequestError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
@@ -213,27 +261,36 @@ export const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(notificationActions.fetchCaretakerRelationshipsSuccess, (state, { notifications }) => ({
-    ...state,
-    notifications: notifications,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(notificationActions.fetchCaretakerRelationshipsError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(
+    notificationActions.fetchCaretakerRelationshipsSuccess,
+    (state, { notifications }) => ({
+      ...state,
+      notifications: notifications,
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(
+    notificationActions.fetchCaretakerRelationshipsError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
 
   // Send relationship request
-  on(notificationActions.sendRelationshipRequest, (state, { requesterId, receiverId }) => ({
-    ...state,
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
+  on(
+    notificationActions.sendRelationshipRequest,
+    (state, { requesterId, receiverId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
   on(notificationActions.sendRelationshipRequestSuccess, (state) => ({
     ...state,
     loading: false,
@@ -245,5 +302,5 @@ export const authReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
-  })),
+  }))
 );
