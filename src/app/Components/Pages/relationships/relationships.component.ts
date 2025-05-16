@@ -91,8 +91,6 @@ export class RelationshipsComponent {
   }
 
   ngOnInit(): void {
-    // this.store.dispatch(userRelationshipsActions.searchUsers({ searchTerm: 'test' }));
-
     this.user$.subscribe((user: UserDTO | null) => {
       if (user) {
         this.userRole = user.role;
