@@ -10,7 +10,7 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
 import { Store } from '@ngrx/store';
-import { updateUser } from 'src/app/Store/auth/actions/auth.actions';
+import * as authActions from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
 // Components
@@ -116,12 +116,16 @@ export class UserConfigComponent {
         message:
           'Ten en cuenta que si cambias tu rol de "familiar" a cualquier otro, perderás cualquier relación previamente establecida con otro usuario.',
         route: '/',
-        action: updateUser({
+        action: authActions.updateUser({
           user: userData,
           password: this.passwordString,
         }),
       },
       this.dialog
     );
+  }
+
+  logout(): void {
+    this.store.dispatch(authActions.logout());
   }
 }
