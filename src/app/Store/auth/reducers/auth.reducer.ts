@@ -247,12 +247,115 @@ export const authReducer = createReducer(
       error: null,
     })
   ),
-  on(userRelationshipActions.acceptRelationshipRequestError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(
+    userRelationshipActions.acceptRelationshipRequestError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
+
+  // Remove patient-caretaker relationship
+  on(
+    userRelationshipActions.removePatientCaretakerRelationship,
+    (state, { patientId, caretakerId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.removePatientCaretakerRelationshipSuccess,
+    (state, { caretakerId }) => {
+      let findIndex = -1;
+      const relationships = [...(state.relationships || [])];
+
+      if (relationships.length > 0) {
+        findIndex = relationships.findIndex(
+          (relationship) => relationship.id === caretakerId
+        );
+      }
+
+      if (findIndex === -1) {
+        return {
+          ...state,
+          loading: false,
+          loaded: true,
+          error: null,
+        };
+      } else {
+        return {
+          ...state,
+          relationships: relationships.slice(findIndex, 1),
+          loading: false,
+          loaded: true,
+          error: null,
+        };
+      }
+    }
+  ),
+  on(
+    userRelationshipActions.removePatientCaretakerRelationshipError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
+
+  // Remove patient-familyMember relationship
+  on(
+    userRelationshipActions.removePatientFamilyMemberRelationship,
+    (state, { patientId, familyMemberId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    userRelationshipActions.removePatientFamilyMemberRelationshipSuccess,
+    (state, { familyMemberId }) => {
+      let findIndex = -1;
+      const relationships = [...(state.relationships || [])];
+
+      if (relationships.length > 0) {
+        findIndex = relationships.findIndex(
+          (relationship) => relationship.id === familyMemberId
+        );
+      }
+
+      if (findIndex === -1) {
+        return {
+          ...state,
+          loading: false,
+          loaded: true,
+          error: null,
+        };
+      } else {
+        return {
+          ...state,
+          relationships: relationships.slice(findIndex, 1),
+          loading: false,
+          loaded: true,
+          error: null,
+        };
+      }
+    }
+  ),
+  on(
+    userRelationshipActions.removePatientFamilyMemberRelationshipError,
+    (state, { error }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    })
+  ),
 
   // Fetch user's unread notifications
   on(notificationActions.fetchUserUnreadNotifications, (state) => ({

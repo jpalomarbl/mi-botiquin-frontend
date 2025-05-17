@@ -73,4 +73,38 @@ export class UserRelationshipsService {
       headers: headers,
     });
   }
+
+  removePatientCaretakerRelationship(patientId: number, caretakerId: number): Observable<any> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('patientId', patientId.toString());
+    body.set('caretakerId', caretakerId.toString());
+
+    return this.http.delete(`${this.apiUrl}/patient-caretaker`, {
+      body: body.toString(),
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
+  removePatientFamilyMemberRelationship(patientId: number, familyMemberId: number): Observable<any> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('patientId', patientId.toString());
+    body.set('familyMemberId', familyMemberId.toString());
+
+    return this.http.delete(`${this.apiUrl}/patient-familyMember`, {
+      body: body.toString(),
+      withCredentials: true,
+      headers: headers,
+    });
+  }
 }

@@ -289,7 +289,7 @@ export class AuthEffects {
                   requesterFirstName: notification.requesterFirstName,
                   requesterLastName: notification.requesterLastName,
                   requesterEmail: notification.requesterEmail,
-                  requesterRole: notification.requesterRole
+                  requesterRole: notification.requesterRole,
                 } as relationshipRequestNotificationDTO);
               } else if (notification.type === 'expiration') {
                 notifications.push({
@@ -297,7 +297,7 @@ export class AuthEffects {
                   id1: notification.requesterId,
                   id2: notification.receiverId,
                   medicineName: notification.medicineName,
-                  medicineKitName: notification.medicineKitName
+                  medicineKitName: notification.medicineKitName,
                 });
               }
             });
@@ -378,6 +378,63 @@ export class AuthEffects {
                 userRelationshipActions.acceptRelationshipRequestError({
                   error: error.error || 'Fetch relationships failed',
                 })
+              )
+            )
+          );
+      })
+    )
+  );
+
+  removePatientCaretakerRelationship$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.removePatientCaretakerRelationship),
+      mergeMap(({ patientId, caretakerId }) => {
+        return this.userRelationshipService
+          .removePatientCaretakerRelationship(patientId, caretakerId)
+          .pipe(
+            map((response: UserDTO) => {
+              console.log(response);
+              return userRelationshipActions.removePatientCaretakerRelationshipSuccess(
+                {
+                  caretakerId: caretakerId,
+                }
+              );
+            }),
+            catchError((error) =>
+              of(
+                userRelationshipActions.removePatientCaretakerRelationshipError(
+                  {
+                    error: error.error || 'Fetch relationships failed',
+                  }
+                )
+              )
+            )
+          );
+      })
+    )
+  );
+  removePatientFamilyMemberRelationship$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userRelationshipActions.removePatientFamilyMemberRelationship),
+      mergeMap(({ patientId, familyMemberId }) => {
+        return this.userRelationshipService
+          .removePatientFamilyMemberRelationship(patientId, familyMemberId)
+          .pipe(
+            map((response: UserDTO) => {
+              console.log(response);
+              return userRelationshipActions.removePatientFamilyMemberRelationshipSuccess(
+                {
+                  familyMemberId: familyMemberId,
+                }
+              );
+            }),
+            catchError((error) =>
+              of(
+                userRelationshipActions.removePatientFamilyMemberRelationshipError(
+                  {
+                    error: error.error || 'Fetch relationships failed',
+                  }
+                )
               )
             )
           );

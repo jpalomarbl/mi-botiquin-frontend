@@ -63,7 +63,7 @@ export const searchUsersError = createAction(
 
 export const acceptRelationshipRequest = createAction(
   '[Auth] Accept Relationship Request and insert relatinoship in DB',
-  props<{ requesterId: number, receiverId: number, requesterRole: string }>()
+  props<{ requesterId: number; receiverId: number; requesterRole: string }>()
 );
 
 export const acceptRelationshipRequestSuccess = createAction(
@@ -73,5 +73,35 @@ export const acceptRelationshipRequestSuccess = createAction(
 
 export const acceptRelationshipRequestError = createAction(
   '[Auth] Accept Relationship Request and insert relatinoship in DB Error',
+  props<{ error: string }>()
+);
+
+export const removePatientCaretakerRelationship = createAction(
+  '[Auth] Remove Patient-Caretaker Relationship From API',
+  props<{ patientId: number; caretakerId: number }>()
+);
+
+export const removePatientCaretakerRelationshipSuccess = createAction(
+  '[Auth] Remove Patient-Caretaker Relationship From API Success',
+  props<{ caretakerId: number }>()
+);
+
+export const removePatientCaretakerRelationshipError = createAction(
+  '[Auth] Remove Patient-Caretaker Relationship From API Error',
+  props<{ error: string }>()
+);
+
+export const removePatientFamilyMemberRelationship = createAction(
+  '[Auth] Remove Patient-Family Member Relationship From API',
+  props<{ patientId: number; familyMemberId: number }>()
+);
+
+export const removePatientFamilyMemberRelationshipSuccess = createAction(
+  '[Auth] Remove Patient-Family Member Relationship From API Success',
+  props<{ familyMemberId: number }>()
+);
+
+export const removePatientFamilyMemberRelationshipError = createAction(
+  '[Auth] Remove Patient-Family Member Relationship From API Error',
   props<{ error: string }>()
 );
