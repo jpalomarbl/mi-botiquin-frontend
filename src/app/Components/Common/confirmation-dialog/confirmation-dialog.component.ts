@@ -3,8 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Store
-import { Store } from '@ngrx/store';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 // Angular Material
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -37,15 +36,7 @@ export class ConfirmationDialogComponent {
   }
 
   navigate(): void {
-    if (
-      this.route === '/' ||
-      this.route === 'remindersList' ||
-      this.route === 'medicineKitsList' ||
-      this.route === 'userConfig' ||
-      this.route === 'relationships'
-    ) {
-      this.router.navigate([this.route]);
-    }
+    this.router.navigate([this.route]);
 
     if (this.action) {
       this.store.dispatch(this.action);
