@@ -1,7 +1,7 @@
 // Angular
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, take } from 'rxjs';
+import { Observable, take, takeUntil, distinctUntilChanged, Subject } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -49,6 +49,7 @@ export class HeaderComponent {
     expirationNotificationDTO | relationshipRequestNotificationDTO
   > | null>;
   user$: Observable<UserDTO | null>;
+  private destroy$ = new Subject<void>(); // Subject para controlar la desuscripción
 
   constructor(
     private router: Router,
@@ -63,12 +64,22 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    this.webSocketService.notifications$
-      .pipe(take(1))
-      .subscribe((notifications) => {
-        this.notifications = [...this.notifications, ...notifications];
-        console.log('Notificaciones actualizadas:', notifications);
-      });
+    this.webSocketService.notificationsSubjectGetter
+      .pipe(
+        distinctUntilChanged(), // Evita valores duplicados
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        (
+          value: expirationNotificationDTO | relationshipRequestNotificationDTO
+        ) => {
+          this.notifications.push(value);
+
+          if (this.isRelationshipRequest(value)) {
+            this.clickRelationshipRequestNotification(value);
+          }
+        }
+      );
 
     this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
       if (user) {
@@ -107,7 +118,7 @@ export class HeaderComponent {
       notification.requesterEmail
     );
 
-    console.log(notification)
+    console.log(notification);
 
     this.dialogService.openConfirmationDialog(
       {
@@ -144,5 +155,12 @@ export class HeaderComponent {
             notification && notification.type === 'relationship request'
         ) as Array<relationshipRequestNotificationDTO>)
       : [];
+  }
+
+  // Typeguard
+  private isRelationshipRequest(
+    value: expirationNotificationDTO | relationshipRequestNotificationDTO
+  ): value is relationshipRequestNotificationDTO {
+    return 'requesterFirstName' in value; // Verifica una propiedad única de relationshipRequestNotificationDTO
   }
 }
