@@ -31,7 +31,6 @@ import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 // Custom modules
 import { MatDialog } from '@angular/material/dialog';
@@ -43,7 +42,6 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
   imports: [
     CommonModule,
     AsyncPipe,
-    HeaderComponent,
     FooterComponent,
     AngularMaterialModule,
     NextDosePipe,

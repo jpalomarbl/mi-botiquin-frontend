@@ -1,5 +1,4 @@
 // Angular
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
@@ -34,8 +33,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'custom-header',
-  standalone: true,
-  imports: [AngularMaterialModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })

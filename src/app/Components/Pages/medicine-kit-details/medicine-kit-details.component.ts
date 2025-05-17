@@ -24,7 +24,6 @@ import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 // Pipes
 import { AsyncPipe } from '@angular/common';
@@ -33,7 +32,6 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-medicine-kit-details',
   standalone: true,
   imports: [
-    HeaderComponent,
     FooterComponent,
     AsyncPipe,
     AngularMaterialModule,

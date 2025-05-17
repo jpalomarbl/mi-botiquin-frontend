@@ -50,13 +50,11 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 @Component({
   selector: 'app-reminders-list',
   standalone: true,
   imports: [
-    HeaderComponent,
     FooterComponent,
     FormsModule,
     AngularMaterialModule,

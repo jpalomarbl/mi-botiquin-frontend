@@ -27,11 +27,7 @@ import { UserDTO } from '../Models/user.dto';
 export class WebSocketService {
   private socket$: WebSocket | null;
   private notificationsSubject: BehaviorSubject<
-    Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
-  >;
-
-  public notifications$: Observable<
-    Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
+    expirationNotificationDTO | relationshipRequestNotificationDTO
   >;
 
   constructor(
@@ -40,9 +36,8 @@ export class WebSocketService {
   ) {
     this.socket$ = null;
     this.notificationsSubject = new BehaviorSubject<
-      Array<expirationNotificationDTO | relationshipRequestNotificationDTO>
-    >([]);
-    this.notifications$ = this.notificationsSubject.asObservable();
+      expirationNotificationDTO | relationshipRequestNotificationDTO
+    >({} as relationshipRequestNotificationDTO);
 
     this.store
       .select(selectUser)
@@ -60,7 +55,7 @@ export class WebSocketService {
               this.socket$!.onmessage = (event) => {
                 const rawMessage = JSON.parse(event.data);
 
-                let message: any;
+                let message: any = rawMessage;
 
                 if (rawMessage.type === 'expired') {
                   message = {
@@ -70,24 +65,23 @@ export class WebSocketService {
                     id2: rawMessage.medicineKitId,
                     medicineKitName: rawMessage.medicineKitName,
                   };
+
+                  this.notificationsSubject.next(message);
                 } else if (rawMessage.type === 'relationship request') {
                   message = {
                     type: rawMessage.type,
-                    id1: rawMessage.senderId,
-                    id2: rawMessage.receiverId,
+                    id1: rawMessage.id1,
+                    id2: rawMessage.id2,
                     requesterFirstName: rawMessage.requesterFirstName,
                     requesterLastName: rawMessage.requesterLastName,
+                    requesterEmail: rawMessage.requesterEmail,
                     requesterRole: rawMessage.requesterRole,
                   };
-                }
-                  // Obtenemos el valor actual, añadimos el nuevo mensaje y emitimos
-                  const currentNotifications =
-                    this.notificationsSubject.getValue();
 
-                  this.notificationsSubject.next([
-                    ...currentNotifications,
-                    message,
-                  ]);
+                  this.notificationsSubject.next(message);
+
+                  console.log(this.notificationsSubject.getValue());
+                }
               };
 
               this.socket$!.onopen = () =>
@@ -114,5 +108,11 @@ export class WebSocketService {
 
   closeSocket(): void {
     this.socket$?.close();
+  }
+
+  get notificationsSubjectGetter(): BehaviorSubject<
+    expirationNotificationDTO | relationshipRequestNotificationDTO
+  > {
+    return this.notificationsSubject;
   }
 }

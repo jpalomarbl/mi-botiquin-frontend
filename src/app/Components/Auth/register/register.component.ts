@@ -8,12 +8,10 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 import { loginOAuth, register } from 'src/app/Store/auth/actions/auth.actions';
 import { environment } from 'src/app/environment/environment';
 
-import { HeaderComponent } from '../../Common/header/header.component';
-
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, HeaderComponent],
+  imports: [FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })

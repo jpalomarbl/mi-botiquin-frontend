@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './Store/auth/actions/auth.actions';
+import { HeaderComponent } from './Components/Common/header/header.component';
+import { FooterComponent } from './Components/Common/footer/footer.component';
 
 @Component({
   selector: 'app-root',

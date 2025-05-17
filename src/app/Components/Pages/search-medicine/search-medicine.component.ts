@@ -20,7 +20,6 @@ import { selectMedicineLoading } from 'src/app/Store/medicine/selectors/medicine
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -37,7 +36,6 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
   selector: 'app-search-medicine',
   standalone: true,
   imports: [
-    HeaderComponent,
     FooterComponent,
     FormsModule,
     AngularMaterialModule,

@@ -10,7 +10,6 @@ import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
@@ -45,7 +44,6 @@ import 'moment/locale/es';
   selector: 'app-add-medicine',
   standalone: true,
   imports: [
-    HeaderComponent,
     FooterComponent,
     FormsModule,
     AngularMaterialModule,

@@ -18,9 +18,13 @@ import { authReducer } from './Store/auth/reducers/auth.reducer';
 import { MedicineKitEffects } from './Store/medicine/effects/medicineKit.effects';
 import { ReminderEffects } from './Store/medicine/effects/reminder.effects';
 import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
+import { HeaderComponent } from './Components/Common/header/header.component';
+import { FooterComponent } from './Components/Common/footer/footer.component';
+import { CommonModule } from '@angular/common';
+import { AngularMaterialModule } from './Modules/angular-material.module';
 
 @NgModule({
-  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent],
+  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,6 +41,8 @@ import { medicineReducer } from './Store/medicine/reducer/medicine.reducer';
       // connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
     BrowserAnimationsModule,
+    CommonModule,
+    AngularMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],

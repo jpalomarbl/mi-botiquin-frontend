@@ -26,7 +26,6 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 
 //Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 // Data models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -37,7 +36,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
   selector: 'app-medicine-kits-list',
   standalone: true,
   imports: [
-    HeaderComponent,
     FooterComponent,
     CommonModule,
     AngularMaterialModule,

@@ -30,14 +30,12 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 
 // Components
 import { FooterComponent } from '../../Common/footer/footer.component';
-import { HeaderComponent } from '../../Common/header/header.component';
 
 @Component({
   selector: 'app-add-medicine-kit',
   standalone: true,
   imports: [
     FormsModule,
-    HeaderComponent,
     FooterComponent,
     AngularMaterialModule,
   ],
