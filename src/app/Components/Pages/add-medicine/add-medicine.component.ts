@@ -104,7 +104,7 @@ export class AddMedicineComponent {
     private router: Router,
     private dialogService: DialogService,
     private actions$: Actions,
-    public errorDialog: MatDialog
+    public dialog: MatDialog
   ) {
     this.medicine = JSON.parse(
       decodeURIComponent(this.route.snapshot.params['medicine'])
@@ -186,7 +186,7 @@ export class AddMedicineComponent {
     });
 
     this.actions$.pipe(ofType(addMedicineError), take(1)).subscribe((error) => {
-      this.dialogService.openErrorDialog(error.error, this.errorDialog);
+      this.dialogService.openErrorDialog(error.error, this.dialog);
     });
   }
 
@@ -225,23 +225,59 @@ export class AddMedicineComponent {
       reminder.start = start;
       reminder.finish = finish;
 
-      this.store.dispatch(
-        addMedicine({
-          medicine: medicine,
-          reminder: reminder,
-          medicineKitId: this.medicineKitId,
-        })
+      let translatedUnit = '';
+
+      if (reminder.frequencyUnit === 'minutes')
+        translatedUnit = 'minutos';
+      else if (reminder.frequencyUnit === 'hours')
+        translatedUnit = 'horas';
+      else if (reminder.frequencyUnit === 'days')
+        translatedUnit = 'días';
+
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Añadir medicamento y recordatorio?',
+          message:
+            '¿Estás seguro de añadir ' +
+            medicine.name +
+            '(' +
+            medicine.amount + ' ' +
+            medicine.unit +
+            '), con un recordatorio cada ' +
+            reminder.frequency +
+            ' ' +
+            translatedUnit +
+            ' al botiquín?',
+          action: addMedicine({
+            medicine: medicine,
+            reminder: reminder,
+            medicineKitId: this.medicineKitId,
+          }),
+          route: 'medicineKitDetails/' + this.medicineKitId,
+        },
+        this.dialog
       );
     } else {
-      this.store.dispatch(
-        addMedicine({
-          medicine: medicine,
-          medicineKitId: this.medicineKitId,
-        })
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Añadir medicamento?',
+          message:
+            '¿Estás seguro de añadir ' +
+            medicine.name +
+            ' (' +
+            medicine.amount + ' ' +
+            medicine.unit +
+            ') ' +
+            'al botiquín?',
+          action: addMedicine({
+            medicine: medicine,
+            medicineKitId: this.medicineKitId,
+          }),
+          route: 'medicineKitDetails/' + this.medicineKitId,
+        },
+        this.dialog
       );
     }
-
-    this.router.navigate(['medicineKitDetails/' + this.medicineKitId]);
   }
 
   openDatePicker(dp: any) {
