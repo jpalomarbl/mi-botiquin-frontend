@@ -1,7 +1,13 @@
 // Angular
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, take, takeUntil, distinctUntilChanged, Subject } from 'rxjs';
+import {
+  distinctUntilChanged,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+} from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -21,7 +27,6 @@ import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
 
 // Modules
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -73,10 +78,10 @@ export class HeaderComponent {
         (
           value: expirationNotificationDTO | relationshipRequestNotificationDTO
         ) => {
-          this.notifications.push(value);
-
           if (this.isRelationshipRequest(value)) {
             this.clickRelationshipRequestNotification(value);
+          } else {
+            this.notifications.push(value);
           }
         }
       );
@@ -117,8 +122,6 @@ export class HeaderComponent {
     const censoredEmail = censorEmailPipe.transform(
       notification.requesterEmail
     );
-
-    console.log(notification);
 
     this.dialogService.openConfirmationDialog(
       {
