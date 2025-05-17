@@ -118,11 +118,6 @@ export class RelationshipsComponent {
           console.log('User relationships:', relationships);
           this.userRelationships = relationships;
         });
-
-        // this.store.dispatch(notificationActions.sendRelationshipRequest({
-        //   requesterId: user.id,
-        //   receiverId: 8
-        // }));
       }
     });
   }
@@ -158,7 +153,9 @@ export class RelationshipsComponent {
           firstName +
           ' ' +
           (lastName ? lastName : '') +
-          ' (' + censoredEmail + ')?',
+          ' (' +
+          censoredEmail +
+          ')?',
         route: '/',
         action: sendRelationshipRequest({
           requesterId: this.userId,
@@ -167,8 +164,81 @@ export class RelationshipsComponent {
       },
       this.dialog
     );
+  }
 
-    console.log("requesterId: ", this.userId);
-    console.log("receiverId: ", userId);
+  removeRelationship(relationship: UserDTO): void {
+    const censorEmailPipe = new CensorEmailPipe();
+    const censoredEmail = censorEmailPipe.transform(relationship.email);
+
+    console.log(relationship, this.userId);
+
+    if (this.userRole === 'patient') {
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Eliminar relación con ' + relationship.firstName + '?',
+          message:
+            '¿Estás seguro de que deseas eliminar tu relación con ' +
+            relationship.firstName +
+            ' ' +
+            (relationship.lastName ? relationship.lastName : '') +
+            ' (' +
+            censoredEmail +
+            ')?',
+          route: '/',
+          action:
+            relationship.role === 'caretaker'
+              ? userRelationshipsActions.removePatientCaretakerRelationship({
+                  patientId: this.userId,
+                  caretakerId: relationship.id,
+                })
+              : userRelationshipsActions.removePatientFamilyMemberRelationship({
+                  patientId: this.userId,
+                  familyMemberId: relationship.id,
+                }),
+        },
+        this.dialog
+      );
+    } else if (this.userRole === 'caretaker') {
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Eliminar relación con ' + relationship.firstName + '?',
+          message:
+            '¿Estás seguro de que deseas eliminar tu relación con ' +
+            relationship.firstName +
+            ' ' +
+            (relationship.lastName ? relationship.lastName : '') +
+            ' (' +
+            censoredEmail +
+            ')?',
+          route: '/',
+          action: userRelationshipsActions.removePatientCaretakerRelationship({
+            patientId: relationship.id,
+            caretakerId: this.userId,
+          }),
+        },
+        this.dialog
+      );
+    } else {
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Eliminar relación con ' + relationship.firstName + '?',
+          message:
+            '¿Estás seguro de que deseas eliminar tu relación con ' +
+            relationship.firstName +
+            ' ' +
+            (relationship.lastName ? relationship.lastName : '') +
+            ' (' +
+            censoredEmail +
+            ')?',
+          route: '/',
+          action:
+            userRelationshipsActions.removePatientFamilyMemberRelationship({
+              patientId: relationship.id,
+              familyMemberId: this.userId,
+            }),
+        },
+        this.dialog
+      );
+    }
   }
 }
