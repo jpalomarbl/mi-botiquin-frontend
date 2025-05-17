@@ -2,5 +2,6 @@
     "prettier.bracketSameLine": true,
     "prettier.singleAttributePerLine": true,
     "prettier.singleQuote": true,
-    "prettier.trailingComma": "none"
+    "prettier.trailingComma": "none",
+    "CodeGPT.apiKey": "Ollama"
 }
