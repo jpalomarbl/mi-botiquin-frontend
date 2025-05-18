@@ -56,6 +56,8 @@ export class HeaderComponent {
   user$: Observable<UserDTO | null>;
   private destroy$ = new Subject<void>(); // Subject para controlar la desuscripción
 
+  notificationsButtonDisable: boolean;
+
   constructor(
     private router: Router,
     private store: Store<GlobalStateDTO>,
@@ -66,6 +68,7 @@ export class HeaderComponent {
     this.notifications = [];
     this.notifications$ = this.store.select(selectUserNotifications);
     this.user$ = this.store.select(selectUser);
+    this.notificationsButtonDisable = false;
   }
 
   ngOnInit(): void {
@@ -102,6 +105,10 @@ export class HeaderComponent {
             ...(notifications || []),
           ];
           console.log('Notificaciones actualizadas:', notifications);
+
+          if (!notifications) {
+            this.notificationsButtonDisable = true;
+          }
         }
       );
     });

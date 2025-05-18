@@ -22,6 +22,7 @@ import { HeaderComponent } from './Components/Common/header/header.component';
 import { FooterComponent } from './Components/Common/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from './Modules/angular-material.module';
+import { AsyncPipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent, HeaderComponent],
@@ -42,7 +43,7 @@ import { AngularMaterialModule } from './Modules/angular-material.module';
     }),
     BrowserAnimationsModule,
     CommonModule,
-    AngularMaterialModule
+    AngularMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
