@@ -22,8 +22,8 @@ import {
   selectUser,
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
-import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Pipes

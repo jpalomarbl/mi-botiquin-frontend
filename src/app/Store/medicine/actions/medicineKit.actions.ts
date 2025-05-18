@@ -99,3 +99,27 @@ export const addMedicineError = createAction(
   '[Medicine] Insert medicine into DB Error',
   props<{ error: string }>()
 );
+
+export const updateMedicine = createAction(
+  '[Medicine] Update medicine from DB',
+  props<{
+    medicine: MedicineDTO;
+    reminder?: ReminderDTO;
+    medicineKitId: number;
+    createReminder: boolean;
+  }>()
+);
+
+export const updateMedicineSuccess = createAction(
+  '[Medicine] Update medicine from DB Success',
+  props<{
+    medicine: MedicineDTO;
+    reminder?: ReminderDTO;
+    medicineKitId: number;
+  }>()
+);
+
+export const updateMedicineError = createAction(
+  '[Medicine] Update medicine from DB Error',
+  props<{ error: string }>()
+);

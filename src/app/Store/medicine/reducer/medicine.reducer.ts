@@ -2,8 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 
 import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
-import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 
 export const initialState: MedicineStateDTO = {
   medicineKits: [],
@@ -119,20 +119,88 @@ export const medicineReducer = createReducer(
   })),
 
   // Add reminder to DB
-  on(reminderActions.addReminder, (state, { reminder }) => ({
+  on(reminderActions.addReminder, (state, { reminder, medicineId }) => ({
     ...state,
     loading: true,
     loaded: false,
     error: null,
   })),
-  on(reminderActions.addReminderSuccess, (state, { reminder }) => ({
+  on(
+    reminderActions.addReminderSuccess,
+    (state, { reminder, medicineId, medicineKitId }) => ({
+      ...state,
+      medicineKits: state.medicineKits.map((medicineKit) => {
+        if (medicineKit.id === medicineKitId) {
+          return {
+            ...medicineKit,
+            medicines: medicineKit.medicines.map((medicine) => {
+              if (medicine.id === medicineId) {
+                return {
+                  ...medicine,
+                  reminder: reminder,
+                };
+              } else return medicine;
+            }),
+          };
+        } else return medicineKit;
+      }),
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(reminderActions.addReminderError, (state, { error }) => ({
     ...state,
-    reminders: [...(state.reminders || []), reminder],
     loading: false,
     loaded: true,
-    error: null,
+    error: error,
   })),
-  on(reminderActions.addReminderError, (state, { error }) => ({
+
+  // Update reminder to DB
+  on(
+    reminderActions.updateReminder,
+    (state, { reminder, medicineId, medicineKitId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    reminderActions.updateReminderSuccess,
+    (state, { reminder, medicineId, medicineKitId }) => {
+      const updatedMedicineKits = state.medicineKits.map((kit) => {
+        if (kit.id !== medicineKitId) {
+          return kit;
+        }
+
+        const updatedMedicines = kit.medicines.map((med) => {
+          if (med.id !== medicineId) {
+            return med;
+          }
+          return {
+            ...med,
+            reminder: reminder,
+          };
+        });
+
+        return {
+          ...kit,
+          medicines: updatedMedicines,
+        };
+      });
+
+      return {
+        ...state,
+        medicineKits: updatedMedicineKits,
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
+  ),
+
+  on(reminderActions.updateReminderError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,
@@ -213,8 +281,6 @@ export const medicineReducer = createReducer(
 
   // Delete a medicine
   on(medicineKitActions.deleteMedicineById, (state) => {
-    console.log('Before deleteMedicineById:', state.error);
-
     return {
       ...state,
       loading: true,
@@ -241,8 +307,6 @@ export const medicineReducer = createReducer(
   ),
 
   on(medicineKitActions.deleteMedicineByIdError, (state, { error }) => {
-    console.log('Before deleteMedicineByIdError:', state.error);
-
     return {
       ...state,
       loading: false,
@@ -295,6 +359,7 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
+  // Add new medicine to medicine kit
   on(
     medicineKitActions.addMedicine,
     (state, { medicine, reminder, medicineKitId }) => ({
@@ -318,9 +383,7 @@ export const medicineReducer = createReducer(
           kit.id !== medicineKitId
             ? kit
             : {
-                // nuevo objeto kit
                 ...kit,
-                // nuevo array de medicines
                 medicines: [...kit.medicines, medicineWithReminder],
               }
         ),
@@ -331,6 +394,49 @@ export const medicineReducer = createReducer(
     }
   ),
   on(medicineKitActions.addMedicineError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
+  // Edit medicine in medicine kit
+  on(
+    medicineKitActions.updateMedicine,
+    (state, { medicine, reminder, medicineKitId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    medicineKitActions.updateMedicineSuccess,
+    (state, { medicine, reminder, medicineKitId }) => {
+      const medicineWithReminder = {
+        ...medicine,
+        reminders: [reminder],
+      };
+
+      return {
+        ...state,
+        medicineKits: state.medicineKits.map((kit) =>
+          kit.id !== medicineKitId
+            ? kit
+            : {
+                ...kit,
+                medicines: kit.medicines.map((m) =>
+                  m.id !== medicine.id ? m : medicineWithReminder
+                ),
+              }
+        ),
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
+  ),
+  on(medicineKitActions.updateMedicineError, (state, { error }) => ({
     ...state,
     loading: false,
     loaded: true,

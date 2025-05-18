@@ -106,6 +106,29 @@ export class ReminderService {
     });
   }
 
+  updateReminder(
+    reminder: ReminderDTO,
+    medicineId: number
+  ): Observable<ReminderDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('reminderId', reminder.id!.toString());
+    body.set('frequency', reminder.frequency.toString());
+    body.set('frequencyUnit', reminder.frequencyUnit);
+    body.set('start', reminder.start.toString());
+    body.set('finish', reminder.finish!.toString());
+    body.set('amount', reminder.amount.toString());
+
+    return this.http.put<any>(`${this.apiUrlReminder}`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
     const startDate = new Date(reminder.start);
 
@@ -146,7 +169,7 @@ export class ReminderService {
 
     // Calcular la diferencia total en milisegundos
     const diffMs = currentTime.getTime() - startTime.getTime();
-    
+
     // Convertir a la unidad de frecuencia correspondiente
     let diffUnits: number;
     switch (frequencyUnit) {

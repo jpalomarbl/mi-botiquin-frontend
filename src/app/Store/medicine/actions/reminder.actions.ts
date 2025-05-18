@@ -55,15 +55,30 @@ export const changeReminderStateError = createAction(
 
 export const addReminder = createAction(
   '[Medicine] Insert reminder into DB',
-  props<{ reminder: ReminderDTO, medicineId: number }>()
+  props<{ reminder: ReminderDTO, medicineId: number, medicineKitId: number }>()
 );
 
 export const addReminderSuccess = createAction(
   '[Medicine] Insert reminder into DB Success',
-  props<{ reminder: ReminderDTO }>()
+  props<{ reminder: ReminderDTO, medicineId: number, medicineKitId: number }>()
 );
 
 export const addReminderError = createAction(
   '[Medicine] Insert reminder into DB Error',
+  props<{ error: string }>()
+);
+
+export const updateReminder = createAction(
+  '[Medicine] Update reminder from DB',
+  props<{ reminder: ReminderDTO; medicineId: number; medicineKitId: number }>()
+);
+
+export const updateReminderSuccess = createAction(
+  '[Medicine] Update reminder from DB Success',
+  props<{ reminder: ReminderDTO; medicineId: number; medicineKitId: number }>()
+);
+
+export const updateReminderError = createAction(
+  '[Medicine] Update reminder from DB Error',
   props<{ error: string }>()
 );

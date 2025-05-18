@@ -28,7 +28,7 @@ import {
   changeReminderStateError,
   fetchAllUserReminders,
   fetchAllUserRemindersError,
-} from 'src/app/Store/medicine/actions/reminders.actions';
+} from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
@@ -310,14 +310,6 @@ export class RemindersListComponent {
           }
         });
     }
-
-    // this.store
-    //   .select(medicineSelectors.selectOrganizedReminders)
-    //   .subscribe(
-    //     (reminders: Array<[Date, ReminderDTO[]] | null> | ReminderDTO[]) => {
-    //       console.log(reminders);
-    //     }
-    //   );
   }
 
   private calculateDate(): void {

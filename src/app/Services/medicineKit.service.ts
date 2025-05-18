@@ -153,6 +153,26 @@ export class MedicineKitService {
     });
   }
 
+  updateMedicine(
+    medicine: MedicineDTO,
+  ): Observable<MedicineDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('medicineId', medicine.id!.toString());
+    body.set('expirationDate', medicine.expirationDate.toString());
+    body.set('amount', medicine.amount.toString());
+    body.set('unit', medicine.unit);
+
+    return this.http.put<any>(`${this.apiUrlMedicine}`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   getMedicineUnit(
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string

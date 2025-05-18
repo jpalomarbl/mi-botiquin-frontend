@@ -14,7 +14,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as medicineKitSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 import { selectMedicineLoading } from 'src/app/Store/medicine/selectors/medicine.selectors';
 

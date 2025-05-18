@@ -19,7 +19,7 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
@@ -108,33 +108,44 @@ export class MedicineKitDetailsComponent {
 
   deleteMedicine(medicineId: number): void {
     this.medicineKit$.pipe(take(1)).subscribe((medicineKit) => {
-      this.dialogService.openConfirmationDialog({
-        title: '¿Eliminar medicamento?',
-        message:
-          '¿Estás seguro de eliminar este medicamento? También se eliminarán los recordatorios asociados.',
-        route: '/medicineKitDetails/' + medicineKit!.id,
-        action: medicineKitActions.deleteMedicineById({
-          medicineId: medicineId,
-          medicineKitId: medicineKit!.id,
-        })
-      }, this.dialog);
+      this.dialogService.openConfirmationDialog(
+        {
+          title: '¿Eliminar medicamento?',
+          message:
+            '¿Estás seguro de eliminar este medicamento? También se eliminarán los recordatorios asociados.',
+          route: '/medicineKitDetails/' + medicineKit!.id,
+          action: medicineKitActions.deleteMedicineById({
+            medicineId: medicineId,
+            medicineKitId: medicineKit!.id,
+          }),
+        },
+        this.dialog
+      );
     });
 
-    this.actions$
-      .pipe(
-        ofType(medicineKitActions.fetchMedicineKitByIdSuccess),
-        take(1) // Para autodesuscribirse después de ejecutarse una vez
-      )
-      .subscribe(() => {
-        // Código a ejecutar después de eliminar
-        this.sortedMedicines = this.sortedMedicines?.filter(
-          (m) => m.id !== medicineId
-        );
-      });
+    // this.actions$
+    //   .pipe(
+    //     ofType(medicineKitActions.fetchMedicineKitByIdSuccess),
+    //     take(1) // Para autodesuscribirse después de ejecutarse una vez
+    //   )
+    //   .subscribe(() => {
+    //     // Código a ejecutar después de eliminar
+    //     this.sortedMedicines = this.sortedMedicines?.filter(
+    //       (m) => m.id !== medicineId
+    //     );
+    //   });
   }
 
   navigateAddMedicine(): void {
     this.router.navigate([`searchMedicine/${this.medicineKit!.id}`]);
+  }
+
+  navigateEditMedicine(medicine: MedicineDTO): void {
+    const medicineJSON = encodeURIComponent(JSON.stringify(medicine));
+
+    this.router.navigate([
+      `/addMedicine/update/${this.medicineKitId}/${medicineJSON}`,
+    ]);
   }
 
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {

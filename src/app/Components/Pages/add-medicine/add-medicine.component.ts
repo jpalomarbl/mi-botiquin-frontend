@@ -20,7 +20,8 @@ import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import {
   addMedicine,
   addMedicineError,
-} from 'src/app/Store/medicine/actions/medicineKits.actions';
+  updateMedicine,
+} from 'src/app/Store/medicine/actions/medicineKit.actions';
 
 // Models
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
@@ -76,9 +77,11 @@ export class AddMedicineComponent {
   reminder: ReminderDTO;
   startDateData: Date;
   startTimeData: string;
-  finishDateData: Date | null;
+  finishDateData: Date | undefined;
   finishTimeData: string;
   medicineKitId: number;
+
+  isUpdateMode: boolean;
 
   addReminder: boolean;
   medicineUnitsArray: Array<[string, string[]]>[];
@@ -109,6 +112,7 @@ export class AddMedicineComponent {
     this.medicine = JSON.parse(
       decodeURIComponent(this.route.snapshot.params['medicine'])
     );
+
     this.medicineKitId = this.route.snapshot.params['medicineKitId'];
 
     this.reminder = {
@@ -119,9 +123,31 @@ export class AddMedicineComponent {
       medicineUnit: '',
     };
 
-    this.startDateData = new Date();
+    if (this.router.url.includes('update')) {
+      this.isUpdateMode = true;
+    } else {
+      this.isUpdateMode = false;
+    }
+
+    if (this.isUpdateMode) {
+      this.medicine.expirationDate = new Date(this.medicine.expirationDate);
+
+      if (this.medicine.reminder) {
+        this.medicine.reminder.start = new Date(this.medicine.reminder.start);
+
+        if (this.medicine.reminder.finish) {
+          this.medicine.reminder.finish = new Date(
+            this.medicine.reminder.finish
+          );
+        }
+
+        this.reminder = this.medicine.reminder;
+      }
+    }
+
+    this.startDateData = this.reminder.start;
     this.startTimeData = '';
-    this.finishDateData = null;
+    this.finishDateData = this.reminder.finish;
     this.finishTimeData = '';
 
     this.addReminder = false;
@@ -152,14 +178,44 @@ export class AddMedicineComponent {
       this.reminder.frequencyUnit,
       Validators.required
     );
+
     this.startDate = new FormControl(this.startDateData, Validators.required);
     this.startTime = new FormControl(this.startTimeData, Validators.required);
+
     this.finishDate = new FormControl(this.finishDateData || null, {
       nonNullable: true,
     });
     this.finishTime = new FormControl(this.finishTimeData || null, {
       nonNullable: true,
     });
+
+    let hours =
+      this.reminder.start.getHours().toString().length === 2
+        ? this.reminder.start.getHours().toString()
+        : '0' + this.reminder.start.getHours().toString();
+
+    let minutes =
+      this.reminder.start.getMinutes().toString().length === 2
+        ? this.reminder.start.getMinutes().toString()
+        : '0' + this.reminder.start.getMinutes().toString();
+
+    this.startDate.setValue(this.reminder.start);
+    this.startTime.setValue(`${hours}:${minutes}`);
+
+    if (this.reminder.finish) {
+      hours =
+        this.reminder.finish.getHours().toString().length === 2
+          ? this.reminder.finish.getHours().toString()
+          : '0' + this.reminder.finish.getHours().toString();
+
+      minutes =
+        this.reminder.finish.getMinutes().toString().length === 2
+          ? this.reminder.finish.getMinutes().toString()
+          : '0' + this.reminder.finish.getMinutes().toString();
+    }
+
+    this.finishDate.setValue(this.reminder.finish);
+    this.finishTime.setValue(`${hours}:${minutes}`);
 
     this.medicineForm = new FormGroup({
       expirationDate: this.expirationDate,
@@ -225,14 +281,12 @@ export class AddMedicineComponent {
       reminder.start = start;
       reminder.finish = finish;
 
+
       let translatedUnit = '';
 
-      if (reminder.frequencyUnit === 'minutes')
-        translatedUnit = 'minutos';
-      else if (reminder.frequencyUnit === 'hours')
-        translatedUnit = 'horas';
-      else if (reminder.frequencyUnit === 'days')
-        translatedUnit = 'días';
+      if (reminder.frequencyUnit === 'minutes') translatedUnit = 'minutos';
+      else if (reminder.frequencyUnit === 'hours') translatedUnit = 'horas';
+      else if (reminder.frequencyUnit === 'days') translatedUnit = 'días';
 
       this.dialogService.openConfirmationDialog(
         {
@@ -241,18 +295,26 @@ export class AddMedicineComponent {
             '¿Estás seguro de añadir ' +
             medicine.name +
             '(' +
-            medicine.amount + ' ' +
+            medicine.amount +
+            ' ' +
             medicine.unit +
             '), con un recordatorio cada ' +
             reminder.frequency +
             ' ' +
             translatedUnit +
             ' al botiquín?',
-          action: addMedicine({
-            medicine: medicine,
-            reminder: reminder,
-            medicineKitId: this.medicineKitId,
-          }),
+          action: this.isUpdateMode
+            ? updateMedicine({
+                medicine: medicine,
+                reminder: reminder,
+                medicineKitId: +this.medicineKitId,
+                createReminder: this.medicine.reminder === null
+              })
+            : addMedicine({
+                medicine: medicine,
+                reminder: reminder,
+                medicineKitId: +this.medicineKitId,
+              }),
           route: 'medicineKitDetails/' + this.medicineKitId,
         },
         this.dialog
@@ -265,14 +327,21 @@ export class AddMedicineComponent {
             '¿Estás seguro de añadir ' +
             medicine.name +
             ' (' +
-            medicine.amount + ' ' +
+            medicine.amount +
+            ' ' +
             medicine.unit +
             ') ' +
             'al botiquín?',
-          action: addMedicine({
-            medicine: medicine,
-            medicineKitId: this.medicineKitId,
-          }),
+          action: this.isUpdateMode
+            ? updateMedicine({
+                medicine: medicine,
+                medicineKitId: +this.medicineKitId,
+                createReminder: false
+              })
+            : addMedicine({
+                medicine: medicine,
+                medicineKitId: +this.medicineKitId,
+              }),
           route: 'medicineKitDetails/' + this.medicineKitId,
         },
         this.dialog

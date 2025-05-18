@@ -21,7 +21,7 @@ import {
   selectUser,
   selectUserRelationships,
 } from 'src/app/Store/auth/selectors/auth.selectors';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 //Components
@@ -35,11 +35,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-medicine-kits-list',
   standalone: true,
-  imports: [
-    FooterComponent,
-    CommonModule,
-    AngularMaterialModule,
-  ],
+  imports: [FooterComponent, CommonModule, AngularMaterialModule],
   templateUrl: './medicine-kits-list.component.html',
   styleUrls: ['./medicine-kits-list.component.scss'],
 })

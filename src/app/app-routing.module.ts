@@ -96,6 +96,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'addMedicine/update/:medicineKitId/:medicine',
+    component: AddMedicineComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'userConfig',
     component: UserConfigComponent,
     canActivate: [AuthGuard]

@@ -5,7 +5,7 @@ import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
 import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-import * as reminderActions from 'src/app/Store/medicine/actions/reminders.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import { ReminderService } from '../../../Services/reminder.service';
 
 @Injectable()
@@ -202,14 +202,42 @@ export class ReminderEffects {
   addReminder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.addReminder),
-      mergeMap(({ reminder, medicineId }) =>
+      mergeMap(({ reminder, medicineId, medicineKitId }) =>
         this.reminderService.addReminder(reminder, medicineId).pipe(
           map((response: ReminderDTO) => {
-            return reminderActions.addReminderSuccess({ reminder: response });
+            return reminderActions.addReminderSuccess({
+              reminder: response,
+              medicineId: medicineId,
+              medicineKitId: medicineKitId
+            });
           }),
           catchError((error) =>
             of(
               reminderActions.addReminderError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  updateReminder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reminderActions.updateReminder),
+      mergeMap(({ reminder, medicineId, medicineKitId }) =>
+        this.reminderService.updateReminder(reminder, medicineId).pipe(
+          map((response: ReminderDTO) => {
+            return reminderActions.updateReminderSuccess({
+              reminder: response,
+              medicineId: medicineId,
+              medicineKitId: medicineKitId
+            });
+          }),
+          catchError((error) =>
+            of(
+              reminderActions.updateReminderError({
                 error: error.error.error || 'Fetch user medicine kits failed',
               })
             )

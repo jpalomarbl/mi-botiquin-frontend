@@ -37,7 +37,7 @@
         class="medicines-list__list-item"
         *cdkVirtualFor="let medicine of sortedMedicines"
       >
-        <mat-card class="medicines-list__card">
+        <mat-card class="medicines-list__card" (click)="navigateEditMedicine(medicine)">
           <mat-card-header>
             <mat-card-title>{{ medicine.name }}</mat-card-title>
             <mat-card-subtitle

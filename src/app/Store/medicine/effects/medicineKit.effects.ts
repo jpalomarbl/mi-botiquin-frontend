@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, take } from 'rxjs/operators';
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
-import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKits.actions';
-import * as reminderKitActions from 'src/app/Store/medicine/actions/reminders.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
+import * as reminderKitActions from 'src/app/Store/medicine/actions/reminder.actions';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
 
 @Injectable()
@@ -177,6 +177,7 @@ export class MedicineKitEffects {
               return reminderKitActions.addReminder({
                 reminder: reminder,
                 medicineId: response.id!,
+                medicineKitId: medicineKitId,
               });
             else
               return medicineKitActions.addMedicineSuccess({
@@ -188,6 +189,43 @@ export class MedicineKitEffects {
           catchError((error) =>
             of(
               medicineKitActions.addMedicineError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  updateMedicine$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.updateMedicine),
+      mergeMap(({ medicine, reminder, medicineKitId, createReminder }) =>
+        this.medicineKitService.updateMedicine(medicine).pipe(
+          map((response: MedicineDTO) => {
+            if (reminder && createReminder)
+              return reminderKitActions.addReminder({
+                reminder: reminder,
+                medicineId: response.id!,
+                medicineKitId: medicineKitId,
+              });
+            else if (reminder && !createReminder) {
+              return reminderKitActions.updateReminder({
+                reminder: reminder,
+                medicineId: response.id!,
+                medicineKitId: medicineKitId
+              });
+            } else
+              return medicineKitActions.updateMedicineSuccess({
+                medicine: medicine,
+                reminder: reminder,
+                medicineKitId: medicineKitId,
+              });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.updateMedicineError({
                 error: error.error.error || 'Fetch user medicine kits failed',
               })
             )

@@ -25,7 +25,7 @@ import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import {
   addMedicineKit,
   addMedicineKitError,
-} from 'src/app/Store/medicine/actions/medicineKits.actions';
+} from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
@@ -34,11 +34,7 @@ import { FooterComponent } from '../../Common/footer/footer.component';
 @Component({
   selector: 'app-add-medicine-kit',
   standalone: true,
-  imports: [
-    FormsModule,
-    FooterComponent,
-    AngularMaterialModule,
-  ],
+  imports: [FormsModule, FooterComponent, AngularMaterialModule],
   templateUrl: './add-medicine-kit.component.html',
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
