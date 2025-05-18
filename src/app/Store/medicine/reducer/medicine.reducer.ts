@@ -304,12 +304,32 @@ export const medicineReducer = createReducer(
       error: null,
     })
   ),
-  on(medicineKitActions.addMedicineSuccess, (state) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
+  on(
+    medicineKitActions.addMedicineSuccess,
+    (state, { medicine, reminder, medicineKitId }) => {
+      const medicineWithReminder = {
+        ...medicine,
+        reminders: [reminder],
+      };
+
+      return {
+        ...state,
+        medicineKits: state.medicineKits.map((kit) =>
+          kit.id !== medicineKitId
+            ? kit
+            : {
+                // nuevo objeto kit
+                ...kit,
+                // nuevo array de medicines
+                medicines: [...kit.medicines, medicineWithReminder],
+              }
+        ),
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
+  ),
   on(medicineKitActions.addMedicineError, (state, { error }) => ({
     ...state,
     loading: false,

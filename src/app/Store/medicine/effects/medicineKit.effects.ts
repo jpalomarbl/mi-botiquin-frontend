@@ -178,7 +178,12 @@ export class MedicineKitEffects {
                 reminder: reminder,
                 medicineId: response.id!,
               });
-            else return medicineKitActions.addMedicineSuccess();
+            else
+              return medicineKitActions.addMedicineSuccess({
+                medicine: medicine,
+                reminder: reminder,
+                medicineKitId: medicineKitId,
+              });
           }),
           catchError((error) =>
             of(

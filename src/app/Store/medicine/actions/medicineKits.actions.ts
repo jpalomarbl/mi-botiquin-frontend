@@ -87,7 +87,12 @@ export const addMedicine = createAction(
 );
 
 export const addMedicineSuccess = createAction(
-  '[Medicine] Insert medicine into DB Success'
+  '[Medicine] Insert medicine into DB Success',
+  props<{
+    medicine: MedicineDTO;
+    reminder?: ReminderDTO;
+    medicineKitId: number;
+  }>()
 );
 
 export const addMedicineError = createAction(
