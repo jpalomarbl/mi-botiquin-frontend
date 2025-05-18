@@ -246,4 +246,28 @@ export class ReminderEffects {
       )
     )
   );
+
+  deleteReminder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reminderActions.deleteReminder),
+      mergeMap(({ reminderId, medicineId, medicineKitId }) =>
+        this.reminderService.deleteReminder(reminderId).pipe(
+          take(1),
+          map((response: any) => {
+            return reminderActions.deleteReminderSucess({
+              medicineId: medicineId,
+              medicineKitId: medicineKitId
+            });
+          }),
+          catchError((error) =>
+            of(
+              reminderActions.deleteReminderError({
+                error: error.error.error || 'Delete reminder failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }

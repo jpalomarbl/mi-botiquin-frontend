@@ -40,6 +40,7 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import 'moment/locale/es';
+import { deleteReminder } from 'src/app/Store/medicine/actions/reminder.actions';
 
 @Component({
   selector: 'app-add-medicine',
@@ -347,6 +348,22 @@ export class AddMedicineComponent {
         this.dialog
       );
     }
+  }
+
+  deleteReminder(): void {
+    console.log(this.reminder)
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Eliminar recordatorio?',
+        message: '¿Estás seguro de eliminar este recordatorio?',
+        route: 'medicineKitDetails/' + this.medicineKitId,
+        action: deleteReminder({
+          medicineKitId: +this.medicineKitId,
+          medicineId: +this.medicine.id!,
+          reminderId: +this.reminder.id!
+        })
+      }, this.dialog
+    );
   }
 
   openDatePicker(dp: any) {

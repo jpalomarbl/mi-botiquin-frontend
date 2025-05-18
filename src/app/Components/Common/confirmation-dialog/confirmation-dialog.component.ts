@@ -36,7 +36,8 @@ export class ConfirmationDialogComponent {
   }
 
   navigate(): void {
-    this.router.navigate([this.route]);
+    if (this.route !== '')
+      this.router.navigate([this.route]);
 
     if (this.action) {
       this.store.dispatch(this.action);

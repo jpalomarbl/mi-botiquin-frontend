@@ -88,6 +88,16 @@
       >
         <mat-icon>add</mat-icon>
       </button>
+
+      <button
+        class="reminder-form__button"
+        *ngIf="isUpdateMode && reminder.id !== 0"
+        (click)="deleteReminder()"
+        mat-mini-fab
+        color="warn"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
     </div>
     <form
       class="reminder-form"

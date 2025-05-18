@@ -129,6 +129,25 @@ export class ReminderService {
     });
   }
 
+  deleteReminder(reminderId: number): Observable<any> {
+
+    console.log("ReminderId", reminderId)
+    
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('reminderId', reminderId.toString());
+
+    return this.http.delete<any>(`${this.apiUrlReminder}`, {
+      body: body.toString(),
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   getNextDoseTime(reminder: ReminderDTO, day: Date) {
     const startDate = new Date(reminder.start);
 

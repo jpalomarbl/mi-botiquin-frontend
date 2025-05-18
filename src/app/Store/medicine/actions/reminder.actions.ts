@@ -82,3 +82,18 @@ export const updateReminderError = createAction(
   '[Medicine] Update reminder from DB Error',
   props<{ error: string }>()
 );
+
+export const deleteReminder = createAction(
+  '[Medicine] Delete reminder from DB',
+  props<{ reminderId: number; medicineId: number; medicineKitId: number }>()
+);
+
+export const deleteReminderSucess = createAction(
+  '[Medicine] Delete reminder from DB Success',
+  props<{ medicineId: number; medicineKitId: number }>()
+);
+
+export const deleteReminderError = createAction(
+  '[Medicine] Delete reminder from DB Error',
+  props<{ error: string }>()
+);

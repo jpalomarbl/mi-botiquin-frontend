@@ -207,6 +207,57 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
+  // Delete reminder from DB
+  on(
+    reminderActions.deleteReminder,
+    (state, { reminderId, medicineId, medicineKitId }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    reminderActions.deleteReminderSucess,
+    (state, { medicineId, medicineKitId }) => {
+      const updatedMedicineKits = state.medicineKits.map((kit) => {
+        if (kit.id !== medicineKitId) {
+          return kit;
+        }
+
+        const updatedMedicines = kit.medicines.map((med) => {
+          if (med.id !== medicineId) {
+            return med;
+          }
+          return {
+            ...med,
+            reminder: null,
+          };
+        });
+
+        return {
+          ...kit,
+          medicines: updatedMedicines,
+        };
+      });
+
+      return {
+        ...state,
+        medicineKits: updatedMedicineKits,
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
+  ),
+
+  on(reminderActions.updateReminderError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Get all medicine kits from user
   on(medicineKitActions.fetchUserMedicineKits, (state) => ({
     ...state,
