@@ -7,10 +7,8 @@ import { environment } from 'src/app/environment/environment';
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
-import { UnitsJsonDTO } from '../Models/unitJson.dto';
 import { MedicineDTO } from '../Models/medicine.dto';
-import { ReminderDTO } from '../Models/reminder.dto';
-import { finalize } from 'rxjs';
+import { UnitsJsonDTO } from '../Models/unitJson.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +22,11 @@ export class MedicineKitService {
   constructor(private http: HttpClient, private store: Store<GlobalStateDTO>) {
     this.medicineUnits = null;
 
-    const unitsObservable = this.http.get<UnitsJsonDTO>('/assets/units.json')
+    const unitsObservable = this.http.get<UnitsJsonDTO>('/assets/units.json');
 
     unitsObservable.subscribe((response) => {
       this.medicineUnits = response;
-    })
+    });
   }
 
   fetchUserMedicineKits(
@@ -131,7 +129,10 @@ export class MedicineKitService {
     );
   }
 
-  addMedicine(medicine: MedicineDTO, medicineKitId: number): Observable<MedicineDTO> {
+  addMedicine(
+    medicine: MedicineDTO,
+    medicineKitId: number
+  ): Observable<MedicineDTO> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
@@ -158,15 +159,17 @@ export class MedicineKitService {
   ): Observable<string> {
     try {
       if (this.medicineUnits) {
-        return of(this.medicineUnits[viaAdmininstracion][formaFarmaceuticaSimplificada][0]);
+        return of(
+          this.medicineUnits[viaAdmininstracion][
+            formaFarmaceuticaSimplificada
+          ][0]
+        );
       } else {
-        return this.http
-        .get<UnitsJsonDTO>('/assets/units.json')
-        .pipe(
+        return this.http.get<UnitsJsonDTO>('/assets/units.json').pipe(
           map((data: UnitsJsonDTO) => {
             return data[viaAdmininstracion][formaFarmaceuticaSimplificada][0];
           })
-        )
+        );
       }
     } catch (error) {
       return of('');

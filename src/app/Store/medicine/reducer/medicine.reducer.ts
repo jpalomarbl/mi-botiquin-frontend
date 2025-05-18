@@ -212,24 +212,44 @@ export const medicineReducer = createReducer(
   })),
 
   // Delete a medicine
-  on(medicineKitActions.deleteMedicineById, (state) => ({
-    ...state,
-    loading: true,
-    loaded: false,
-    error: null,
-  })),
-  on(medicineKitActions.deleteMedicineByIdSuccess, (state) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
-  on(medicineKitActions.deleteMedicineByIdError, (state, { error }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: error,
-  })),
+  on(medicineKitActions.deleteMedicineById, (state) => {
+    console.log('Before deleteMedicineById:', state.error);
+
+    return {
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    };
+  }),
+  on(
+    medicineKitActions.deleteMedicineByIdSuccess,
+    (state, { medicineId, medicineKitId }) => ({
+      ...state,
+      medicineKits: state.medicineKits.map((kit) =>
+        kit.id !== medicineKitId
+          ? kit
+          : {
+              ...kit,
+              medicines: kit.medicines.filter((m) => m.id !== medicineId),
+            }
+      ),
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+
+  on(medicineKitActions.deleteMedicineByIdError, (state, { error }) => {
+    console.log('Before deleteMedicineByIdError:', state.error);
+
+    return {
+      ...state,
+      loading: false,
+      loaded: true,
+      error: error,
+    };
+  }),
 
   // Add new mediicne kit
   on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => {

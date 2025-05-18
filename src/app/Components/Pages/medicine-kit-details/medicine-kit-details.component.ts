@@ -31,12 +31,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-medicine-kit-details',
   standalone: true,
-  imports: [
-    FooterComponent,
-    AsyncPipe,
-    AngularMaterialModule,
-    CommonModule,
-  ],
+  imports: [FooterComponent, AsyncPipe, AngularMaterialModule, CommonModule],
   templateUrl: './medicine-kit-details.component.html',
   styleUrls: ['./medicine-kit-details.component.scss'],
 })
@@ -57,7 +52,7 @@ export class MedicineKitDetailsComponent {
     private actions$: Actions,
     private router: Router,
     private dialogService: DialogService,
-    public errorDialog: MatDialog
+    public dialog: MatDialog
   ) {
     this.medicineKitId = +this.route.snapshot.params['medicineKitId'];
 
@@ -99,7 +94,7 @@ export class MedicineKitDetailsComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.dialogService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.dialog);
       });
   }
 
@@ -113,12 +108,16 @@ export class MedicineKitDetailsComponent {
 
   deleteMedicine(medicineId: number): void {
     this.medicineKit$.pipe(take(1)).subscribe((medicineKit) => {
-      this.store.dispatch(
-        medicineKitActions.deleteMedicineById({
+      this.dialogService.openConfirmationDialog({
+        title: '¿Eliminar medicamento?',
+        message:
+          '¿Estás seguro de eliminar este medicamento? También se eliminarán los recordatorios asociados.',
+        route: '/medicineKitDetails/' + medicineKit!.id,
+        action: medicineKitActions.deleteMedicineById({
           medicineId: medicineId,
           medicineKitId: medicineKit!.id,
         })
-      );
+      }, this.dialog);
     });
 
     this.actions$

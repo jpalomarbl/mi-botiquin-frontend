@@ -39,11 +39,12 @@ export const deleteMedicineById = createAction(
 );
 
 export const deleteMedicineByIdSuccess = createAction(
-  '[Medicine] Delete Medicine By Id Success'
+  '[Medicine] Delete Medicine By Id Success',
+  props<{ medicineId: number; medicineKitId: number }>()
 );
 
 export const deleteMedicineByIdError = createAction(
-  '[Medicine] Delete Medicine By Id',
+  '[Medicine] Delete Medicine By Id Error',
   props<{ error: string }>()
 );
 
