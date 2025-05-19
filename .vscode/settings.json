@@ -3,5 +3,5 @@
     "prettier.singleAttributePerLine": true,
     "prettier.singleQuote": true,
     "prettier.trailingComma": "none",
-    "CodeGPT.apiKey": "Ollama"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

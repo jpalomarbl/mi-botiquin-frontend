@@ -10,6 +10,7 @@ export interface NotificationDTO {
 export interface expirationNotificationDTO extends NotificationDTO {
   medicineName: string;
   medicineKitName: string;
+  medicineKitId: number;
 }
 
 export interface relationshipRequestNotificationDTO extends NotificationDTO {

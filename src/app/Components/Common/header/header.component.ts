@@ -1,13 +1,7 @@
 // Angular
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  distinctUntilChanged,
-  Observable,
-  Subject,
-  take,
-  takeUntil,
-} from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -72,23 +66,6 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    this.webSocketService.notificationsSubjectGetter
-      .pipe(
-        distinctUntilChanged(), // Evita valores duplicados
-        takeUntil(this.destroy$)
-      )
-      .subscribe(
-        (
-          value: expirationNotificationDTO | relationshipRequestNotificationDTO
-        ) => {
-          if (this.isRelationshipRequest(value)) {
-            this.clickRelationshipRequestNotification(value);
-          } else {
-            this.notifications.push(value);
-          }
-        }
-      );
-
     this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
       if (user) {
         this.store.dispatch(fetchUserUnreadNotifications({ userId: user.id }));
@@ -100,18 +77,21 @@ export class HeaderComponent {
             expirationNotificationDTO | relationshipRequestNotificationDTO
           > | null
         ) => {
-          this.notifications = [
-            ...this.notifications,
-            ...(notifications || []),
-          ];
-          console.log('Notificaciones actualizadas:', notifications);
+          if (notifications) {
+            this.notifications = [
+              ...this.notifications,
+              notifications[notifications.length - 1],
+            ];
 
-          if (!notifications) {
-            this.notificationsButtonDisable = true;
+            // console.log('Notificaciones actualizadas:', notifications);
           }
         }
       );
     });
+  }
+
+  log(): void {
+    console.log(this.notifications);
   }
 
   backButtonRedirect() {

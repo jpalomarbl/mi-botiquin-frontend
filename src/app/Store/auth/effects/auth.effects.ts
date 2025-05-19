@@ -298,6 +298,7 @@ export class AuthEffects {
                   id2: notification.receiverId,
                   medicineName: notification.medicineName,
                   medicineKitName: notification.medicineKitName,
+                  medicineKitId: notification.medicineKitId
                 });
               }
             });

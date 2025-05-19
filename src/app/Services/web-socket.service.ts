@@ -7,6 +7,7 @@ import { environment } from '../environment/environment';
 
 // Store
 import { Store } from '@ngrx/store';
+import * as notificationActions from '../Store/auth/actions/notification.actions';
 import { selectUser } from '../Store/auth/selectors/auth.selectors';
 
 // Services
@@ -26,18 +27,12 @@ import { UserDTO } from '../Models/user.dto';
 })
 export class WebSocketService {
   private socket$: WebSocket | null;
-  private notificationsSubject: BehaviorSubject<
-    expirationNotificationDTO | relationshipRequestNotificationDTO
-  >;
 
   constructor(
     private authService: AuthService,
     private store: Store<GlobalStateDTO>
   ) {
     this.socket$ = null;
-    this.notificationsSubject = new BehaviorSubject<
-      expirationNotificationDTO | relationshipRequestNotificationDTO
-    >({} as relationshipRequestNotificationDTO);
 
     this.store
       .select(selectUser)
@@ -55,6 +50,8 @@ export class WebSocketService {
               this.socket$!.onmessage = (event) => {
                 const rawMessage = JSON.parse(event.data);
 
+                console.log(rawMessage);
+
                 let message: any = rawMessage;
 
                 if (rawMessage.type === 'expired') {
@@ -64,9 +61,16 @@ export class WebSocketService {
                     medicineName: rawMessage.medicineName,
                     id2: rawMessage.medicineKitId,
                     medicineKitName: rawMessage.medicineKitName,
+                    medicineKitId: rawMessage.medicineKitId
                   };
 
-                  this.notificationsSubject.next(message);
+                  // console.log(message)
+
+                  this.store.dispatch(
+                    notificationActions.addNotification({
+                      notification: message,
+                    })
+                  );
                 } else if (rawMessage.type === 'relationship request') {
                   message = {
                     type: rawMessage.type,
@@ -78,9 +82,11 @@ export class WebSocketService {
                     requesterRole: rawMessage.requesterRole,
                   };
 
-                  this.notificationsSubject.next(message);
-
-                  console.log(this.notificationsSubject.getValue());
+                  this.store.dispatch(
+                    notificationActions.addNotification({
+                      notification: message,
+                    })
+                  );
                 }
               };
 
@@ -108,11 +114,5 @@ export class WebSocketService {
 
   closeSocket(): void {
     this.socket$?.close();
-  }
-
-  get notificationsSubjectGetter(): BehaviorSubject<
-    expirationNotificationDTO | relationshipRequestNotificationDTO
-  > {
-    return this.notificationsSubject;
   }
 }

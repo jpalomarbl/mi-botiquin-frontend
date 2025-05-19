@@ -405,5 +405,14 @@ export const authReducer = createReducer(
     loading: false,
     loaded: true,
     error: error,
+  })),
+
+  // Add new notification
+  on(notificationActions.addNotification, (state, { notification }) => ({
+    ...state,
+    notifications: [...(state.notifications || []), notification],
+    loading: false,
+    loaded: true,
+    error: null,
   }))
 );
