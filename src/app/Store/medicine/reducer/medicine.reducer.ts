@@ -144,6 +144,7 @@ export const medicineReducer = createReducer(
           };
         } else return medicineKit;
       }),
+      reminders: [...(state.reminders || []), reminder],
       loading: false,
       loaded: true,
       error: null,
@@ -193,6 +194,9 @@ export const medicineReducer = createReducer(
       return {
         ...state,
         medicineKits: updatedMedicineKits,
+        reminders: state.reminders.map((reminderItem) =>
+          reminderItem.id === reminder.id ? reminder : reminderItem
+        ),
         loading: false,
         loaded: true,
         error: null,
@@ -219,7 +223,7 @@ export const medicineReducer = createReducer(
   ),
   on(
     reminderActions.deleteReminderSucess,
-    (state, { medicineId, medicineKitId }) => {
+    (state, { reminderId, medicineId, medicineKitId }) => {
       const updatedMedicineKits = state.medicineKits.map((kit) => {
         if (kit.id !== medicineKitId) {
           return kit;
@@ -244,6 +248,9 @@ export const medicineReducer = createReducer(
       return {
         ...state,
         medicineKits: updatedMedicineKits,
+        reminders: state.reminders.filter(
+          (reminder) => reminder.id !== reminderId
+        ),
         loading: false,
         loaded: true,
         error: null,

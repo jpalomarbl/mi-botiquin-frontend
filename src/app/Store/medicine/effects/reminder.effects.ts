@@ -113,14 +113,6 @@ export class ReminderEffects {
                 };
               });
 
-            // const organizedReminders: Array<[Date, ReminderDTO[]] | null> =
-            //   this.reminderService.organizeReminders(reminders, day);
-
-            // return reminderActions.fetchAllUserRemindersSuccess({
-            //   organizedReminders: organizedReminders,
-            //   reminders: reminders
-            // });
-
             return reminderActions.fetchAllUserConsumptions({
               userId: userId,
               reminders: reminders,
@@ -255,6 +247,7 @@ export class ReminderEffects {
           take(1),
           map((response: any) => {
             return reminderActions.deleteReminderSucess({
+              reminderId: reminderId,
               medicineId: medicineId,
               medicineKitId: medicineKitId
             });

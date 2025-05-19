@@ -90,7 +90,7 @@ export const deleteReminder = createAction(
 
 export const deleteReminderSucess = createAction(
   '[Medicine] Delete reminder from DB Success',
-  props<{ medicineId: number; medicineKitId: number }>()
+  props<{ reminderId: number; medicineId: number; medicineKitId: number }>()
 );
 
 export const deleteReminderError = createAction(
