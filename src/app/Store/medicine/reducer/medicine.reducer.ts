@@ -127,28 +127,49 @@ export const medicineReducer = createReducer(
   })),
   on(
     reminderActions.addReminderSuccess,
-    (state, { reminder, medicineId, medicineKitId }) => ({
-      ...state,
-      medicineKits: state.medicineKits.map((medicineKit) => {
-        if (medicineKit.id === medicineKitId) {
-          return {
-            ...medicineKit,
-            medicines: medicineKit.medicines.map((medicine) => {
-              if (medicine.id === medicineId) {
-                return {
-                  ...medicine,
-                  reminder: reminder,
-                };
-              } else return medicine;
-            }),
-          };
-        } else return medicineKit;
-      }),
-      reminders: [...(state.reminders || []), reminder],
-      loading: false,
-      loaded: true,
-      error: null,
-    })
+    (state, { reminder, medicineId, medicineKitId }) => {
+      let medicineName: string = '';
+      let medicineKitName: string = '';
+      let medicineUnit: string = '';
+
+      console.log(reminder);
+
+      return {
+        ...state,
+        medicineKits: state.medicineKits.map((medicineKit) => {
+          if (medicineKit.id === medicineKitId) {
+            medicineKitName = medicineKit.name;
+
+            return {
+              ...medicineKit,
+              medicines: medicineKit.medicines.map((medicine) => {
+                if (medicine.id === medicineId) {
+                  medicineName = medicine.name;
+                  medicineUnit = medicine.unit;
+
+                  return {
+                    ...medicine,
+                    reminder: reminder,
+                  };
+                } else return medicine;
+              }),
+            };
+          } else return medicineKit;
+        }),
+        reminders: [
+          ...(state.reminders || []),
+          {
+            ...reminder,
+            medicineUnit: medicineUnit,
+            medicineName: medicineName,
+            medicineKitName: medicineKitName,
+          },
+        ],
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
   ),
   on(reminderActions.addReminderError, (state, { error }) => ({
     ...state,
@@ -170,23 +191,33 @@ export const medicineReducer = createReducer(
   on(
     reminderActions.updateReminderSuccess,
     (state, { reminder, medicineId, medicineKitId }) => {
-      const updatedMedicineKits = state.medicineKits.map((kit) => {
-        if (kit.id !== medicineKitId) {
-          return kit;
+      let medicineName: string = '';
+      let medicineKitName: string = '';
+      let medicineUnit: string = '';
+
+      const updatedMedicineKits = state.medicineKits.map((medicineKit) => {
+        if (medicineKit.id !== medicineKitId) {
+          return medicineKit;
         }
 
-        const updatedMedicines = kit.medicines.map((med) => {
-          if (med.id !== medicineId) {
-            return med;
+        medicineKitName = medicineKit.name;
+
+        const updatedMedicines = medicineKit.medicines.map((medicine) => {
+          if (medicine.id !== medicineId) {
+            return medicine;
           }
+
+          medicineName = medicine.name;
+          medicineUnit = medicine.unit;
+
           return {
-            ...med,
+            ...medicine,
             reminder: reminder,
           };
         });
 
         return {
-          ...kit,
+          ...medicineKit,
           medicines: updatedMedicines,
         };
       });
@@ -195,7 +226,14 @@ export const medicineReducer = createReducer(
         ...state,
         medicineKits: updatedMedicineKits,
         reminders: state.reminders.map((reminderItem) =>
-          reminderItem.id === reminder.id ? reminder : reminderItem
+          reminderItem.id === reminder.id
+            ? {
+                ...reminder,
+                medicineUnit: medicineUnit,
+                medicineName: medicineName,
+                medicineKitName: medicineKitName,
+              }
+            : reminderItem
         ),
         loading: false,
         loaded: true,
@@ -224,23 +262,23 @@ export const medicineReducer = createReducer(
   on(
     reminderActions.deleteReminderSucess,
     (state, { reminderId, medicineId, medicineKitId }) => {
-      const updatedMedicineKits = state.medicineKits.map((kit) => {
-        if (kit.id !== medicineKitId) {
-          return kit;
+      const updatedMedicineKits = state.medicineKits.map((medicineKit) => {
+        if (medicineKit.id !== medicineKitId) {
+          return medicineKit;
         }
 
-        const updatedMedicines = kit.medicines.map((med) => {
-          if (med.id !== medicineId) {
-            return med;
+        const updatedMedicines = medicineKit.medicines.map((medicine) => {
+          if (medicine.id !== medicineId) {
+            return medicine;
           }
           return {
-            ...med,
+            ...medicine,
             reminder: null,
           };
         });
 
         return {
-          ...kit,
+          ...medicineKit,
           medicines: updatedMedicines,
         };
       });

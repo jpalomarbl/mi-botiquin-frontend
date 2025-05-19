@@ -122,18 +122,6 @@ export class MedicineKitDetailsComponent {
         this.dialog
       );
     });
-
-    // this.actions$
-    //   .pipe(
-    //     ofType(medicineKitActions.fetchMedicineKitByIdSuccess),
-    //     take(1) // Para autodesuscribirse después de ejecutarse una vez
-    //   )
-    //   .subscribe(() => {
-    //     // Código a ejecutar después de eliminar
-    //     this.sortedMedicines = this.sortedMedicines?.filter(
-    //       (m) => m.id !== medicineId
-    //     );
-    //   });
   }
 
   navigateAddMedicine(): void {

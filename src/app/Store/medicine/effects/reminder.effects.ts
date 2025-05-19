@@ -200,7 +200,7 @@ export class ReminderEffects {
             return reminderActions.addReminderSuccess({
               reminder: response,
               medicineId: medicineId,
-              medicineKitId: medicineKitId
+              medicineKitId: medicineKitId,
             });
           }),
           catchError((error) =>
@@ -224,7 +224,7 @@ export class ReminderEffects {
             return reminderActions.updateReminderSuccess({
               reminder: response,
               medicineId: medicineId,
-              medicineKitId: medicineKitId
+              medicineKitId: medicineKitId,
             });
           }),
           catchError((error) =>
@@ -249,7 +249,7 @@ export class ReminderEffects {
             return reminderActions.deleteReminderSucess({
               reminderId: reminderId,
               medicineId: medicineId,
-              medicineKitId: medicineKitId
+              medicineKitId: medicineKitId,
             });
           }),
           catchError((error) =>
