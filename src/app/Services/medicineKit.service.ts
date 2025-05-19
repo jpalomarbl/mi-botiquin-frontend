@@ -129,6 +129,16 @@ export class MedicineKitService {
     );
   }
 
+  fetchMedicineById(medicineId: number): Observable<any> {
+    return this.http.get<any>(
+      this.apiUrlMedicine + '/id',
+      {
+        withCredentials: true,
+        params: { medicineId: medicineId.toString() },
+      }
+    );
+  }
+
   addMedicine(
     medicine: MedicineDTO,
     medicineKitId: number

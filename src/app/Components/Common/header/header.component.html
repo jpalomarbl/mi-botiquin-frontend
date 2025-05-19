@@ -9,7 +9,7 @@
   >
     <mat-icon fontIcon="arrow_back"></mat-icon>
   </button>
-  <h1 class="header__title" (click)="log()">{{ title }}</h1>
+  <h1 class="header__title">{{ title }}</h1>
 
   <button
     mat-icon-button
@@ -28,6 +28,7 @@
       <span class="notification-menu__section-title"> Caducidad </span>
       <div
         class="notification-menu__item"
+        (click)="clickExpirationNotification(notification)"
         mat-menu-item
         *ngFor="let notification of expirationNotifications"
       >

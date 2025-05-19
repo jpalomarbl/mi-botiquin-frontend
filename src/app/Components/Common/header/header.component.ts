@@ -5,7 +5,10 @@ import { Observable, Subject, take } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
-import { fetchUserUnreadNotifications } from 'src/app/Store/auth/actions/notification.actions';
+import {
+  fetchUserUnreadNotifications,
+  removeNotification,
+} from 'src/app/Store/auth/actions/notification.actions';
 import { acceptRelationshipRequest } from 'src/app/Store/auth/actions/userRelationships.actions';
 import {
   selectUser,
@@ -14,6 +17,7 @@ import {
 
 // Services
 import { DialogService } from 'src/app/Services/dialog.service';
+import { MedicineKitService } from 'src/app/Services/medicineKit.service';
 import { WebSocketService } from 'src/app/Services/web-socket.service';
 
 // Pipes
@@ -24,6 +28,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import {
   expirationNotificationDTO,
   relationshipRequestNotificationDTO,
@@ -57,6 +62,7 @@ export class HeaderComponent {
     private store: Store<GlobalStateDTO>,
     public webSocketService: WebSocketService,
     private dialogService: DialogService,
+    private medicineKitService: MedicineKitService,
     private dialog: MatDialog
   ) {
     this.notifications = [];
@@ -78,20 +84,51 @@ export class HeaderComponent {
           > | null
         ) => {
           if (notifications) {
-            this.notifications = [
-              ...this.notifications,
-              notifications[notifications.length - 1],
-            ];
-
-            // console.log('Notificaciones actualizadas:', notifications);
+            this.notifications = notifications;
           }
         }
       );
     });
   }
 
-  log(): void {
-    console.log(this.notifications);
+  clickExpirationNotification(notification: expirationNotificationDTO): void {
+    console.log(notification);
+
+    this.medicineKitService
+      .fetchMedicineById(notification.id1)
+      .subscribe((medicine) => {
+        console.log(medicine);
+
+        const medicineItem: MedicineDTO = {
+          id: medicine.id,
+          name: medicine.name,
+          reminder: medicine.reminder,
+          unit: medicine.unit,
+          amount: medicine.amount,
+          expirationDate: medicine.expirationDate,
+          nregistro: medicine.nregistro,
+          dose: medicine.dose,
+        };
+
+        const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
+
+        this.dialogService.openConfirmationDialog(
+          {
+            title: '¿Ir a los detalles del medicamento?',
+            message:
+              '¿Quieres ver los detalles del medicamento ' +
+              medicine.name +
+              ' ?',
+            route:
+              'addMedicine/update/' +
+              medicine.medicineKitId +
+              '/' +
+              medicineJSON,
+            action: removeNotification({ notification: notification }),
+          },
+          this.dialog
+        );
+      });
   }
 
   backButtonRedirect() {

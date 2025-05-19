@@ -37,6 +37,11 @@ export const sendRelationshipRequestError = createAction(
 );
 
 export const addNotification = createAction(
-  '[Auth] Add Notification to User',
+  '[Auth] Add Notification to Store',
+  props<{ notification: expirationNotificationDTO }>()
+);
+
+export const removeNotification = createAction(
+  '[Auth] Remove Notification from Store',
   props<{ notification: expirationNotificationDTO }>()
 );

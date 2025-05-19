@@ -414,5 +414,23 @@ export const authReducer = createReducer(
     loading: false,
     loaded: true,
     error: null,
+  })),
+
+  // Add new notification
+  on(notificationActions.removeNotification, (state, { notification }) => ({
+    ...state,
+    notifications:
+      state.notifications?.filter(
+        (notificationItem) =>
+          // Mantenemos solo las notificaciones que NO coincidan con la que queremos eliminar
+          !(
+            notificationItem.id1 === notification.id1 &&
+            notificationItem.id2 === notification.id2 &&
+            notificationItem.type === notification.type
+          )
+      ) ?? null, // Si notifications es undefined, devolvemos null
+    loading: false,
+    loaded: true,
+    error: null,
   }))
 );
