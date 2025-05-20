@@ -151,11 +151,6 @@ export class RemindersListComponent {
 
     this.isPatient = false;
 
-    // this.datePicker = new FormControl(this.today);
-    // this.datePickerForm = new FormGroup({
-    //   datePicker: this.datePicker,
-    // });
-
     this.calculateDate();
   }
 

@@ -268,6 +268,8 @@ export class AddMedicineComponent {
       let start = this.startDate.value;
       start.setHours(+this.startTime.value.slice(0, 2));
       start.setMinutes(+this.startTime.value.slice(3, 5));
+      start.setSeconds(0);
+      start.setMilliseconds(0);
 
       let finish = new Date();
 
@@ -277,12 +279,13 @@ export class AddMedicineComponent {
         if (this.finishTime.value) {
           finish.setHours(+this.finishTime.value.slice(0, 2));
           finish.setMinutes(+this.finishTime.value.slice(3, 5));
+          finish.setSeconds(0);
+          finish.setMilliseconds(0);
         }
       }
 
       reminder.start = start;
       reminder.finish = finish;
-
 
       let translatedUnit = '';
 
@@ -310,7 +313,7 @@ export class AddMedicineComponent {
                 medicine: medicine,
                 reminder: reminder,
                 medicineKitId: +this.medicineKitId,
-                createReminder: this.medicine.reminder === null
+                createReminder: this.medicine.reminder === null,
               })
             : addMedicine({
                 medicine: medicine,
@@ -338,7 +341,7 @@ export class AddMedicineComponent {
             ? updateMedicine({
                 medicine: medicine,
                 medicineKitId: +this.medicineKitId,
-                createReminder: false
+                createReminder: false,
               })
             : addMedicine({
                 medicine: medicine,
@@ -352,7 +355,7 @@ export class AddMedicineComponent {
   }
 
   deleteReminder(): void {
-    console.log(this.reminder)
+    console.log(this.reminder);
     this.dialogService.openConfirmationDialog(
       {
         title: '¿Eliminar recordatorio?',
@@ -361,9 +364,10 @@ export class AddMedicineComponent {
         action: deleteReminder({
           medicineKitId: +this.medicineKitId,
           medicineId: +this.medicine.id!,
-          reminderId: +this.reminder.id!
-        })
-      }, this.dialog
+          reminderId: +this.reminder.id!,
+        }),
+      },
+      this.dialog
     );
   }
 
