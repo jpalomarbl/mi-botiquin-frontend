@@ -9,7 +9,9 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
 import * as authActions from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
@@ -26,11 +28,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-user-config',
   standalone: true,
-  imports: [
-    FormsModule,
-    FooterComponent,
-    AngularMaterialModule,
-  ],
+  imports: [FormsModule, FooterComponent, AngularMaterialModule],
   templateUrl: './user-config.component.html',
   styleUrls: ['./user-config.component.scss'],
 })
@@ -51,6 +49,7 @@ export class UserConfigComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private dialogService: DialogService,
+    private actions$: Actions,
     public dialog: MatDialog
   ) {
     this.user = {
@@ -96,6 +95,12 @@ export class UserConfigComponent {
         this.role.setValue(user.role);
       }
     });
+
+    this.actions$
+      .pipe(ofType(authActions.updateUserError), take(1))
+      .subscribe((error) => {
+        this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
   }
 
   submitUserConfig(): void {
@@ -127,7 +132,8 @@ export class UserConfigComponent {
     this.dialogService.openConfirmationDialog(
       {
         title: '¿Estás seguro de que deseas cerrar sesión?',
-        message: 'Deberás volver a iniciar sesión para acceder a la aplicación.',
+        message:
+          'Deberás volver a iniciar sesión para acceder a la aplicación.',
         route: 'login',
         action: authActions.logout(),
       },
