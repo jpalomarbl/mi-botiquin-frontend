@@ -124,6 +124,14 @@ export class UserConfigComponent {
   }
 
   logout(): void {
-    this.store.dispatch(authActions.logout());
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Estás seguro de que deseas cerrar sesión?',
+        message: 'Deberás volver a iniciar sesión para acceder a la aplicación.',
+        route: 'login',
+        action: authActions.logout(),
+      },
+      this.dialog
+    );
   }
 }
