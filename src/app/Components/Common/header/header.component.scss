@@ -18,6 +18,15 @@
   &__back-button {
     margin-right: auto;
   }
+
+  &__notifications-button--active {
+    animation-name: earthquake;
+    animation-duration: 1s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+
+
+  }
 }
 
 .notification-menu {
@@ -38,4 +47,10 @@
 
     font-size: .9rem;
   }
+}
+
+@keyframes earthquake {
+  75% { transform: rotate(-5deg) translateX(-1px); }
+  85% { transform: translateY(-1px); }
+  100% { transform: rotate(7deg) translateY(1px); }
 }
