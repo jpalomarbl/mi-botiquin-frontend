@@ -40,7 +40,7 @@
       <ng-container
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
-        <mat-list-item class="reminders__list-item" *ngIf="i < 2">
+        <mat-list-item class="reminders__list-item" *ngIf="i < 2" [ngClass]="{'reminders__list-item--solo': oneReminder}">
           <span matListItemTitle>{{ reminder.medicineName }}</span>
 
           <span matListItemLine
@@ -120,7 +120,7 @@
       ></mat-icon>
     </div>
 
-    <mat-list
+    <ul
       class="medicine-kits__list"
       *ngIf="medicineKits$ | async; else noMedicineKits"
     >
@@ -128,15 +128,21 @@
       <ng-container
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
       >
-        <div class="medicine-kits__list-item-container" *ngIf="i < 2">
-          <!-- Information -->
-          <mat-list-item>
-            <span matListItemTitle>{{ medicineKit.name }}</span>
-
-            <span matListItemLine>{{ medicineKit.note }}</span>
+        <!-- Information -->
+        <li class="medicine-kits__list-item" *ngIf="i <= 2" [ngClass]="{'medicine-kits__list-item--solo': oneMedicineKit}">
+          <div class="medicine-kits__list-item-content">
+            <span
+              class="medicine-kits__list-item-text medicine-kits__list-item-text--name"
+              >{{ medicineKit.name }}</span
+            >
 
             <span
-              matListItemLine
+              class="medicine-kits__list-item-text medicine-kits__list-item-text--note"
+              >{{ medicineKit.note }}</span
+            >
+
+            <span
+              class="medicine-kits__list-item-text medicine-kits__list-item-text--owner"
               *ngIf="
                 user !== null && !isPatient && medicineKit.owner.id !== user.id
               "
@@ -146,7 +152,7 @@
             </span>
 
             <span
-              matListItemLine
+              class="medicine-kits__list-item-text medicine-kits__list-item-text--owner"
               *ngIf="
                 user !== null &&
                 (user.role === 'caretaker' || user.role === 'family member') &&
@@ -155,17 +161,18 @@
             >
               Este botiquín es tuyo
             </span>
-          </mat-list-item>
+          </div>
 
           <!-- Button -->
           <button
             mat-icon-button
+            class="medicine-kits__list-item-button"
             color="primary"
             (click)="navigateMedicineKitDetails(medicineKit.id)"
           >
             <mat-icon>chevron_right</mat-icon>
           </button>
-        </div>
+        </li>
       </ng-container>
 
       <button
@@ -176,7 +183,7 @@
       >
         Ver más
       </button>
-    </mat-list>
+    </ul>
 
     <!-- Message shown when there are no medicine kits -->
     <ng-template #noMedicineKits>

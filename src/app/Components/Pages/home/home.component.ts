@@ -59,6 +59,8 @@ export class HomeComponent {
 
   user: UserDTO | null;
   isPatient: boolean;
+  oneReminder: boolean;
+  oneMedicineKit: boolean;
 
   constructor(
     private store: Store<GlobalStateDTO>,
@@ -68,7 +70,9 @@ export class HomeComponent {
     private dialogService: DialogService
   ) {
     this.user$ = this.store.select(authSelectors.selectUser);
-    this.userRelationships$ = this.store.select(authSelectors.selectUserRelationships);
+    this.userRelationships$ = this.store.select(
+      authSelectors.selectUserRelationships
+    );
 
     this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
     this.error$ = this.store.select(medicineSelectors.selectMedicineError);
@@ -86,6 +90,8 @@ export class HomeComponent {
     this.user = null;
 
     this.isPatient = false;
+    this.oneReminder = false;
+    this.oneMedicineKit = false;
   }
 
   ngOnInit() {
@@ -112,11 +118,15 @@ export class HomeComponent {
 
           if (user.role === 'caretaker') {
             this.store.dispatch(
-              userRelationShipActions.fetchCaretakerRelationships({ userId: user.id })
+              userRelationShipActions.fetchCaretakerRelationships({
+                userId: user.id,
+              })
             );
           } else if (user.role === 'family member') {
             this.store.dispatch(
-              userRelationShipActions.fetchFamilyMemberRelationships({ userId: user.id })
+              userRelationShipActions.fetchFamilyMemberRelationships({
+                userId: user.id,
+              })
             );
           } else this.isPatient = true;
 
@@ -140,6 +150,23 @@ export class HomeComponent {
         // Código a ejecutar después de eliminar
         this.todaysReminders$.subscribe((reminders) => {
           this.reminders = reminders;
+
+          if (this.reminders && this.reminders.length > 0) {
+            this.oneReminder = true;
+          }
+        });
+      });
+
+    this.actions$
+      .pipe(ofType(medicineKitActions.fetchUserMedicineKitsSuccess), take(1))
+      .subscribe(() => {
+        // Código a ejecutar después de eliminar
+        this.medicineKits$.subscribe((medicineKits) => {
+          this.medicineKits = medicineKits;
+
+          if (this.medicineKits && this.medicineKits.length > 0) {
+            this.oneMedicineKit = true;
+          }
         });
       });
 
@@ -164,6 +191,8 @@ export class HomeComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
+
+      console.log(this.oneMedicineKit, this.oneReminder)
   }
 
   navigateRemindersList(): void {
