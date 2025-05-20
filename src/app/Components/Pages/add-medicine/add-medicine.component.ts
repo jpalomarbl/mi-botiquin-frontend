@@ -17,11 +17,7 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
-import {
-  addMedicine,
-  addMedicineError,
-  updateMedicine,
-} from 'src/app/Store/medicine/actions/medicineKit.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 
 // Models
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
@@ -243,7 +239,7 @@ export class AddMedicineComponent {
       });
     });
 
-    this.actions$.pipe(ofType(addMedicineError), take(1)).subscribe((error) => {
+    this.actions$.pipe(ofType(medicineKitActions.addMedicineError, medicineKitActions.updateMedicineError), take(1)).subscribe((error) => {
       this.dialogService.openErrorDialog(error.error, this.dialog);
     });
   }
@@ -309,13 +305,13 @@ export class AddMedicineComponent {
             translatedUnit +
             ' al botiquín?',
           action: this.isUpdateMode
-            ? updateMedicine({
+            ? medicineKitActions.updateMedicine({
                 medicine: medicine,
                 reminder: reminder,
                 medicineKitId: +this.medicineKitId,
                 createReminder: this.medicine.reminder === null,
               })
-            : addMedicine({
+            : medicineKitActions.addMedicine({
                 medicine: medicine,
                 reminder: reminder,
                 medicineKitId: +this.medicineKitId,
@@ -338,12 +334,12 @@ export class AddMedicineComponent {
             ') ' +
             'al botiquín?',
           action: this.isUpdateMode
-            ? updateMedicine({
+            ? medicineKitActions.updateMedicine({
                 medicine: medicine,
                 medicineKitId: +this.medicineKitId,
                 createReminder: false,
               })
-            : addMedicine({
+            : medicineKitActions.addMedicine({
                 medicine: medicine,
                 medicineKitId: +this.medicineKitId,
               }),
