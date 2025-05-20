@@ -137,7 +137,7 @@
           class="medicine-kits__list-item"
           [ngClass]="{ 'medicine-kits__list-item--solo': oneMedicineKit }"
           *ngIf="i <= 2"
-          (click)="navigateMedicineKitsList()"
+          (click)="navigateMedicineKitDetails(medicineKit.id)"
         >
           <div class="medicine-kits__list-item-content">
             <span
