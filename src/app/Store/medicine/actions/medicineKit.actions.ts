@@ -63,6 +63,21 @@ export const addMedicineKitError = createAction(
   props<{ error: string }>()
 );
 
+export const deleteMedicineKit = createAction(
+  '[Medicine] Delete Medicine Kit From API',
+  props<{ medicineKitId: number }>()
+);
+
+export const deleteMedicineKitSuccess = createAction(
+  '[Medicine] Delete Medicine Kit From API Success',
+  props<{ medicineKitId: number }>()
+);
+
+export const deleteMedicineKitError = createAction(
+  '[Medicine] Delete Medicine Kit From API Error',
+  props<{ error: string }>()
+);
+
 export const fetchMedicinesCIMA = createAction(
   '[Medicine] Fetch Medicines From CIMA REST API',
   props<{ medicineName: string }>()

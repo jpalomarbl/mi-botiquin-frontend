@@ -434,6 +434,34 @@ export const medicineReducer = createReducer(
     error: error,
   })),
 
+  // Delete mediicne kit
+  on(medicineKitActions.deleteMedicineKit, (state, { medicineKitId }) => {
+    return {
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    };
+  }),
+  on(
+    medicineKitActions.deleteMedicineKitSuccess,
+    (state, { medicineKitId }) => ({
+      ...state,
+      medicineKits: state.medicineKits.filter(
+        (item) => item.id !== medicineKitId
+      ),
+      loading: false,
+      loaded: true,
+      error: null,
+    })
+  ),
+  on(medicineKitActions.deleteMedicineKitError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
   // Fetch medicines from CIMA REST API
   on(medicineKitActions.fetchMedicinesCIMA, (state, { medicineName }) => ({
     ...state,

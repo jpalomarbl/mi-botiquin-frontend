@@ -123,6 +123,22 @@ export class MedicineKitService {
     );
   }
 
+  deleteMedicineKit(medicineKitId: number): Observable<MedicineKitDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('medicineKitId', medicineKitId.toString());
+
+    return this.http.delete<MedicineKitDTO>(`${this.apiUrlMedicineKit}`, {
+      body: body.toString(),
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   fetchMedicinesCIMA(medicineName: string): Observable<any> {
     return this.http.get<any>(
       `https://cima.aemps.es/cima/rest/medicamentos?nombre=${medicineName}`
@@ -130,13 +146,10 @@ export class MedicineKitService {
   }
 
   fetchMedicineById(medicineId: number): Observable<any> {
-    return this.http.get<any>(
-      this.apiUrlMedicine + '/id',
-      {
-        withCredentials: true,
-        params: { medicineId: medicineId.toString() },
-      }
-    );
+    return this.http.get<any>(this.apiUrlMedicine + '/id', {
+      withCredentials: true,
+      params: { medicineId: medicineId.toString() },
+    });
   }
 
   addMedicine(
@@ -163,9 +176,7 @@ export class MedicineKitService {
     });
   }
 
-  updateMedicine(
-    medicine: MedicineDTO,
-  ): Observable<MedicineDTO> {
+  updateMedicine(medicine: MedicineDTO): Observable<MedicineDTO> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'

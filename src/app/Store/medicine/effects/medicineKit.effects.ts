@@ -127,6 +127,26 @@ export class MedicineKitEffects {
     )
   );
 
+  deleteMedicineKit$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.deleteMedicineKit),
+      mergeMap(({ medicineKitId }) =>
+        this.medicineKitService.deleteMedicineKit(medicineKitId).pipe(
+          map((response: any) => {
+            return medicineKitActions.deleteMedicineKitSuccess({ medicineKitId: medicineKitId });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.deleteMedicineKitError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   fetchMedicinesCIMA$ = createEffect(() =>
     this.actions$.pipe(
       ofType(medicineKitActions.fetchMedicinesCIMA),

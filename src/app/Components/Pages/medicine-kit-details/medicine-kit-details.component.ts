@@ -124,6 +124,21 @@ export class MedicineKitDetailsComponent {
     });
   }
 
+  deleteMedicineKit(): void {
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Eliminar botiquín?',
+        message:
+          '¿Estás seguro de eliminar este botiquín? Esta acción también eliminará todos los medicamentos asociados y sus recordatorios.',
+        route: 'medicineKitsList',
+        action: medicineKitActions.deleteMedicineKit({
+          medicineKitId: this.medicineKitId!,
+        }),
+      },
+      this.dialog
+    );
+  }
+
   navigateAddMedicine(): void {
     this.router.navigate([`searchMedicine/${this.medicineKit!.id}`]);
   }
