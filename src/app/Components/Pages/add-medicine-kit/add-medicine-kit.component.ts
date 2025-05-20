@@ -62,7 +62,7 @@ export class AddMedicineKitComponent {
     private router: Router,
     private dialogService: DialogService,
     private actions$: Actions,
-    public errorDialog: MatDialog
+    public dialog: MatDialog
   ) {
     this.medicineKit = {
       id: 0,
@@ -158,7 +158,7 @@ export class AddMedicineKitComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.dialogService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.dialog);
       });
   }
 
@@ -175,8 +175,28 @@ export class AddMedicineKitComponent {
 
     this.medicineKit = updatedMedicineKit;
 
-    this.store.dispatch(medicineKitActions.addMedicineKit({ medicineKit: this.medicineKit }));
+    // this.store.dispatch(
+    //   medicineKitActions.addMedicineKit({ medicineKit: this.medicineKit })
+    // );
 
-    this.router.navigate(['medicineKitsList']);
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Crear nuevo botiquín?',
+        message: `¿Estás seguro de crear el botiquín ${
+          updatedMedicineKit.name
+        }${
+          +(updatedMedicineKit.note && updatedMedicineKit.note !== '')
+            ? ` (${updatedMedicineKit.note})?`
+            : '?'
+        }`,
+        action: medicineKitActions.addMedicineKit({
+          medicineKit: this.medicineKit,
+        }),
+        route: 'medicineKitsList',
+      },
+      this.dialog
+    );
+
+    // this.router.navigate(['medicineKitsList']);
   }
 }
