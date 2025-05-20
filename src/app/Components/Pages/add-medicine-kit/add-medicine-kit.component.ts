@@ -175,9 +175,6 @@ export class AddMedicineKitComponent {
 
     this.medicineKit = updatedMedicineKit;
 
-    // this.store.dispatch(
-    //   medicineKitActions.addMedicineKit({ medicineKit: this.medicineKit })
-    // );
 
     this.dialogService.openConfirmationDialog(
       {
@@ -196,7 +193,5 @@ export class AddMedicineKitComponent {
       },
       this.dialog
     );
-
-    // this.router.navigate(['medicineKitsList']);
   }
 }
