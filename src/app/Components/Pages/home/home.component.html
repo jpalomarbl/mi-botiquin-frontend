@@ -40,7 +40,11 @@
       <ng-container
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
-        <mat-list-item class="reminders__list-item" *ngIf="i < 2" [ngClass]="{'reminders__list-item--solo': oneReminder}">
+        <mat-list-item
+          class="reminders__list-item"
+          *ngIf="i < 2"
+          [ngClass]="{ 'reminders__list-item--solo': oneReminder }"
+        >
           <span matListItemTitle>{{ reminder.medicineName }}</span>
 
           <span matListItemLine
@@ -129,7 +133,12 @@
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
       >
         <!-- Information -->
-        <li class="medicine-kits__list-item" *ngIf="i <= 2" [ngClass]="{'medicine-kits__list-item--solo': oneMedicineKit}">
+        <li
+          class="medicine-kits__list-item"
+          [ngClass]="{ 'medicine-kits__list-item--solo': oneMedicineKit }"
+          *ngIf="i <= 2"
+          (click)="navigateMedicineKitsList()"
+        >
           <div class="medicine-kits__list-item-content">
             <span
               class="medicine-kits__list-item-text medicine-kits__list-item-text--name"
