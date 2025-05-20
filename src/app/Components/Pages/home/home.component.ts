@@ -14,14 +14,8 @@ import { UserDTO } from 'src/app/Models/user.dto';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
-import {
-  fetchCaretakerRelationships,
-  fetchFamilyMemberRelationships,
-} from 'src/app/Store/auth/actions/userRelationships.actions';
-import {
-  selectUser,
-  selectUserRelationships,
-} from 'src/app/Store/auth/selectors/auth.selectors';
+import * as userRelationShipActions from 'src/app/Store/auth/actions/userRelationships.actions';
+import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -73,8 +67,8 @@ export class HomeComponent {
     public errorDialog: MatDialog,
     private dialogService: DialogService
   ) {
-    this.user$ = this.store.select(selectUser);
-    this.userRelationships$ = this.store.select(selectUserRelationships);
+    this.user$ = this.store.select(authSelectors.selectUser);
+    this.userRelationships$ = this.store.select(authSelectors.selectUserRelationships);
 
     this.loading$ = this.store.select(medicineSelectors.selectMedicineLoading);
     this.error$ = this.store.select(medicineSelectors.selectMedicineError);
@@ -118,11 +112,11 @@ export class HomeComponent {
 
           if (user.role === 'caretaker') {
             this.store.dispatch(
-              fetchCaretakerRelationships({ userId: user.id })
+              userRelationShipActions.fetchCaretakerRelationships({ userId: user.id })
             );
           } else if (user.role === 'family member') {
             this.store.dispatch(
-              fetchFamilyMemberRelationships({ userId: user.id })
+              userRelationShipActions.fetchFamilyMemberRelationships({ userId: user.id })
             );
           } else this.isPatient = true;
 
@@ -161,7 +155,9 @@ export class HomeComponent {
       .pipe(
         ofType(
           reminderActions.fetchAllUserRemindersError,
-          medicineKitActions.fetchUserMedicineKitsError
+          medicineKitActions.fetchUserMedicineKitsError,
+          userRelationShipActions.fetchCaretakerRelationshipsError,
+          userRelationShipActions.fetchFamilyMemberRelationshipsError
         ),
         take(1)
       )
