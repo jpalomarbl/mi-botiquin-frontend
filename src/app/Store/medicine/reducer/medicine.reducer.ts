@@ -415,14 +415,14 @@ export const medicineReducer = createReducer(
   on(medicineKitActions.addMedicineKit, (state, { medicineKit }) => {
     return {
       ...state,
-      medicineKits: [...(state.medicineKits || []), medicineKit],
       loading: true,
       loaded: false,
       error: null,
     };
   }),
-  on(medicineKitActions.addMedicineKitSuccess, (state) => ({
+  on(medicineKitActions.addMedicineKitSuccess, (state, { medicineKit }) => ({
     ...state,
+    medicineKits: [...(state.medicineKits || []), medicineKit],
     loading: false,
     loaded: true,
     error: null,

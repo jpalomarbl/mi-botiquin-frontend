@@ -54,7 +54,8 @@ export const addMedicineKit = createAction(
 );
 
 export const addMedicineKitSuccess = createAction(
-  '[Medicine] Insert Medicine Kit Success'
+  '[Medicine] Insert Medicine Kit Success',
+  props<{ medicineKit: MedicineKitDTO }>()
 );
 
 export const addMedicineKitError = createAction(

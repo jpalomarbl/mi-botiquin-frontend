@@ -113,7 +113,7 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKit }) =>
         this.medicineKitService.addMedicineKit(medicineKit).pipe(
           map((response: any) => {
-            return medicineKitActions.addMedicineKitSuccess();
+            return medicineKitActions.addMedicineKitSuccess({ medicineKit: medicineKit });
           }),
           catchError((error) =>
             of(
