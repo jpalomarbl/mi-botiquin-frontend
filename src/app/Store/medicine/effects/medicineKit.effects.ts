@@ -7,6 +7,7 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderKitActions from 'src/app/Store/medicine/actions/reminder.actions';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
+import { TitleCasePipe } from '@angular/common';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -155,9 +156,11 @@ export class MedicineKitEffects {
           map((response) => {
             const medicines: MedicineDTO[] = response.resultados.map(
               (medicine: any) => {
+                const titleCasePipe = new TitleCasePipe();
+
                 return {
                   id: 0,
-                  name: medicine.nombre,
+                  name: titleCasePipe.transform(medicine.nombre),
                   reminder: null,
                   unit: '',
                   amount: 0,
