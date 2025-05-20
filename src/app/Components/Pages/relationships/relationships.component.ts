@@ -2,11 +2,12 @@
 import { Component } from '@angular/core';
 
 // RxJS
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 // Store
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { sendRelationshipRequest } from 'src/app/Store/auth/actions/notification.actions';
+import * as  notificationActions from 'src/app/Store/auth/actions/notification.actions';
 import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 
@@ -60,6 +61,7 @@ export class RelationshipsComponent {
   constructor(
     private store: Store<GlobalStateDTO>,
     private dialogService: DialogService,
+    private actions$: Actions,
     public dialog: MatDialog
   ) {
     this.userRelationships$ = this.store.select(
@@ -120,6 +122,19 @@ export class RelationshipsComponent {
         });
       }
     });
+
+    this.actions$
+      .pipe(
+        ofType(
+          notificationActions.sendRelationshipRequestError,
+          userRelationshipsActions.removePatientCaretakerRelationshipError,
+          userRelationshipsActions.removePatientFamilyMemberRelationshipError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
   }
 
   searchUsers(): void {
@@ -157,7 +172,7 @@ export class RelationshipsComponent {
           censoredEmail +
           ')?',
         route: '/',
-        action: sendRelationshipRequest({
+        action: notificationActions.sendRelationshipRequest({
           requesterId: this.userId,
           receiverId: userId,
         }),
