@@ -28,7 +28,7 @@ export const selectMedicineKits = createSelector(
 export const selectMedicineKitById = (medicineKitId: number) =>
   createSelector(
     selectMedicineKits,
-    (medicineKits: MedicineKitDTO[]) => medicineKits.find((medicineKit) => medicineKit.id === medicineKitId)
+    (medicineKits: MedicineKitDTO[]) => (medicineKits || []).find((medicineKit) => medicineKit.id === medicineKitId)
   );
 
 export const selectMedicineLoading = createSelector(
