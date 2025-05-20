@@ -1,3 +1,5 @@
+@import '/src/assets/colors.scss';
+
 .footer {
   display: flex;
   justify-content: center;
@@ -11,8 +13,8 @@
   position: fixed;
   bottom: 0;
 
-  background-color: #ececec;
-  border-top: 1px solid #dee2e6;
+  background-color: $backgrounds;
+  border-top: 1px solid $borders;
 
   &__button {
     display: flex;

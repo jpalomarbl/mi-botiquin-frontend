@@ -1,0 +1,13 @@
+@import '@angular/material/theming';
+
+@include mat-core();
+
+$primary: mat-palette($mat-deep-purple);
+$accent: mat-palette($mat-pink, 300);
+$warn: mat-palette($mat-red);
+
+$white: #f1f1f1;
+$black: #121212;
+
+$backgrounds: #71D7FF;
+$borders: #00B7FF;

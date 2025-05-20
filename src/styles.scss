@@ -1,7 +1,14 @@
+@import '/src/assets/colors.scss';
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto,"Helvetica Neue", sans-serif;
+  color: $black;
+
+  background-color: $white;
+}
 
 
 // Custom Theming for Angular Material
@@ -10,9 +17,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @include mat-core();
 
-$my-app-primary: mat-palette($mat-deep-purple);
-$my-app-accent: mat-palette($mat-pink, 300);
-$my-app-warn: mat-palette($mat-red);
+$my-app-primary: $primary;
+$my-app-accent: $accent;
+$my-app-warn: $warn;
 
 $my-app-theme: mat-light-theme(
   (
