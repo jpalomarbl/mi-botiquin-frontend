@@ -117,6 +117,7 @@ export class AddMedicineComponent {
     this.medicineKitId = this.route.snapshot.params['medicineKitId'];
 
     this.reminder = {
+      id: 0,
       frequency: 0,
       frequencyUnit: 'horas',
       start: new Date(),
