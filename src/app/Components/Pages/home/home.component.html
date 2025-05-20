@@ -43,7 +43,6 @@
         <mat-list-item
           class="reminders__list-item"
           *ngIf="i < 2"
-          [ngClass]="{ 'reminders__list-item--solo': oneReminder }"
         >
           <span matListItemTitle>{{ reminder.medicineName }}</span>
 
@@ -135,7 +134,6 @@
         <!-- Information -->
         <li
           class="medicine-kits__list-item"
-          [ngClass]="{ 'medicine-kits__list-item--solo': oneMedicineKit }"
           *ngIf="i <= 2"
           (click)="navigateMedicineKitDetails(medicineKit.id)"
         >
