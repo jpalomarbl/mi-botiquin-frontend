@@ -156,10 +156,6 @@ export class RemindersListComponent {
       this.loadData(this.userId);
     }
 
-    // this.store.dispatch(
-    //   fetchAllUserConsumptions({ userId: 2, day: new Date() })
-    // );
-
     this.actions$
       .pipe(
         ofType(
