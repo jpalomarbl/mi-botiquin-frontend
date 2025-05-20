@@ -22,10 +22,7 @@ import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
 import * as userRelationshipActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
-import {
-  addMedicineKit,
-  addMedicineKitError,
-} from 'src/app/Store/medicine/actions/medicineKit.actions';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Components
@@ -156,7 +153,7 @@ export class AddMedicineKitComponent {
         ofType(
           userRelationshipActions.fetchCaretakerRelationshipsError,
           userRelationshipActions.fetchFamilyMemberRelationshipsError,
-          addMedicineKitError
+          medicineKitActions.addMedicineKitError
         ),
         take(1)
       )
@@ -178,7 +175,7 @@ export class AddMedicineKitComponent {
 
     this.medicineKit = updatedMedicineKit;
 
-    this.store.dispatch(addMedicineKit({ medicineKit: this.medicineKit }));
+    this.store.dispatch(medicineKitActions.addMedicineKit({ medicineKit: this.medicineKit }));
 
     this.router.navigate(['medicineKitsList']);
   }
