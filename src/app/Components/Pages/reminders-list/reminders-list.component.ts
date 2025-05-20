@@ -12,23 +12,9 @@ import { distinctUntilChanged, filter, Observable, take } from 'rxjs';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
-import {
-  fetchCaretakerRelationships,
-  fetchCaretakerRelationshipsError,
-  fetchFamilyMemberRelationships,
-  fetchFamilyMemberRelationshipsError,
-} from 'src/app/Store/auth/actions/userRelationships.actions';
+import * as userRelationshipsActions  from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
-import {
-  selectUser,
-  selectUserRelationships,
-} from 'src/app/Store/auth/selectors/auth.selectors';
-import {
-  changeReminderState,
-  changeReminderStateError,
-  fetchAllUserReminders,
-  fetchAllUserRemindersError,
-} from 'src/app/Store/medicine/actions/reminder.actions';
+import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
 // Angular Material
@@ -114,8 +100,8 @@ export class RemindersListComponent {
     private actions$: Actions,
     public errorDialog: MatDialog
   ) {
-    this.user$ = this.store.select(selectUser);
-    this.userRelationships$ = this.store.select(selectUserRelationships);
+    this.user$ = this.store.select(authSelectors.selectUser);
+    this.userRelationships$ = this.store.select(authSelectors.selectUserRelationships);
     this.organizedReminders$ = this.store.select(
       medicineSelectors.selectOrganizedReminders
     );
@@ -177,10 +163,10 @@ export class RemindersListComponent {
     this.actions$
       .pipe(
         ofType(
-          changeReminderStateError,
-          fetchAllUserRemindersError,
-          fetchCaretakerRelationshipsError,
-          fetchFamilyMemberRelationshipsError
+          reminderActions.changeReminderStateError,
+          reminderActions.fetchAllUserRemindersError,
+          userRelationshipsActions.fetchCaretakerRelationshipsError,
+          userRelationshipsActions.fetchFamilyMemberRelationshipsError
         ),
         take(1)
       )
@@ -258,7 +244,7 @@ export class RemindersListComponent {
     status: boolean
   ) {
     this.store.dispatch(
-      changeReminderState({
+      reminderActions.changeReminderState({
         index: index,
         reminderId: reminderId,
         time: time,
@@ -276,7 +262,7 @@ export class RemindersListComponent {
       this.userId = +userId;
 
       this.store.dispatch(
-        fetchAllUserReminders({
+        reminderActions.fetchAllUserReminders({
           userId: userId,
           day: this.day,
         })
@@ -287,7 +273,7 @@ export class RemindersListComponent {
         .subscribe((user: UserDTO | null) => {
           if (user) {
             this.store.dispatch(
-              fetchAllUserReminders({
+              reminderActions.fetchAllUserReminders({
                 userId: user.id,
                 day: this.day,
               })
@@ -295,11 +281,11 @@ export class RemindersListComponent {
 
             if (user.role === 'caretaker') {
               this.store.dispatch(
-                fetchCaretakerRelationships({ userId: user.id })
+                userRelationshipsActions.fetchCaretakerRelationships({ userId: user.id })
               );
             } else if (user.role === 'family member') {
               this.store.dispatch(
-                fetchFamilyMemberRelationships({ userId: user.id })
+                userRelationshipsActions.fetchFamilyMemberRelationships({ userId: user.id })
               );
             } else this.isPatient = true;
           }
