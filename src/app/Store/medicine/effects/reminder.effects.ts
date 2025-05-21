@@ -81,8 +81,6 @@ export class ReminderEffects {
   fetchAllUserReminders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserReminders),
-      take(1),
-      debounceTime(300),
       mergeMap(({ userId, day }) =>
         this.reminderService.fetchAllUserReminders(userId).pipe(
           map((response: any) => {
@@ -134,7 +132,6 @@ export class ReminderEffects {
   fetchAllUserConsumptions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reminderActions.fetchAllUserConsumptions),
-      debounceTime(300),
       mergeMap(({ userId, reminders, day }) =>
         this.reminderService.fetchAllUserConsumptions(userId).pipe(
           map((response: ConsumptionDTO[]) => {

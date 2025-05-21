@@ -47,20 +47,24 @@ export const medicineReducer = createReducer(
   // Get all reminders from user
   on(reminderActions.fetchAllUserReminders, (state) => ({
     ...state,
+    reminders: [],
+    organizedReminders: [],
     loading: true,
     loaded: false,
     error: null,
   })),
   on(
     reminderActions.fetchAllUserRemindersSuccess,
-    (state, { reminders, organizedReminders }) => ({
-      ...state,
-      reminders: reminders,
-      organizedReminders: organizedReminders,
-      loading: false,
-      loaded: true,
-      error: null,
-    })
+    (state, { reminders, organizedReminders }) => {
+      return {
+        ...state,
+        reminders: reminders,
+        organizedReminders: organizedReminders,
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
   ),
   on(reminderActions.fetchAllUserRemindersError, (state, { error }) => ({
     ...state,
@@ -131,8 +135,6 @@ export const medicineReducer = createReducer(
       let medicineName: string = '';
       let medicineKitName: string = '';
       let medicineUnit: string = '';
-
-      console.log(reminder);
 
       return {
         ...state,
@@ -456,8 +458,6 @@ export const medicineReducer = createReducer(
             });
           }
         });
-
-        console.log(deletedReminders);
 
         return {
           ...state,

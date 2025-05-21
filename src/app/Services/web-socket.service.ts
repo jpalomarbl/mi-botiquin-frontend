@@ -50,8 +50,6 @@ export class WebSocketService {
               this.socket$!.onmessage = (event) => {
                 const rawMessage = JSON.parse(event.data);
 
-                console.log(rawMessage);
-
                 let message: any = rawMessage;
 
                 if (rawMessage.type === 'expired') {
@@ -63,8 +61,6 @@ export class WebSocketService {
                     medicineKitName: rawMessage.medicineKitName,
                     medicineKitId: rawMessage.medicineKitId
                   };
-
-                  // console.log(message)
 
                   this.store.dispatch(
                     notificationActions.addNotification({

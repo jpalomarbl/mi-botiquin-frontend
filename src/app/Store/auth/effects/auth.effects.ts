@@ -252,8 +252,6 @@ export class AuthEffects {
       mergeMap(({ searchTerm }) =>
         this.userRelationshipService.searchUsers(searchTerm).pipe(
           map((response: UserDTO[]) => {
-            console.log('searchUsers response', response);
-
             return userRelationshipActions.searchUsersSuccess({
               searchResults: response,
             });
@@ -355,14 +353,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(userRelationshipActions.acceptRelationshipRequest),
       mergeMap(({ requesterId, receiverId, requesterRole }) => {
-        console.log(requesterId, receiverId, requesterRole);
-
         return this.userRelationshipService
           .acceptRelationshipRequest(requesterId, receiverId, requesterRole)
           .pipe(
             map((response: UserDTO | null) => {
               if (response) {
-                console.log(response);
                 return userRelationshipActions.acceptRelationshipRequestSuccess(
                   {
                     relationship: response,

@@ -32,31 +32,23 @@ export class ReminderService {
   }
 
   fetchAllUserReminders(userId: number): Observable<ReminderDTO[]> {
-    const response = this.http.get<ReminderDTO[]>(
+    return this.http.get<ReminderDTO[]>(
       `${this.apiUrlReminder}/user`,
       {
         withCredentials: true,
         params: { userId: userId.toString() },
       }
     );
-
-    response.subscribe((data) => {
-      console.log(data);
-    });
-
-    return response;
   }
 
   fetchAllUserConsumptions(userId: number): Observable<ConsumptionDTO[]> {
-    const response = this.http.get<ConsumptionDTO[]>(
+    return this.http.get<ConsumptionDTO[]>(
       `${this.apiUrlConsumption}/user`,
       {
         withCredentials: true,
         params: { userId: userId.toString() },
       }
     );
-
-    return response;
   }
 
   changeReminderState(
@@ -134,9 +126,6 @@ export class ReminderService {
   }
 
   deleteReminder(reminderId: number): Observable<any> {
-
-    console.log("ReminderId", reminderId)
-
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'

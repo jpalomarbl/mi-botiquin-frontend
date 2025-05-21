@@ -6,13 +6,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // Ngrx, Rxjs and Redux
 import { ofType } from '@ngrx/effects';
-import { distinctUntilChanged, filter, Observable, take } from 'rxjs';
+import {
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  take,
+} from 'rxjs';
 
 // Store
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
-import * as userRelationshipsActions  from 'src/app/Store/auth/actions/userRelationships.actions';
+import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
@@ -83,6 +90,9 @@ export class RemindersListComponent {
   // If user is a patient patient selector will not be displayed
   isPatient: boolean;
 
+  // True if reminders is empty
+  isRemindersEmpty: boolean;
+
   // Reminders grouped by next doses
   organizedReminders: Array<[Date, ReminderDTO[]]>;
 
@@ -101,7 +111,9 @@ export class RemindersListComponent {
     public errorDialog: MatDialog
   ) {
     this.user$ = this.store.select(authSelectors.selectUser);
-    this.userRelationships$ = this.store.select(authSelectors.selectUserRelationships);
+    this.userRelationships$ = this.store.select(
+      authSelectors.selectUserRelationships
+    );
     this.organizedReminders$ = this.store.select(
       medicineSelectors.selectOrganizedReminders
     );
@@ -134,6 +146,7 @@ export class RemindersListComponent {
     this.isToday = false;
     this.isYesterday = false;
     this.isTomorrow = false;
+    this.isRemindersEmpty = false;
 
     this.isPatient = false;
 
@@ -141,20 +154,40 @@ export class RemindersListComponent {
   }
 
   ngOnInit() {
-    this.route.params.pipe(distinctUntilChanged()).subscribe((params) => {
-      this.userId = params['userId'] ? +params['userId'] : 0;
+    this.user$;
+    combineLatest([this.route.params.pipe(distinctUntilChanged()), this.user$])
+      .pipe(
+        filter(([params, user]) => user !== null),
+        map(([params, user]) => {
+          return user ;
+        })
+      )
+      .subscribe((user) => {
+        this.userId = user!.id;
 
-      this.calculateDate();
-      this.loadData(this.userId);
-    });
+        this.route.params.pipe(distinctUntilChanged()).subscribe((params) => {
+          this.calculateDate();
+          this.loadData(user!.id, user!.role);
+        });
 
-    // We fetch all user reminders and filter them for the specified day.
-    if (
-      !this.router.url.includes('forwards') &&
-      !this.router.url.includes('backwards')
-    ) {
-      this.loadData(this.userId);
-    }
+        // We fetch all user reminders and filter them for the specified day.
+        if (
+          !this.router.url.includes('forwards') &&
+          !this.router.url.includes('backwards')
+        ) {
+          this.loadData(user!.id, user!.role);
+        }
+      });
+
+    this.actions$
+      .pipe(ofType(reminderActions.fetchAllUserRemindersSuccess), take(1))
+      .subscribe((reminders) => {
+        if (reminders.reminders.length === 0) {
+          this.isRemindersEmpty = true;
+        } else {
+          this.isRemindersEmpty = false;
+        }
+      });
 
     this.actions$
       .pipe(
@@ -186,20 +219,19 @@ export class RemindersListComponent {
       this.daysDisplaced += isBackwards ? +1 : isForwards ? -1 : 0;
 
       if (this.daysDisplaced === 0) {
-        this.router.navigate(['remindersList' + userIdString]);
+        this.router.navigate(['remindersList']);
       } else if (isForwards) {
         this.router.navigate([
-          'remindersList' + userIdString + '/forwards',
+          'remindersList' + '/forwards',
           this.daysDisplaced,
         ]);
       } else if (isBackwards) {
         this.router.navigate([
-          'remindersList' + userIdString + '/backwards',
+          'remindersList' + '/backwards',
           this.daysDisplaced,
         ]);
       }
-    } else
-      this.router.navigate(['remindersList' + userIdString + '/backwards/1']);
+    } else this.router.navigate(['remindersList' + '/backwards/1']);
   }
 
   navigateToNextDay() {
@@ -217,20 +249,19 @@ export class RemindersListComponent {
       this.daysDisplaced += isBackwards ? -1 : isForwards ? +1 : 0;
 
       if (this.daysDisplaced === 0) {
-        this.router.navigate(['remindersList' + userIdString]);
+        this.router.navigate(['remindersList']);
       } else if (isForwards) {
         this.router.navigate([
-          'remindersList' + userIdString + '/forwards',
+          'remindersList' + '/forwards',
           this.daysDisplaced,
         ]);
       } else if (isBackwards) {
         this.router.navigate([
-          'remindersList' + userIdString + '/backwards',
+          'remindersList' + '/backwards',
           this.daysDisplaced,
         ]);
       }
-    } else
-      this.router.navigate(['remindersList' + userIdString + '/forwards/1']);
+    } else this.router.navigate(['remindersList' + '/forwards/1']);
   }
 
   changeReminderState(
@@ -249,12 +280,11 @@ export class RemindersListComponent {
     );
   }
 
-  loadData(userId: number = 0): void {
-    this.userId = userId;
-
-    // If a userId has been specified, we search for that user's reminders.
-    // If not, we search for the logged in user's reminders.
-    if (userId && +userId !== 0) {
+  loadData(userId: number = 0, role?: string): void {
+    // If we're looking for any user other than the logged in user's reminders
+    // we just fetch that user's reminders.
+    // Otherwise, we fetch the logged in user's reminders, and their relationships.
+    if (this.userId !== userId) {
       this.userId = +userId;
 
       this.store.dispatch(
@@ -264,28 +294,26 @@ export class RemindersListComponent {
         })
       );
     } else {
-      this.user$
-        .pipe(filter((user) => user !== null))
-        .subscribe((user: UserDTO | null) => {
-          if (user) {
-            this.store.dispatch(
-              reminderActions.fetchAllUserReminders({
-                userId: user.id,
-                day: this.day,
-              })
-            );
+      this.store.dispatch(
+        reminderActions.fetchAllUserReminders({
+          userId: userId,
+          day: this.day,
+        })
+      );
 
-            if (user.role === 'caretaker') {
-              this.store.dispatch(
-                userRelationshipsActions.fetchCaretakerRelationships({ userId: user.id })
-              );
-            } else if (user.role === 'family member') {
-              this.store.dispatch(
-                userRelationshipsActions.fetchFamilyMemberRelationships({ userId: user.id })
-              );
-            } else this.isPatient = true;
-          }
-        });
+      if (role === 'caretaker') {
+        this.store.dispatch(
+          userRelationshipsActions.fetchCaretakerRelationships({
+            userId: userId,
+          })
+        );
+      } else if (role === 'family member') {
+        this.store.dispatch(
+          userRelationshipsActions.fetchFamilyMemberRelationships({
+            userId: userId,
+          })
+        );
+      } else this.isPatient = true;
     }
   }
 
