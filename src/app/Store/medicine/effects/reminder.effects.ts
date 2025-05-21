@@ -90,12 +90,12 @@ export class ReminderEffects {
               .filter((row: ReminderDTO) => {
                 const dayAfter = new Date(day);
                 dayAfter.setDate(dayAfter.getDate() + 1);
-                const finishDate = new Date(row.finish!);
+                const finishDate = row.finish ? new Date(row.finish) : null;
                 const nextDose = this.reminderService.getNextDoseTime(row, day);
 
                 return (
                   nextDose.getTime() < dayAfter.getTime() &&
-                  nextDose.getTime() < finishDate.getTime()
+                  (!finishDate || nextDose.getTime() < finishDate.getTime())
                 );
               })
               .map((row: ReminderDTO) => {

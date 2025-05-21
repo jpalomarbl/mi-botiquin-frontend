@@ -40,6 +40,10 @@ export class ReminderService {
       }
     );
 
+    response.subscribe((data) => {
+      console.log(data);
+    });
+
     return response;
   }
 
@@ -96,7 +100,7 @@ export class ReminderService {
     body.set('frequency', reminder.frequency.toString());
     body.set('frequencyUnit', reminder.frequencyUnit);
     body.set('start', reminder.start.toString());
-    body.set('finish', reminder.finish!.toString());
+    body.set('finish', reminder.finish ? reminder.finish.toString() : String(null));
     body.set('amount', reminder.amount.toString());
     body.set('medicineId', medicineId.toString());
 
@@ -132,7 +136,7 @@ export class ReminderService {
   deleteReminder(reminderId: number): Observable<any> {
 
     console.log("ReminderId", reminderId)
-    
+
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
