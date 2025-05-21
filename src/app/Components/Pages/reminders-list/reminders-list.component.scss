@@ -65,7 +65,7 @@
     background-color: $backgrounds;
 
     &--consumed {
-      background-color: $borders;
+      background-color: #55CFFF;
     }
 
     &--consumed .reminders-list__card-content,
@@ -80,6 +80,7 @@
     justify-content: center;
 
     padding-top: .5dvh;
+    border-bottom: solid 1px $borders;
   }
 
   &__card-state {
@@ -87,7 +88,8 @@
   }
 
   &__card-content {
-    margin-block: 1dvh;
+    margin-top: 1.5dvh;
+    margin-bottom: .5dvh;
   }
 
   &__card-title,
