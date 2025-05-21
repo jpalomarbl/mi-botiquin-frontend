@@ -210,10 +210,10 @@ export class AddMedicineComponent {
         this.reminder.finish.getMinutes().toString().length === 2
           ? this.reminder.finish.getMinutes().toString()
           : '0' + this.reminder.finish.getMinutes().toString();
-    }
 
-    this.finishDate.setValue(this.reminder.finish);
-    this.finishTime.setValue(`${hours}:${minutes}`);
+      this.finishDate.setValue(this.reminder.finish);
+      this.finishTime.setValue(`${hours}:${minutes}`);
+    }
 
     this.medicineForm = new FormGroup({
       expirationDate: this.expirationDate,
@@ -239,9 +239,17 @@ export class AddMedicineComponent {
       });
     });
 
-    this.actions$.pipe(ofType(medicineKitActions.addMedicineError, medicineKitActions.updateMedicineError), take(1)).subscribe((error) => {
-      this.dialogService.openErrorDialog(error.error, this.dialog);
-    });
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.addMedicineError,
+          medicineKitActions.updateMedicineError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
   }
 
   submitForms(): void {
@@ -278,10 +286,11 @@ export class AddMedicineComponent {
           finish.setSeconds(0);
           finish.setMilliseconds(0);
         }
+
+        reminder.finish = finish;
       }
 
       reminder.start = start;
-      reminder.finish = finish;
 
       let translatedUnit = '';
 
