@@ -1,16 +1,26 @@
-
 <div class="medicine-kits">
   <mat-progress-spinner
     class="medicine-kits__spinner"
-    [ngClass]="{ 'medicine-kits__spinner--not-hidden': (loadingMedicine$ | async) || (loadingAuth$ | async) }"
+    [ngClass]="{
+      'medicine-kits__spinner--not-hidden':
+        (loadingMedicine$ | async) || (loadingAuth$ | async)
+    }"
     color="primary"
     mode="indeterminate"
     value="50"
   >
   </mat-progress-spinner>
 
+  <h1 class="medicine-kits__title">Tus botiquines</h1>
+
   <section class="options__container">
-    <mat-form-field class="options__selector" *ngIf="!isPatient && (!(loadingMedicine$ | async) && !(loadingAuth$ | async))" appearance="fill">
+    <mat-form-field
+      class="options__selector"
+      *ngIf="
+        !isPatient && !(loadingMedicine$ | async) && !(loadingAuth$ | async)
+      "
+      appearance="fill"
+    >
       <mat-label>Filtra por pacientes</mat-label>
       <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">
         <mat-option
@@ -23,66 +33,93 @@
       </mat-select>
     </mat-form-field>
 
-    <button class="options__button" (click)="navigateAddMedicineKit()" mat-fab extended color="primary">
+    <button
+      mat-button
+      class="options__button"
+      (click)="navigateAddMedicineKit()"
+      extended
+      color="accent"
+    >
       <mat-icon>add</mat-icon>
-      Añadir botiquín
+      <span class="options__button-text">Añadir botiquín</span>
     </button>
   </section>
 
-  <section class="medicine-kits-list" *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)">
+  <section
+    class="medicine-kits-list"
+    *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)"
+  >
     <cdk-virtual-scroll-viewport
       class="medicine-kits-list__viewport"
       appendOnly
       itemSize="200"
     >
       <div
-        class="medicine-kits-list__list-item"
+        class="medicine-kits-list__card"
         *cdkVirtualFor="let medicineKit of medicineKits$ | async; index as i"
         (click)="navigateMedicineKitDetails(medicineKit.id)"
       >
-        <mat-card class="medicine-kits-list__card">
-          <mat-card-header>
-            <mat-card-title>{{ medicineKit.name }}</mat-card-title>
-            <mat-card-subtitle>{{ medicineKit.note }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p
-              *ngIf="
-                medicineKit.owner.id === (user$ | async)!.id;
-                else notOwner
-              "
-            >
-              Este botiquín es tuyo.
-            </p>
-            <ng-template #notOwner>
-              <p>
-                Botiquín de {{ medicineKit.owner.firstName }}
-                {{ medicineKit.owner.lastName }}.
-              </p>
+        <div class="medicine-kits-list__content">
+          <div class="medicine-kits-list__card-header">
+            <span class="medicine-kits-list__card-title">
+              {{ medicineKit.name }}
+            </span>
+
+            <span class="medicine-kits-list__card-note">
+              {{ medicineKit.note }}
+            </span>
+          </div>
+
+          <div class="medicine-kits-list__card-text">
+            <ng-template *ngIf="!isPatient">
+              <span
+                class="medicine-kits-list__card-owner"
+                *ngIf="
+                  medicineKit.owner.id === (user$ | async)!.id;
+                  else notOwner
+                "
+              >
+                Este botiquín es tuyo.
+              </span>
+              <ng-template #notOwner>
+                <span class="medicine-kits-list__card-owner">
+                  Botiquín de {{ medicineKit.owner.firstName }}
+                  {{ medicineKit.owner.lastName }}.
+                </span>
+              </ng-template>
             </ng-template>
 
-            <ul class="medicine-kits-list__medicine-list" *ngIf="medicineKit.medicines.lenth > 0; else noMedicines">
+            <ul
+              class="medicine-kits-list__medicine-list"
+              *ngIf="medicineKit.medicines.lenth > 0; else noMedicines"
+            >
               <li>{{ medicineKit.medicines[0].name }}.</li>
 
-              <li *ngIf="medicineKit.medicines[1]">{{ medicineKit.medicines[1].name }}.</li>
+              <li *ngIf="medicineKit.medicines[1]">
+                {{ medicineKit.medicines[1].name }}.
+              </li>
 
-              <li *ngIf="(medicineKit.medicines.length - 2) > 0">{{ medicineKit.medicines.length - 2 }} medicamentos más.</li>
+              <li *ngIf="medicineKit.medicines.length - 2 > 0">
+                {{ medicineKit.medicines.length - 2 }} medicamentos más.
+              </li>
             </ul>
 
             <ng-template #noMedicines>
-              <p>Este botiquín está vacío.</p>
+              <span>Este botiquín está vacío.</span>
             </ng-template>
-          </mat-card-content>
-        </mat-card>
+          </div>
+        </div>
 
-        <button
-        class="medicine-kits-list__button"
-          mat-icon-button
-          color="primary"
-          aria-label="Example icon button with a home icon"
-        >
-          <mat-icon>chevron_right</mat-icon>
-        </button>
+        <div class="medicine-kits-list__card-actions">
+          <button
+            class="medicine-kits-list__button"
+            mat-icon-button
+            color="primary"
+            aria-label="Example icon button with a home icon"
+          >
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
       </div>
     </cdk-virtual-scroll-viewport>
   </section>

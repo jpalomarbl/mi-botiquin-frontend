@@ -1,6 +1,11 @@
+@import '/src/assets/variables.scss';
+
 .medicine-kits {
   margin-top: 10dvh;
-  padding-inline: 10vw;
+
+  &__title {
+    text-align: center;
+  }
 
   &__spinner {
     display: none;
@@ -32,20 +37,67 @@
 
 .medicine-kits-list {
   &__viewport {
-    height: 65dvh;
+    height: 70dvh;
   }
 
-  &__list-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  &__card {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
 
-    margin-bottom: 3dvh;
+    width: 75vw;
+    margin-inline: auto;
+
+    padding-inline: 5vw;
+    padding-block: 2dvh;
+
+    margin-block: 2dvh;
+
+    background-color: $backgrounds;
+    border-radius: 5px;
+    border-bottom: solid 1px $borders;
+    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.5);
+    background-color: $backgrounds;
 
     cursor: pointer;
   }
 
-  &__card {
-    width: 90%;
+  &__card-header,
+  &__card-content {
+    grid-column-start: 1;
+    grid-column-end: span 1;
   }
+
+  &__card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  &__card-actions {
+    grid-column-start: 2;
+    grid-column-end: span 1;
+
+    grid-row-start: 1;
+    grid-row-end: span 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    border-left: solid 1px $borders;
+  }
+
+  &__card-title,
+  &__card-note,
+  &__card-owner {
+    display: block;
+  }
+
+  &__card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
 }
