@@ -1,7 +1,4 @@
-// Main reminders container
-.reminders {
-  padding-inline: 10vw;
-}
+@import '/src/assets/variables.scss';
 
 .date-picker {
   display: flex;
@@ -47,6 +44,9 @@
 
   &__time-period {
     margin-bottom: 4dvh;
+    margin-inline: auto;
+    width: 80%;
+
   }
 
   &__time-title {
@@ -55,33 +55,71 @@
   }
 
   &__card {
+    padding-inline: 5vw;
+    padding-bottom: 2dvh;
     margin-bottom: 2dvh;
 
+    border-radius: 5px;
+    border-bottom: solid 1px $borders;
+    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.5);
+    background-color: $backgrounds;
+
     &--consumed {
-      background-color: rgb(185, 185, 185)
+      background-color: $borders;
     }
 
-    &--consumed .reminders-list__card-title {
+    &--consumed .reminders-list__card-content,
+    &--consumed .reminders-list__card-header {
       color: rgb(99, 99, 99)
     }
   }
 
+  &__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-top: .5dvh;
+  }
+
+  &__card-state {
+    font-weight: bold;
+  }
+
+  &__card-content {
+    margin-block: 1dvh;
+  }
+
+  &__card-title,
+  &__card-info {
+    display: block;
+  }
+
   &__card-title {
+    margin-bottom: .5dvh;
+
     font-size: 1.1rem;
+  }
+
+  &__card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__no-reminders-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
     height: 50dvh;
     margin-inline: auto;
-
-    background-color: rgb(185, 185, 185);
   }
 
   &__no-reminders-text {
     font-size: 1rem;
+
+    text-align: center;
   }
 }
