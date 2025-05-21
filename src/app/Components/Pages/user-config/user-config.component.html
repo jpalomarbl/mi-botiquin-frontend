@@ -76,10 +76,10 @@
       </mat-select>
     </mat-form-field>
 
-    <button mat-button [disabled]="userForm.invalid">Guardar</button>
+    <button mat-raised-button color="primary" [disabled]="userForm.invalid">Guardar</button>
   </form>
 
-  <button mat-button (click)="logout()">Cerrar sesión</button>
+  <button mat-button color="warn" (click)="logout()">Cerrar sesión</button>
 </div>
 
 <custom-footer></custom-footer>
