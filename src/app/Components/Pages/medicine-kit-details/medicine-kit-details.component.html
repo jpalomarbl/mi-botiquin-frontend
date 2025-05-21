@@ -1,4 +1,3 @@
-
 <div class="medicine-kit" *ngIf="medicineKit$ | async">
   <section class="titles">
     <h2 class="titles__title">{{ (medicineKit$ | async)!.name }}</h2>
@@ -6,25 +5,36 @@
   </section>
 
   <section class="buttons">
-    <button class="buttons__add" (click)="navigateAddMedicine()" mat-fab extended color="primary">
-      <mat-icon>add</mat-icon>
-      Añadir medicina
-    </button>
-
-    <button class="buttons__remove" (click)="deleteMedicineKit()" mat-fab extended color="warn">
+    <button
+      class="buttons__remove"
+      (click)="deleteMedicineKit()"
+      mat-button
+      color="warn"
+    >
       <mat-icon>delete</mat-icon>
       Eliminar botiquín
     </button>
   </section>
 
-  <section>
-    <mat-form-field class="patient-selector" appearance="fill">
+  <section class="medicine-kit__options">
+    <mat-form-field class="medicine-kit__patient-selector" appearance="fill">
       <mat-label>Ordenar</mat-label>
       <mat-select (selectionChange)="orderMedicineKits(+$event.value)">
         <mat-option value="1"> Caducidad </mat-option>
         <mat-option value="0"> No ordenar </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <button
+      class="medicine-kit__button"
+      (click)="navigateAddMedicine()"
+      mat-fab
+      extended
+      color="primary"
+    >
+      <mat-icon>add</mat-icon>
+      Añadir medicina
+    </button>
   </section>
 
   <section class="medicines-list" *ngIf="medicineKit">
@@ -34,25 +44,38 @@
       itemSize="50"
     >
       <div
-        class="medicines-list__list-item"
+        class="medicines-list__card"
         *cdkVirtualFor="let medicine of sortedMedicines"
+        (click)="navigateEditMedicine(medicine)"
       >
-        <mat-card class="medicines-list__card" (click)="navigateEditMedicine(medicine)">
-          <mat-card-header>
-            <mat-card-title>{{ medicine.name }}</mat-card-title>
-            <mat-card-subtitle
-              >Tienes {{ medicine.amount }}
-              {{ medicine.unit }}</mat-card-subtitle
-            >
-          </mat-card-header>
-          <mat-card-content>
-            <p>Caducidad: {{ medicine.expirationDate | date : 'd/M/yy' }}</p>
-          </mat-card-content>
-        </mat-card>
+        <div class="medicines-list__content">
+          <div class="medicines-list__card-header">
+            <span class="medicines-list__card-title">
+              {{ medicine.name }}
+            </span>
 
-        <button class="medicines-list__button" (click)="deleteMedicine(medicine.id)" mat-mini-fab color="warn" aria-label="Delete medicine">
-          <mat-icon>delete</mat-icon>
-        </button>
+            <span class="medicines-list__card-amount">
+              Tienes {{ medicine.amount }} {{ medicine.unit }}
+            </span>
+          </div>
+
+          <div class="medicines-list__card-text">
+            <span>
+              Caducidad: {{ medicine.expirationDate | date : "d/M/yy" }}
+            </span>
+          </div>
+        </div>
+
+        <div class="medicines-list__card-actions">
+          <button
+            class="medicines-list__button"
+            mat-icon-button
+            color="warn"
+            aria-label="Delete medicine"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
     </cdk-virtual-scroll-viewport>
   </section>
