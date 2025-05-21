@@ -1,11 +1,14 @@
 .add-medicine {
   display: flex;
   flex-direction: column;
-  
+
   padding-inline: 10vw;
   padding-top: 5dvh;
 
-  &__title { text-align: center; }
+  &__title {
+    text-align: center;
+    margin: 0;
+  }
 }
 
 .buttons {
@@ -13,7 +16,7 @@
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 3dvh;
+  margin-bottom: 1dvh;
 }
 
 .medicine-form > *,
@@ -49,6 +52,8 @@
   column-gap: 2vw;
   row-gap: .1dvh;
 
+  margin-bottom: 2dvh;
+
   &__title {
     margin-bottom: 1dvh;
   }
@@ -65,19 +70,34 @@
   &__field {
     &--amount {
       grid-column-start: 1;
-      grid-column-end:  span 1;
+      grid-column-end:  span 2;
+    }
+
+    &--medicine-unit {
+      grid-column-start: 3;
+      grid-column-end: span 2;
+
+      grid-row-start: 1;
+      grid-row-end: span 1;
+
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+
     }
 
     &--frequency {
       grid-column-start: 1;
-      grid-column-end:  span 1;
+      grid-column-end:  span 2;
+
       grid-row-start: 2;
       grid-row-end: span 1;
     }
 
     &--frequency-unit {
-      grid-column-start: 2;
-      grid-column-end:  span 3;
+      grid-column-start: 3;
+      grid-column-end:  span 2;
+
       grid-row-start: 2;
       grid-row-end: span 1;
     }
@@ -85,6 +105,7 @@
     &--start-date {
       grid-column-start: 1;
       grid-column-end:  span 2;
+
       grid-row-start: 3;
       grid-row-end: span 1;
     }
@@ -92,6 +113,7 @@
     &--start-time {
       grid-column-start: 3;
       grid-column-end:  span 2;
+
       grid-row-start: 3;
       grid-row-end: span 1;
     }
@@ -99,6 +121,7 @@
     &--finish-date {
       grid-column-start: 1;
       grid-column-end:  span 2;
+
       grid-row-start: 4;
       grid-row-end: span 1;
     }
@@ -106,17 +129,19 @@
     &--finish-time {
       grid-column-start: 3;
       grid-column-end:  span 2;
+
       grid-row-start: 4;
       grid-row-end: span 1;
     }
   }
 
-  &__medicine-unit {
-    grid-column-start: 2;
-    grid-column-end: span 3;
+  &__medicine-unit-text {
+    display: block;
 
+    margin-bottom: 2dvh;
+
+    font-size: 1.1rem;
     text-align: center;
-    font-size: 1rem;
   }
 
   &__button,

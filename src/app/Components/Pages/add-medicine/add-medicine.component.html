@@ -1,14 +1,10 @@
-
 <div class="add-medicine">
   <h2 class="add-medicine__title">
-    {{ medicine.name | shortenText : 50 }}
+    {{ medicine.name | shortenText : 60 }}
   </h2>
 
   <section class="buttons">
-    <button mat-fab extended color="primary">
-      <mat-icon>edit</mat-icon>
-      Cambiar medicamento
-    </button>
+    <button mat-button extended color="accent">Cambiar medicamento</button>
   </section>
 
   <section>
@@ -83,20 +79,25 @@
       <button
         class="reminder-form__button"
         (click)="addReminder = !addReminder"
-        mat-mini-fab
+        mat-button
         color="primary"
       >
         <mat-icon>add</mat-icon>
+        <span *ngIf="!isUpdateMode; else updateMode">Añadir</span>
+        <ng-template #updateMode>
+          <span>Editar</span>
+        </ng-template>
       </button>
 
       <button
         class="reminder-form__button"
         *ngIf="isUpdateMode && reminder.id !== 0"
         (click)="deleteReminder()"
-        mat-mini-fab
+        mat-button
         color="warn"
       >
         <mat-icon>delete</mat-icon>
+        Eliminar
       </button>
     </div>
     <form
@@ -115,7 +116,11 @@
         />
       </mat-form-field>
 
-      <span class="reminder-form__medicine-unit">{{ unitMedicine.value }}</span>
+      <div class="reminder-form__medicine-unit reminder-form__field--medicine-unit">
+        <span class="reminder-form__medicine-unit-text">{{
+          unitMedicine.value
+        }}</span>
+      </div>
 
       <mat-form-field class="reminder-form__field--frequency" appearance="fill">
         <mat-label>Cada</mat-label>
@@ -202,7 +207,12 @@
       (!addReminder && medicineForm.invalid)
     "
   >
-    Añadir medicamento <span *ngIf="addReminder"> y recordatorio</span>
+    <span *ngIf="!isUpdateMode; else updateModeMain">Añadir</span>
+    <ng-template #updateModeMain>
+      <span>Actualizar</span>
+    </ng-template>
+    medicamento
+    <span *ngIf="addReminder"> y recordatorio</span>
   </button>
 </div>
 
