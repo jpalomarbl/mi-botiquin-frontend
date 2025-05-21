@@ -1,9 +1,9 @@
+@import '/src/assets/variables.scss';
+
 .search-medicine {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding-inline: 10vw;
 
   &__spinner {
     display: none;
@@ -23,7 +23,7 @@
 }
 
 .form {
-  width: 100%;
+  width: 80vw;
   margin-top: 10dvh;
 
   &__title {
@@ -36,13 +36,25 @@
 }
 
 .medicines-list {
-  height: 60dvh;
+  height: 58dvh;
   width: 100%;
 
   &__viewport {
-    height: 50dvh;
-    width: 100%;
+    height: 58dvh;
+    width: 100%
   }
 
-  &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
+  &__list-item:nth-child(odd) { background-color: $backgrounds; }
+
+  &__list-item {
+    width: 80vw;
+    min-height: 10dvh;
+    margin-inline: auto;
+  }
+
+  &__medicine-name {
+    white-space: normal;
+    word-wrap: break-word;
+    display: inline;
+  }
 }
