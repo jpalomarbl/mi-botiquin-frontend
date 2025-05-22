@@ -35,6 +35,7 @@ import { HeaderComponent } from './Components/Common/header/header.component';
 import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 import { HomeComponent } from './Components/Pages/home/home.component';
 import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
+import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add
     FooterComponent,
     HomeComponent,
     AddMedicineComponent,
-    AddMedicineKitComponent
+    AddMedicineKitComponent,
+    MedicineKitDetailsComponent
   ],
   imports: [
     BrowserModule,

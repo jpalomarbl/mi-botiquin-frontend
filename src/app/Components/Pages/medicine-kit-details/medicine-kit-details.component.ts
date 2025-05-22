@@ -27,8 +27,6 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-medicine-kit-details',
-  standalone: true,
-  imports: [AsyncPipe, AngularMaterialModule, CommonModule],
   templateUrl: './medicine-kit-details.component.html',
   styleUrls: ['./medicine-kit-details.component.scss'],
 })
