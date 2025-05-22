@@ -151,18 +151,21 @@ export class RemindersListComponent {
       .subscribe((user) => {
         this.userId = user!.id;
 
-        this.route.params.pipe(distinctUntilChanged()).subscribe((params) => {
           this.calculateDate();
-          this.loadData(user!.id, user!.role);
-        });
 
-        // We fetch all user reminders and filter them for the specified day.
-        if (
-          !this.router.url.includes('forwards') &&
-          !this.router.url.includes('backwards')
-        ) {
-          this.loadData(user!.id, user!.role);
-        }
+        this.loadData(this.userId, user!.role);
+
+        // this.route.params
+        //   .pipe(distinctUntilChanged())
+        //   .subscribe((params) => {});
+
+        // // We fetch all user reminders and filter them for the specified day.
+        // if (
+        //   !this.router.url.includes('forwards') &&
+        //   !this.router.url.includes('backwards')
+        // ) {
+        //   this.loadData(user!.id, user!.role);
+        // }
       });
 
     this.actions$
