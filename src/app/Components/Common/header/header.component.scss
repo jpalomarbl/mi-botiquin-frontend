@@ -40,6 +40,17 @@
   }
 }
 
+@media only screen and (min-width: $lg) {
+  .header {
+    justify-content: space-around;
+
+    &__title { position: static; }
+    &__nav { display: block; }
+    &__back-button { display: none; }
+    &__nav-button { margin-inline: 1vw;}
+  }
+}
+
 .notification-menu {
   &__item:nth-child(even) { background-color: $backgrounds; }
 
