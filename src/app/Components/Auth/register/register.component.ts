@@ -25,8 +25,6 @@ export class RegisterComponent {
   role: FormControl;
   registerForm: FormGroup;
 
-  // loading$: Observable<boolean>;
-  // error$: Observable<string | null>;
 
   constructor(private store: Store, private router: Router) {
     this.userData = {
@@ -49,9 +47,6 @@ export class RegisterComponent {
       lastName: this.lastName,
       role: this.role,
     });
-
-    // this.loading$ = this.store.select(selectors.selectAuthLoading);
-    // this.error$ = this.store.select(selectors.selectAuthError);
   }
 
   submitRegister(): void {
