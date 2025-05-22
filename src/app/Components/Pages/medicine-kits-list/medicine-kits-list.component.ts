@@ -124,6 +124,10 @@ export class MedicineKitsListComponent {
         }
       });
     }
+
+    this.medicineKits$.subscribe((medicineKits) => {
+      console.log(medicineKits)
+    })
   }
 
   navigateMedicineKitDetails(medicineKitId: number): void {
