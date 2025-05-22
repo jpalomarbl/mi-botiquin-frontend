@@ -6,8 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'custom-footer',
-  // standalone: true,
-  // imports: [MatIconModule, MatButtonModule],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
