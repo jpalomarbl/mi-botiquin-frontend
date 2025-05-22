@@ -36,6 +36,7 @@ import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medici
 import { HomeComponent } from './Components/Pages/home/home.component';
 import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
+import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list/medicine-kits-list.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-det
     HomeComponent,
     AddMedicineComponent,
     AddMedicineKitComponent,
-    MedicineKitDetailsComponent
+    MedicineKitDetailsComponent,
+    MedicineKitsListComponent
   ],
   imports: [
     BrowserModule,

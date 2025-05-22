@@ -31,8 +31,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-medicine-kits-list',
-  standalone: true,
-  imports: [CommonModule, AngularMaterialModule],
   templateUrl: './medicine-kits-list.component.html',
   styleUrls: ['./medicine-kits-list.component.scss'],
 })
