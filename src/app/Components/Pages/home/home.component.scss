@@ -21,6 +21,14 @@
   }
 }
 
+@media only screen and (min-width: $lg) {
+  .home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 4fr 1fr;
+  }
+}
+
 // Container for reminder/medicine-kits list
 .reminders,
 .medicine-kits {
@@ -105,6 +113,25 @@
   }
 }
 
+@media only screen and (min-width: $lg) {
+  .reminders,
+  .medicine-kits {
+    align-items: center;
+    justify-content: center;
+
+    grid-row-start: 1;
+    grid-row-end: span 1;
+
+    width: 50vw;
+
+    &__list {
+      width: 30vw;
+      margin: 0;
+      padding-inline: 10vw;
+    }
+  }
+}
+
 .medicine-kits {
   &__list-item {
     display: flex;
@@ -140,4 +167,14 @@
   margin-top: 3vh;
 
   &--hidden { display: none; }
+}
+
+@media only screen and (min-width: $lg) {
+  .caretakers {
+    grid-row-start: 2;
+    grid-row-end: span 1;
+
+    grid-column-start: 1;
+    grid-column-end: span 2;
+  }
 }
