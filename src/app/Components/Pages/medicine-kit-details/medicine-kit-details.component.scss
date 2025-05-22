@@ -10,8 +10,14 @@
     justify-content: space-between;
     align-items: center;
 
-    width: 80vw;
+    width: 75vw;
     margin-inline: auto;
+  }
+
+  @media only screen and (min-width: $lg) {
+    &__options {
+      width: 50vw;
+    }
   }
 
   &__button {
@@ -42,6 +48,10 @@
 .medicines-list {
   &__viewport { height: 52dvh; }
 
+  @media only screen and (min-width: $lg) {
+    &__viewport { height: 62dvh; }
+  }
+
   &__card {
     display: grid;
     grid-template-columns: 5fr 1fr;
@@ -60,6 +70,12 @@
     background-color: $backgrounds;
 
     cursor: pointer;
+  }
+
+  @media only screen and (min-width: $lg) {
+    &__card {
+      width: 50vw;
+    }
   }
 
   &__card-header,
