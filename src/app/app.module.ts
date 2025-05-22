@@ -34,6 +34,7 @@ import { FooterComponent } from './Components/Common/footer/footer.component';
 import { HeaderComponent } from './Components/Common/header/header.component';
 import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 import { HomeComponent } from './Components/Pages/home/home.component';
+import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { HomeComponent } from './Components/Pages/home/home.component';
     FooterComponent,
     HomeComponent,
     AddMedicineComponent,
+    AddMedicineKitComponent
   ],
   imports: [
     BrowserModule,

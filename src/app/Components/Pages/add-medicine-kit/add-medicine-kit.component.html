@@ -1,6 +1,6 @@
-
-<div class="login">
+<div class="add-medicine-kit">
   <h1>Añadir un botiquín</h1>
+
   <form
     class="form"
     [formGroup]="medicineKitForm"
@@ -8,15 +8,21 @@
   >
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>Nombre del botiquín </mat-label>
+
       <input
         type="text"
         [formControl]="medicineKitName"
         matInput
         placeholder="Botiquín de la cocina"
       />
+
       <div
         class="form__errors"
-        *ngIf="medicineKitName.errors && medicineKitName.dirty && medicineKitName.touched"
+        *ngIf="
+          medicineKitName.errors &&
+          medicineKitName.dirty &&
+          medicineKitName.touched
+        "
       >
         <mat-error
           class="form__error-message"
@@ -34,6 +40,7 @@
 
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>Añade una nota breve </mat-label>
+
       <input
         type="text"
         [formControl]="medicineKitNote"
@@ -44,6 +51,7 @@
 
     <mat-form-field class="form__field" *ngIf="!isPatient" appearance="fill">
       <mat-label>Paciente</mat-label>
+
       <mat-select [formControl]="ownerId" [value]="userId">
         <mat-option
           *ngFor="let user of userRelationships$ | async; index as i"
@@ -51,8 +59,10 @@
         >
           {{ user.firstName }} {{ user.lastName }}
         </mat-option>
+
         <mat-option [value]="userId"> Tú </mat-option>
       </mat-select>
+
       <div
         class="form__errors"
         *ngIf="ownerId.errors && ownerId.dirty && ownerId.touched"
@@ -63,10 +73,16 @@
           >Debes ponerle un nombre al botiquín.</mat-error
         >
       </div>
+
       <mat-hint>¿Quién va a utilizar el botiquín?</mat-hint>
     </mat-form-field>
 
-    <button class="form__button" [disabled]="medicineKitForm.invalid" mat-raised-button color="primary">
+    <button
+      class="form__button"
+      [disabled]="medicineKitForm.invalid"
+      mat-raised-button
+      color="primary"
+    >
       Crear botiquín
     </button>
   </form>

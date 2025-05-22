@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 // Rxjs
 import { ofType } from '@ngrx/effects';
@@ -8,8 +7,6 @@ import { Observable, take } from 'rxjs';
 
 // Custom modules
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -27,8 +24,6 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 
 @Component({
   selector: 'app-add-medicine-kit',
-  standalone: true,
-  imports: [FormsModule, AngularMaterialModule],
   templateUrl: './add-medicine-kit.component.html',
   styleUrls: ['./add-medicine-kit.component.scss'],
 })
@@ -56,7 +51,6 @@ export class AddMedicineKitComponent {
 
   constructor(
     private store: Store<GlobalStateDTO>,
-    private router: Router,
     private dialogService: DialogService,
     private actions$: Actions,
     public dialog: MatDialog
@@ -113,6 +107,7 @@ export class AddMedicineKitComponent {
   }
 
   ngOnInit(): void {
+    // In case of non patient user, loads relationships
     this.user$.subscribe((user: UserDTO | null) => {
       if (user) {
         if (user.role === 'caretaker') {
@@ -145,6 +140,7 @@ export class AddMedicineKitComponent {
       }
     });
 
+    // Error dialog handling
     this.actions$
       .pipe(
         ofType(
@@ -171,7 +167,6 @@ export class AddMedicineKitComponent {
     };
 
     this.medicineKit = updatedMedicineKit;
-
 
     this.dialogService.openConfirmationDialog(
       {
