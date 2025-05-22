@@ -44,6 +44,10 @@
     width: 100%
   }
 
+  @media only screen and (min-width: $lg) {
+    &__viewport { height: 68dvh; }
+  }
+
   &__list-item:nth-child(odd) { background-color: $backgrounds; }
 
   &__list-item {
