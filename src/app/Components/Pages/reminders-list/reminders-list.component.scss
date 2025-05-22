@@ -14,6 +14,12 @@
     &__date { margin-bottom: 0; }
 }
 
+@media only screen and (min-width: $lg) {
+  .date-picker {
+    justify-content: space-around;
+  }
+}
+
 .patient-selector { width: 100%; }
 
 .reminders-list {
@@ -56,6 +62,12 @@
     margin-bottom: 0;
   }
 
+  @media only screen and (min-width: $lg) {
+    &__time-title {
+      text-align: center;
+    }
+  }
+
   &__card {
     padding-inline: 5vw;
     padding-bottom: 2dvh;
@@ -78,10 +90,17 @@
       gap: 2%;
     }
 
+    &__card-container {
+      display: flex;
+      justify-content: center;
+    }
+
     &__card-container:not(.reminders-list__card--one-reminder) > &__card {
       flex: 1;
       box-sizing: border-box;
+    }
 
+    &__card {
       max-width: 48%;
       min-width: 40%;
     }
