@@ -1,19 +1,5 @@
-<!-- <section class="date-picker">
-  <mat-form-field appearance="fill">
-    <mat-label>Enter a date range</mat-label>
-    <input matInput [matDatepicker]="picker">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-
-    <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-  </mat-form-field>
-</section> -->
-
 <!-- Main container -->
 <div class="reminders">
-  <!-- Here is the date selector -->
   <section class="date-picker">
     <button
       mat-icon-button
@@ -26,8 +12,11 @@
 
     <!-- Depending on the date it will display "Hoy", "Ayer", "Mañana" or the full date -->
     <h2 class="date-picker__date" *ngIf="isYesterday">Ayer</h2>
+
     <h2 class="date-picker__date" *ngIf="isToday">Hoy</h2>
+
     <h2 class="date-picker__date" *ngIf="isTomorrow">Mañana</h2>
+
     <h2
       class="date-picker__date"
       *ngIf="!isToday && !isTomorrow && !isYesterday"
@@ -60,6 +49,7 @@
     </mat-form-field>
   </section>
 
+  <!-- Spinner shows when data is loading -->
   <mat-progress-spinner
     class="reminders-list__spinner"
     [ngClass]="{
@@ -72,10 +62,9 @@
   >
   </mat-progress-spinner>
 
-  <section *ngIf="!isRemindersEmpty; else noReminders">
+  <section *ngIf="!isRemindersEmpty && !(loadingMedicine$ | async) && !(loadingAuth$ | async); else noReminders">
     <cdk-virtual-scroll-viewport
       class="reminders-list__viewport"
-      *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)"
       appendOnly
       itemSize="50"
     >
@@ -133,69 +122,13 @@
               <button
                 mat-button
                 color="primary"
-                (click)="
-                  changeReminderState(i, reminder[0].id, pair[0], reminder[1])
-                "
+                (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
               >
                 Dejar de consumir
               </button>
             </ng-template>
           </div>
         </div>
-
-        <!-- <mat-card
-          class="reminders-list__card"
-          *ngFor="let reminder of pair![1]"
-          [ngClass]="{ 'reminders-list__card--consumed': reminder[1] }"
-        >
-          <mat-card-header>
-            <mat-card-subtitle
-              class="reminders-list__card-state"
-              *ngIf="reminder[1]; else notConsumed"
-            >
-              Consumido
-            </mat-card-subtitle>
-
-            <ng-template #notConsumed>
-              <mat-card-subtitle class="reminders-list__card-state">
-                Por consumir
-              </mat-card-subtitle>
-            </ng-template>
-
-            <mat-card-title class="reminders-list__card-title">{{
-              reminder[0].medicineName | shortenText : 30
-            }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ reminder[0].medicineKitName }}</p>
-
-            <p>{{ reminder[0].amount }} {{ reminder[0].medicineUnit }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-raised-button
-              color="primary"
-              *ngIf="!reminder[1]; else toBeConsumed"
-              (click)="
-                changeReminderState(i, reminder[0].id, pair[0], reminder[1])
-              "
-            >
-              Consumir
-            </button>
-
-            <ng-template #toBeConsumed>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="
-                  changeReminderState(i, reminder[0].id, pair[0], reminder[1])
-                "
-              >
-                Dejar de consumir
-              </button>
-            </ng-template>
-          </mat-card-actions>
-        </mat-card> -->
       </div>
     </cdk-virtual-scroll-viewport>
   </section>

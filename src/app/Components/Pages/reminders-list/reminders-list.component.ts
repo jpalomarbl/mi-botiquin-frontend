@@ -26,19 +26,11 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 
 // Angular Material
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-
-// Custom modules
-import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Data types
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
-
-// Pipes
-import { DatePipe } from '@angular/common';
-import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 
 @Component({
   selector: 'app-reminders-list',
@@ -84,9 +76,6 @@ export class RemindersListComponent {
 
   // Debounce control
   lastClickTime: number;
-
-  // datePicker: FormControl;
-  // datePickerForm: FormGroup;
 
   constructor(
     private store: Store<GlobalStateDTO>,
@@ -140,18 +129,18 @@ export class RemindersListComponent {
   }
 
   ngOnInit() {
-    this.user$;
+    // Whatever happens first (route change or user data update) will trigger data load
     combineLatest([this.route.params.pipe(distinctUntilChanged()), this.user$])
       .pipe(
         filter(([params, user]) => user !== null),
         map(([params, user]) => {
-          return user ;
+          return user;
         })
       )
       .subscribe((user) => {
         this.userId = user!.id;
 
-          this.calculateDate();
+        this.calculateDate();
 
         this.loadData(this.userId, user!.role);
 
