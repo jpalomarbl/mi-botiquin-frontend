@@ -24,8 +24,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-user-config',
-  standalone: true,
-  imports: [FormsModule, AngularMaterialModule],
   templateUrl: './user-config.component.html',
   styleUrls: ['./user-config.component.scss'],
 })

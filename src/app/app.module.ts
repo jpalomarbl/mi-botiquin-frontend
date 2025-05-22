@@ -42,6 +42,7 @@ import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list
 import { RelationshipsComponent } from './Components/Pages/relationships/relationships.component';
 import { RemindersListComponent } from './Components/Pages/reminders-list/reminders-list.component';
 import { SearchMedicineComponent } from './Components/Pages/search-medicine/search-medicine.component';
+import { UserConfigComponent } from './Components/Pages/user-config/user-config.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { SearchMedicineComponent } from './Components/Pages/search-medicine/sear
     MedicineKitsListComponent,
     RelationshipsComponent,
     RemindersListComponent,
-    SearchMedicineComponent
+    SearchMedicineComponent,
+    UserConfigComponent
   ],
   imports: [
     BrowserModule,
