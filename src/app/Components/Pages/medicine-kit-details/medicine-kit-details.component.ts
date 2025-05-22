@@ -1,5 +1,4 @@
 // Angular
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,7 +7,6 @@ import { Observable, take } from 'rxjs';
 
 // Angular material
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Data models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -22,8 +20,6 @@ import { DialogService } from 'src/app/Services/dialog.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-// Pipes
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-medicine-kit-details',
@@ -80,6 +76,7 @@ export class MedicineKitDetailsComponent {
       });
     }
 
+    // Error dialog handling
     this.actions$
       .pipe(
         ofType(

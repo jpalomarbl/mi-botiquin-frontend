@@ -1,5 +1,6 @@
 @import '/src/assets/variables.scss';
 
+// Main container
 .medicine-kit {
   margin-top: 7dvh;
 
@@ -19,9 +20,7 @@
     width: 45%;
   }
 
-  &__patient-selector {
-    width: 45%;
-  }
+  &__patient-selector { width: 45%; }
 }
 
 .titles {
@@ -29,9 +28,7 @@
   flex-direction: column;
   align-items: center;
 
-  &__title {
-    margin-bottom: 0;
-  }
+  &__title { margin-bottom: 0; }
 }
 
 .buttons {
@@ -43,9 +40,7 @@
 }
 
 .medicines-list {
-  &__viewport {
-    height: 52dvh;
-  }
+  &__viewport { height: 52dvh; }
 
   &__card {
     display: grid;
@@ -105,5 +100,4 @@
     font-size: 1.1rem;
     font-weight: bold;
   }
-
 }
