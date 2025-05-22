@@ -56,6 +56,12 @@
     cursor: pointer;
   }
 
+  @media only screen and (min-width: $lg) {
+    &__card {
+      width: 50vw;
+    }
+  }
+
   &__card-header,
   &__card-content {
     grid-column-start: 1;
