@@ -1,7 +1,7 @@
 // Angular
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Subject, take } from 'rxjs';
+import { Component } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, Observable, Subject, take } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -41,10 +41,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  @Input() hasBackButton: boolean = true;
-  @Input() backButtonDirection: string = 'back';
-
-  @Input() title: string = 'Mi Botiquín';
+  hasBackButton: boolean = true;
 
   notifications: Array<
     expirationNotificationDTO | relationshipRequestNotificationDTO
@@ -63,7 +60,8 @@ export class HeaderComponent {
     public webSocketService: WebSocketService,
     private dialogService: DialogService,
     private medicineKitService: MedicineKitService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute
   ) {
     this.notifications = [];
     this.notifications$ = this.store.select(selectUserNotifications);
@@ -89,6 +87,28 @@ export class HeaderComponent {
         }
       );
     });
+
+    // Escuchar cambios de ruta
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const route =
+          this.route.snapshot.firstChild?.routeConfig?.path?.split('/')[0];
+
+        switch (route) {
+          case 'login':
+            this.hasBackButton = false;
+            break;
+
+          case 'register':
+            this.hasBackButton = false;
+            break;
+
+          default:
+            this.hasBackButton = true;
+            break;
+        }
+      });
   }
 
   clickExpirationNotification(notification: expirationNotificationDTO): void {
@@ -132,10 +152,45 @@ export class HeaderComponent {
   }
 
   backButtonRedirect() {
-    if (this.backButtonDirection === 'back') {
-      history.back();
-    } else {
-      this.router.navigate([this.backButtonDirection]);
+    const route =
+      this.route.snapshot.firstChild?.routeConfig?.path?.split('/')[0];
+
+    switch (route) {
+      case 'remindersList':
+        history.back();
+        break;
+
+      case 'medicineKitsList':
+        history.back();
+        break;
+
+      case 'medicineKitDetails':
+        this.router.navigate(['medicineKitsList']);
+        break;
+
+      case 'addMedicineKit':
+        this.router.navigate(['medicineKitsList']);
+        break;
+
+      case 'searchMedicine':
+        history.back();
+        break;
+
+      case 'addMedicine':
+        history.back();
+        break;
+
+      case 'userConfig':
+        history.back();
+        break;
+
+      case 'relationships':
+        this.router.navigate(['']);
+        break;
+
+      default:
+        this.router.navigate(['']);
+        break;
     }
   }
 
