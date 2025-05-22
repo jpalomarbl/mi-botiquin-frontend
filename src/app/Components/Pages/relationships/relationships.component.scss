@@ -1,3 +1,5 @@
+@import '/src/assets/variables.scss';
+
 // Main container
 .relationships {
   display: flex;
@@ -41,10 +43,10 @@
     &--add-margin { margin-block: 2dvh; }
   }
 
-  &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
+  &__list-item:nth-child(odd) { background-color: $backgrounds }
 
   &__viewport {
-    height: 25dvh;
+    height: 35dvh;
     width: 60vw;
   }
 }
