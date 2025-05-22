@@ -24,3 +24,7 @@
     width: 20vw;
   }
 }
+
+@media only screen and (min-width: $lg) {
+  .footer { display: none; }
+}
