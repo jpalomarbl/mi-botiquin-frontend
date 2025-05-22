@@ -1,3 +1,5 @@
+@import '/src/assets/variables.scss';
+
 .add-medicine-kit, .form {
   display: flex;
   flex-direction: column;
@@ -15,4 +17,8 @@
 
   &__field { width: 100%; }
   &__error-message { font-size: .8rem; }
+}
+
+@media only screen and (min-width: $lg) {
+  .form { width: 50vw; }
 }
