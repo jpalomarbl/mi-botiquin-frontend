@@ -7,7 +7,7 @@
     <button mat-button extended color="accent">Cambiar medicamento</button>
   </section>
 
-  <section>
+  <section class="medicine-form__section">
     <form
       class="medicine-form"
       [formGroup]="medicineForm"
@@ -72,7 +72,7 @@
     </form>
   </section>
 
-  <section>
+  <section class="reminder-form__section">
     <div class="reminder-form__title">
       <h3 class="reminder-form__title-text">Recordatorio</h3>
 
@@ -202,7 +202,7 @@
         appearance="fill"
       >
         <mat-label>A las</mat-label>
-        
+
         <input matInput type="time" [formControl]="finishTime" />
       </mat-form-field>
     </form>

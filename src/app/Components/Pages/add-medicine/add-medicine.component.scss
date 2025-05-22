@@ -1,3 +1,5 @@
+@import '/src/assets/variables.scss';
+
 // Main container
 .add-medicine {
   display: flex;
@@ -140,4 +142,14 @@
 
   &__button,
   &__submit-button { margin-inline: auto; }
+}
+
+@media only screen and (min-width: $lg) {
+    .medicine-form,
+    .reminder-form {
+      &__section {
+        width: 50vw;
+        margin-inline: auto;
+      }
+    }
 }
