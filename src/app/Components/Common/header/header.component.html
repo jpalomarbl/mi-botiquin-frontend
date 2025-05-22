@@ -15,10 +15,38 @@
 
   <!-- Nav menu is hidden in smaller screens -->
   <nav class="header__nav">
-    <button class="header__nav-button"mat-button color="primary">Recordatorios</button>
-    <button class="header__nav-button"mat-button color="primary">Botiquines</button>
-    <button class="header__nav-button"mat-button color="primary">Inicio</button>
-    <button class="header__nav-button"mat-button color="primary">Usuario</button>
+    <button
+      class="header__nav-button"
+      mat-button
+      color="primary"
+      (click)="navigate('remindersList')"
+    >
+      <mat-icon>calendar_month</mat-icon> Recordatorios
+    </button>
+    <button
+      class="header__nav-button"
+      mat-button
+      color="primary"
+      (click)="navigate('medicineKitsList')"
+    >
+      <mat-icon>medical_services</mat-icon> Botiquines
+    </button>
+    <button
+      class="header__nav-button"
+      mat-button
+      color="primary"
+      (click)="navigate('/')"
+    >
+      <mat-icon>home</mat-icon> Inicio
+    </button>
+    <button
+      class="header__nav-button"
+      mat-button
+      color="primary"
+      (click)="navigate('userConfig')"
+    >
+      <mat-icon>person</mat-icon> Usuario
+    </button>
   </nav>
 
   <button

@@ -224,6 +224,10 @@ export class HeaderComponent {
     );
   }
 
+  navigate(route: string): void {
+    this.router.navigate([route]);
+  }
+
   get expirationNotifications(): Array<expirationNotificationDTO> {
     return this.notifications.length > 0
       ? (this.notifications.filter(
