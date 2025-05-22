@@ -26,8 +26,6 @@ import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
-//Pipes
-import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 @Component({
   selector: 'app-search-medicine',
@@ -36,7 +34,6 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     FormsModule,
     AngularMaterialModule,
     CommonModule,
-    ShortenTextPipe,
   ],
   templateUrl: './search-medicine.component.html',
   styleUrls: ['./search-medicine.component.scss'],

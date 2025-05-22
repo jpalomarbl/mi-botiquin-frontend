@@ -39,7 +39,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 // Pipes
 import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
-import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 @Component({
   selector: 'app-reminders-list',
@@ -48,10 +47,8 @@ import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
     FormsModule,
     AngularMaterialModule,
     DateFormatPipe,
-    ShortenTextPipe,
     DatePipe,
   ],
-  providers: [DatePipe, ShortenTextPipe],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
