@@ -1,5 +1,6 @@
 @import '/src/assets/variables.scss';
 
+// Main container
 .search-medicine {
   display: flex;
   flex-direction: column;
@@ -26,13 +27,8 @@
   width: 80vw;
   margin-top: 10dvh;
 
-  &__title {
-    text-align: center;
-  }
-
-  &__field {
-    width: 100%;
-  }
+  &__title { text-align: center; }
+  &__field { width: 100%; }
 }
 
 .medicines-list {

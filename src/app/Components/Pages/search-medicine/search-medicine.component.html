@@ -1,8 +1,10 @@
 <div class="search-medicine">
   <form class="form" [formGroup]="medicineForm">
     <h1 class="form__title">Añadir un medicamento</h1>
+
     <mat-form-field class="form__field" appearance="fill">
       <mat-label>¿Qué medicamento deseas añadir? </mat-label>
+
       <input
         type="text"
         [formControl]="medicine"
@@ -14,6 +16,7 @@
 
   <section class="medicines-list" *ngIf="medicinesSearch.length > 0">
     <mat-list class="medicines-list" role="list">
+      <!-- Spinner shows when data is loading -->
       <mat-progress-spinner
         class="search-medicine__spinner"
         [ngClass]="{ 'search-medicine__spinner--not-hidden': loading$ | async }"
@@ -22,6 +25,8 @@
         value="50"
       >
       </mat-progress-spinner>
+
+      <!-- List dissapears when data is loading -->
       <cdk-virtual-scroll-viewport
         class="medicines-list__viewport"
         *ngIf="!(loading$ | async)"

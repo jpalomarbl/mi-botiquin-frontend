@@ -1,13 +1,10 @@
-import { CommonModule } from '@angular/common';
+// Angular
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Rxjs
 import { debounceTime, Observable, Subject, take, takeUntil } from 'rxjs';
-
-// Custom modules
-import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
@@ -24,17 +21,9 @@ import { MedicineDTO } from 'src/app/Models/medicine.dto';
 
 // Angular material
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-
 
 @Component({
   selector: 'app-search-medicine',
-  standalone: true,
-  imports: [
-    FormsModule,
-    AngularMaterialModule,
-    CommonModule,
-  ],
   templateUrl: './search-medicine.component.html',
   styleUrls: ['./search-medicine.component.scss'],
 })
@@ -84,10 +73,9 @@ export class SearchMedicineComponent {
     this.actions$
       .pipe(
         ofType(medicineKitActions.fetchMedicinesCIMASuccess),
-        take(1) // Para autodesuscribirse después de ejecutarse una vez
+        take(1)
       )
       .subscribe(() => {
-        // Código a ejecutar después de eliminar
         this.medicinesSearch$.subscribe((medicines: MedicineDTO[]) => {
           this.medicinesSearch = medicines;
         });
@@ -101,6 +89,7 @@ export class SearchMedicineComponent {
         );
       });
 
+      // Error dialog handling
     this.actions$
       .pipe(ofType(medicineKitActions.fetchMedicinesCIMAError), take(1))
       .subscribe((error) => {
@@ -114,8 +103,9 @@ export class SearchMedicineComponent {
   }
 
   navigateAddMedicine(medicine: MedicineDTO) {
+    // Custom debouncer
     const now = Date.now();
-    if (now - this.lastClickTime < 500) return; // Evita múltiples clics en 500ms
+    if (now - this.lastClickTime < 500) return;
     this.lastClickTime = now;
 
     const medicineItem: MedicineDTO = {
