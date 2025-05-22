@@ -26,6 +26,7 @@ import { FormsModule } from './Modules/forms.module';
 // Pipes
 import { NextDosePipe } from './Pipes/next-dose.pipe';
 import { ShortenTextPipe } from './Pipes/shorten-text.pipe';
+import { CensorEmailPipe } from './Pipes/censor-email.pipe';
 
 // Components
 import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
@@ -37,6 +38,7 @@ import { HomeComponent } from './Components/Pages/home/home.component';
 import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add-medicine-kit.component';
 import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
 import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list/medicine-kits-list.component';
+import { RelationshipsComponent } from './Components/Pages/relationships/relationships.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list
     AddMedicineComponent,
     AddMedicineKitComponent,
     MedicineKitDetailsComponent,
-    MedicineKitsListComponent
+    MedicineKitsListComponent,
+    RelationshipsComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list
     AsyncPipe,
     NextDosePipe,
     ShortenTextPipe,
+    CensorEmailPipe,
     FormsModule,
   ],
   providers: [],

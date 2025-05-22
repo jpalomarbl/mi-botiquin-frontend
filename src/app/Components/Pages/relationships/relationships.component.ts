@@ -29,12 +29,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-relationships',
-  standalone: true,
-  imports: [
-    FormsModule,
-    AngularMaterialModule,
-    CensorEmailPipe,
-  ],
   templateUrl: './relationships.component.html',
   styleUrls: ['./relationships.component.scss'],
 })
