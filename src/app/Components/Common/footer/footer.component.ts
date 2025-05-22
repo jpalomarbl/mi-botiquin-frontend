@@ -15,13 +15,6 @@ export class FooterComponent {
   constructor(private router: Router) {}
 
   navigate(route: string): void {
-    if (
-      route === '/' ||
-      route === 'remindersList' ||
-      route === 'medicineKitsList' ||
-      route === 'userConfig'
-    ) {
-      this.router.navigate([route]);
-    }
+    this.router.navigate([route]);
   }
 }
