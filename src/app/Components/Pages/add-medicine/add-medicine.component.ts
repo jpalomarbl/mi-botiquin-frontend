@@ -4,10 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Custom modules
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-import { FormsModule } from 'src/app/Modules/forms.module';
-
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -19,9 +15,6 @@ import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.
 // Models
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-
-// Pipes
-import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
@@ -37,12 +30,6 @@ import { deleteReminder } from 'src/app/Store/medicine/actions/reminder.actions'
 
 @Component({
   selector: 'app-add-medicine',
-  standalone: true,
-  imports: [
-    FormsModule,
-    AngularMaterialModule,
-    ShortenTextPipe,
-  ],
   templateUrl: './add-medicine.component.html',
   styleUrls: ['./add-medicine.component.scss'],
   providers: [

@@ -21,15 +21,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AngularMaterialModule } from './Modules/angular-material.module';
+import { FormsModule } from './Modules/forms.module';
 
 // Pipes
 import { NextDosePipe } from './Pipes/next-dose.pipe';
+import { ShortenTextPipe } from './Pipes/shorten-text.pipe';
 
 // Components
 import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
 import { OAuthSuccessComponent } from './Components/Auth/oauth-success/oauth-success.component';
 import { FooterComponent } from './Components/Common/footer/footer.component';
 import { HeaderComponent } from './Components/Common/header/header.component';
+import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medicine.component';
 import { HomeComponent } from './Components/Pages/home/home.component';
 
 @NgModule({
@@ -40,6 +43,7 @@ import { HomeComponent } from './Components/Pages/home/home.component';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
+    AddMedicineComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +64,8 @@ import { HomeComponent } from './Components/Pages/home/home.component';
     AngularMaterialModule,
     AsyncPipe,
     NextDosePipe,
+    ShortenTextPipe,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
