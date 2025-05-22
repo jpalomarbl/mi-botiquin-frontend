@@ -21,13 +21,9 @@
   }
 
   // Nav menu is hidden in smaller screen sizes
-  &__nav {
-    display: none;
-  }
+  &__nav { display: none; }
 
-  &__back-button {
-    margin-right: auto;
-  }
+  &__back-button { margin-right: auto; }
 
   // Notification icon shakes when there are unread notifications
   &__notifications-button--active {
@@ -45,9 +41,7 @@
 }
 
 .notification-menu {
-  &__item:nth-child(even) {
-    background-color: $backgrounds;
-  }
+  &__item:nth-child(even) { background-color: $backgrounds; }
 
   &__section-title {
     margin-inline: 3vw;
