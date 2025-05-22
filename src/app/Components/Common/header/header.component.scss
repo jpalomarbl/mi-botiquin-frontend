@@ -17,6 +17,10 @@
   margin: 0; /* Elimina márgenes por defecto del h1 */
   }
 
+  &__nav {
+    display: none;
+  }
+
   &__back-button {
     margin-right: auto;
   }

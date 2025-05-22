@@ -11,13 +11,22 @@
   </button>
   <h1 class="header__title">Mi Botiquín</h1>
 
+  <nav class="header__nav">
+    <button class="header__nav-button"mat-button color="primary">Recordatorios</button>
+    <button class="header__nav-button"mat-button color="primary">Botiquines</button>
+    <button class="header__nav-button"mat-button color="primary">Inicio</button>
+    <button class="header__nav-button"mat-button color="primary">Usuario</button>
+  </nav>
+
   <button
     class="header__notifications-button"
     mat-icon-button
     color="primary"
     [matMenuTriggerFor]="menu"
     [disabled]="notifications.length === 0"
-    [ngClass]="{'header__notifications-button--active': notifications.length > 0}"
+    [ngClass]="{
+      'header__notifications-button--active': notifications.length > 0
+    }"
     aria-label="Access notifications"
   >
     <mat-icon *ngIf="notifications.length > 0">notifications_unread</mat-icon>
