@@ -77,6 +77,7 @@ export class HomeComponent {
     this.oneMedicineKit = false;
   }
 
+  // On init load all reminders, medicine kits and relationships
   ngOnInit() {
     this.user$
       .pipe(filter((user) => user !== null))
@@ -127,10 +128,10 @@ export class HomeComponent {
       }
     });
 
+    // Update reminders and meidicine kits arrays after fetching from API
     this.actions$
       .pipe(ofType(reminderActions.fetchAllUserRemindersSuccess), take(1))
       .subscribe(() => {
-        // Código a ejecutar después de eliminar
         this.todaysReminders$.subscribe((reminders) => {
           this.reminders = reminders;
 
@@ -143,7 +144,6 @@ export class HomeComponent {
     this.actions$
       .pipe(ofType(medicineKitActions.fetchUserMedicineKitsSuccess), take(1))
       .subscribe(() => {
-        // Código a ejecutar después de eliminar
         this.medicineKits$.subscribe((medicineKits) => {
           this.medicineKits = medicineKits;
 
@@ -153,14 +153,7 @@ export class HomeComponent {
         });
       });
 
-    this.actions$
-      .pipe(ofType(medicineKitActions.fetchUserMedicineKitsSuccess), take(1))
-      .subscribe(() => {
-        this.medicineKits$.subscribe((medicineKits) => {
-          this.medicineKits = medicineKits;
-        });
-      });
-
+    // Error dialog handling
     this.actions$
       .pipe(
         ofType(
@@ -174,8 +167,6 @@ export class HomeComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
-
-    console.log(this.oneMedicineKit, this.oneReminder);
   }
 
   navigateRemindersList(): void {
