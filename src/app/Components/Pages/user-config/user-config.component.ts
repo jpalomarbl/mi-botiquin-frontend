@@ -5,8 +5,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 // Modules
 import { MatDialog } from '@angular/material/dialog';
 import { passwordsMatch } from 'src/app/Directives/passwordsMatch.validator';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
