@@ -42,13 +42,6 @@ import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 
 @Component({
   selector: 'app-reminders-list',
-  standalone: true,
-  imports: [
-    FormsModule,
-    AngularMaterialModule,
-    DateFormatPipe,
-    DatePipe,
-  ],
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })

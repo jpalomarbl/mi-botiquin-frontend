@@ -27,6 +27,7 @@ import { FormsModule } from './Modules/forms.module';
 import { NextDosePipe } from './Pipes/next-dose.pipe';
 import { ShortenTextPipe } from './Pipes/shorten-text.pipe';
 import { CensorEmailPipe } from './Pipes/censor-email.pipe';
+import { DateFormatPipe } from './Pipes/date-format.pipe';
 
 // Components
 import { OauthErrorComponent } from './Components/Auth/oauth-error/oauth-error.component';
@@ -39,6 +40,7 @@ import { AddMedicineKitComponent } from './Components/Pages/add-medicine-kit/add
 import { MedicineKitDetailsComponent } from './Components/Pages/medicine-kit-details/medicine-kit-details.component';
 import { MedicineKitsListComponent } from './Components/Pages/medicine-kits-list/medicine-kits-list.component';
 import { RelationshipsComponent } from './Components/Pages/relationships/relationships.component';
+import { RemindersListComponent } from './Components/Pages/reminders-list/reminders-list.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { RelationshipsComponent } from './Components/Pages/relationships/relatio
     AddMedicineKitComponent,
     MedicineKitDetailsComponent,
     MedicineKitsListComponent,
-    RelationshipsComponent
+    RelationshipsComponent,
+    RemindersListComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import { RelationshipsComponent } from './Components/Pages/relationships/relatio
     NextDosePipe,
     ShortenTextPipe,
     CensorEmailPipe,
+    DateFormatPipe,
     FormsModule,
   ],
   providers: [],
