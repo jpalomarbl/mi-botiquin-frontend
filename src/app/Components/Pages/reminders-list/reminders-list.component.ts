@@ -180,6 +180,10 @@ export class RemindersListComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
+
+    this.organizedReminders$.subscribe((organizedReminders) => {
+      console.log(organizedReminders);
+    });
   }
 
   navigateToPreviousDay() {

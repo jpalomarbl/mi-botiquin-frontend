@@ -22,6 +22,13 @@
     width: 100%;
   }
 
+  @media only screen and (min-width: $lg) {
+    &__viewport {
+      height: 82dvh;
+      width: 100%;
+    }
+  }
+
   &__spinner {
     display: none;
 
@@ -62,6 +69,22 @@
     &--consumed { background-color: #55CFFF; }
     &--consumed .reminders-list__card-content,
     &--consumed .reminders-list__card-header { color: rgb(99, 99, 99) }
+  }
+
+  @media only screen and (min-width: $lg) {
+    &__card-container:not(.reminders-list__card--one-reminder) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2%;
+    }
+
+    &__card-container:not(.reminders-list__card--one-reminder) > &__card {
+      flex: 1;
+      box-sizing: border-box;
+
+      max-width: 48%;
+      min-width: 40%;
+    }
   }
 
   &__card-header {

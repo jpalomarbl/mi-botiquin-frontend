@@ -62,7 +62,14 @@
   >
   </mat-progress-spinner>
 
-  <section *ngIf="!isRemindersEmpty && !(loadingMedicine$ | async) && !(loadingAuth$ | async); else noReminders">
+  <section
+    *ngIf="
+      !isRemindersEmpty &&
+        !(loadingMedicine$ | async) &&
+        !(loadingAuth$ | async);
+      else noReminders
+    "
+  >
     <cdk-virtual-scroll-viewport
       class="reminders-list__viewport"
       appendOnly
@@ -78,55 +85,66 @@
         </h3>
 
         <div
-          class="reminders-list__card"
-          *ngFor="let reminder of pair![1]"
-          [ngClass]="{ 'reminders-list__card--consumed': reminder[1] }"
+          class="reminders-list__card-container"
+          [ngClass]="{
+            'reminders-list__card--one-reminder': pair![1].length === 1
+          }"
         >
-          <div class="reminders-list__card-header">
-            <span
-              class="reminders-list__card-state"
-              *ngIf="reminder[1]; else notConsumed"
-            >
-              Consumido
-            </span>
+          <div
+            class="reminders-list__card"
+            *ngFor="let reminder of pair![1]"
+            [ngClass]="{
+              'reminders-list__card--consumed': reminder[1],
+            }"
+          >
+            <div class="reminders-list__card-header">
+              <span
+                class="reminders-list__card-state"
+                *ngIf="reminder[1]; else notConsumed"
+              >
+                Consumido
+              </span>
 
-            <ng-template #notConsumed>
-              <span class="reminders-list__card-state"> Por consumir </span>
-            </ng-template>
-          </div>
+              <ng-template #notConsumed>
+                <span class="reminders-list__card-state"> Por consumir </span>
+              </ng-template>
+            </div>
 
-          <div class="reminders-list__card-content">
-            <span class="reminders-list__card-title"
-              >{{ reminder[0].medicineName }}
-            </span>
+            <div class="reminders-list__card-content">
+              <span class="reminders-list__card-title"
+                >{{ reminder[0].medicineName }}
+              </span>
 
-            <span class="reminders-list__card-info">
-              {{ reminder[0].medicineKitName }} - {{ reminder[0].amount }}
-              {{ reminder[0].medicineUnit }}
-            </span>
-          </div>
+              <span class="reminders-list__card-info">
+                {{ reminder[0].medicineKitName }} - {{ reminder[0].amount }}
+                {{ reminder[0].medicineUnit }}
+              </span>
+            </div>
 
-          <div class="reminders-list__card-actions">
-            <button
-              mat-button
-              color="primary"
-              *ngIf="!reminder[1]; else toBeConsumed"
-              (click)="
-                changeReminderState(i, reminder[0].id, pair[0], reminder[1])
-              "
-            >
-              Consumir
-            </button>
-
-            <ng-template #toBeConsumed>
+            <div class="reminders-list__card-actions">
               <button
                 mat-button
                 color="primary"
-                (click)="changeReminderState(i, reminder[0].id, pair[0], reminder[1])"
+                *ngIf="!reminder[1]; else toBeConsumed"
+                (click)="
+                  changeReminderState(i, reminder[0].id, pair[0], reminder[1])
+                "
               >
-                Dejar de consumir
+                Consumir
               </button>
-            </ng-template>
+
+              <ng-template #toBeConsumed>
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="
+                    changeReminderState(i, reminder[0].id, pair[0], reminder[1])
+                  "
+                >
+                  Dejar de consumir
+                </button>
+              </ng-template>
+            </div>
           </div>
         </div>
       </div>
