@@ -1,7 +1,6 @@
 // Angular
-import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { filter, Observable, take } from 'rxjs';
 
 // Models
@@ -20,23 +19,11 @@ import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-// Pipes
-import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
-
 // Custom modules
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [
-    CommonModule,
-    AsyncPipe,
-    AngularMaterialModule,
-    NextDosePipe,
-    RouterLink,
-  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -188,7 +175,7 @@ export class HomeComponent {
         this.dialogService.openErrorDialog(error.error, this.errorDialog);
       });
 
-      console.log(this.oneMedicineKit, this.oneReminder)
+    console.log(this.oneMedicineKit, this.oneReminder);
   }
 
   navigateRemindersList(): void {

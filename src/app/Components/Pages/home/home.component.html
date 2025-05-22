@@ -1,5 +1,5 @@
 <div class="home">
-  <!-- Spinner shows only when data is loading to store -->
+  <!-- Spinner shows only when data is loading -->
   <mat-progress-spinner
     class="home__spinner"
     [ngClass]="{ 'home__spinner--not-hidden': loading$ | async }"
@@ -9,17 +9,14 @@
   >
   </mat-progress-spinner>
 
-  <!-- Reminders section disapears when page is loading info to store -->
+  <!-- Reminders section disapears when page is loading info -->
   <section
     class="reminders"
     [ngClass]="{ 'reminders--hidden': loading$ | async }"
   >
-    <!-- Title has heading and icon -->
     <div class="reminders__title">
-      <!-- Heading -->
       <h2 class="reminders__title-text">Para hoy</h2>
 
-      <!-- Icon -->
       <mat-icon
         class="reminders__title-icon"
         aria-hidden="false"
@@ -40,10 +37,7 @@
       <ng-container
         *ngFor="let reminder of todaysReminders$ | async; index as i"
       >
-        <mat-list-item
-          class="reminders__list-item"
-          *ngIf="i < 2"
-        >
+        <mat-list-item class="reminders__list-item" *ngIf="i < 2">
           <span matListItemTitle>{{ reminder.medicineName }}</span>
 
           <span matListItemLine
@@ -58,6 +52,7 @@
             }}
           </span>
 
+          <!-- If the user has access to other user's reminders, it shows the ownership of the reminder -->
           <span
             matListItemLine
             *ngIf="
@@ -104,17 +99,14 @@
     </ng-template>
   </section>
 
-  <!-- Medicine kits section disapears when page is loading info to store -->
+  <!-- Medicine kits section disapears when page is loading info -->
   <section
     class="medicine-kits"
     [ngClass]="{ 'medicine-kits--hidden': loading$ | async }"
   >
-    <!-- Title has heading and icon -->
     <div class="medicine-kits__title">
-      <!-- Heading -->
       <h2 class="medicine-kits__title-text">Tus botiquines</h2>
 
-      <!-- Icon -->
       <mat-icon
         class="medicine-kits__title-icon"
         aria-hidden="false"
@@ -131,7 +123,6 @@
       <ng-container
         *ngFor="let medicineKit of medicineKits$ | async; index as i"
       >
-        <!-- Information -->
         <li
           class="medicine-kits__list-item"
           *ngIf="i <= 2"
@@ -158,6 +149,7 @@
               {{ medicineKit.owner.lastName }}
             </span>
 
+            <!-- If the user has acces to other user's medicine kits, it shows ownership of the kit -->
             <span
               class="medicine-kits__list-item-text medicine-kits__list-item-text--owner"
               *ngIf="
@@ -170,7 +162,6 @@
             </span>
           </div>
 
-          <!-- Button -->
           <button
             mat-icon-button
             class="medicine-kits__list-item-button"

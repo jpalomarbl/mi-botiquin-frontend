@@ -27,9 +27,7 @@
   display: flex;
   flex-direction: column;
 
-  &--hidden {
-    display: none;
-  }
+  &--hidden { display: none; }
 
   // Container for title and icon
   &__title {
@@ -80,8 +78,6 @@
 
     cursor: pointer;
   }
-
-  // &__list-item:not(:nth-last-child(-n+2)) { border-bottom: solid 1px $borders; }
 
   &__button {
     margin-top: 2vh;
@@ -142,8 +138,6 @@
   align-items: center;
 
   margin-top: 3vh;
-}
 
-.caretakers--hidden {
-  display: none;
+  &--hidden { display: none; }
 }
