@@ -1,3 +1,4 @@
+<!-- Spinner shows when data is loading -->
 <mat-progress-spinner
   class="relationships__spinner"
   [ngClass]="{ 'relationships__spinner--not-hidden': loading$ | async }"
@@ -7,6 +8,7 @@
 >
 </mat-progress-spinner>
 
+<!-- Everything else dissapears when data is loading -->
 <div class="relationships" *ngIf="!(loading$ | async)">
   <h1
     class="relationships__title"
@@ -37,6 +39,7 @@
     </ng-template>
   </section>
 
+  <!-- If user is not a patient, allow it to search for other users -->
   <section class="relationships-search" *ngIf="userRole !== 'patient'">
     <form
       class="relationships-search__form"

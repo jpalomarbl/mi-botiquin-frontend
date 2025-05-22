@@ -7,7 +7,7 @@ import { Observable, take } from 'rxjs';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import * as  notificationActions from 'src/app/Store/auth/actions/notification.actions';
+import * as notificationActions from 'src/app/Store/auth/actions/notification.actions';
 import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 
@@ -20,8 +20,6 @@ import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
 // Custom modules
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
-import { FormsModule } from 'src/app/Modules/forms.module';
 
 // Models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
@@ -113,6 +111,7 @@ export class RelationshipsComponent {
       }
     });
 
+    // Error dialong handling
     this.actions$
       .pipe(
         ofType(

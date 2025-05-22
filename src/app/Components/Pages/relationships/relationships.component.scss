@@ -1,3 +1,4 @@
+// Main container
 .relationships {
   display: flex;
   flex-direction: column;
@@ -25,9 +26,9 @@
   }
 }
 
-.explanation__text {
-  text-align: center;
-}
+// This is the text that explains how relationships work
+// Under the title.
+.explanation__text { text-align: center; }
 
 .relationships-search,
 .relationships-list {
@@ -37,9 +38,7 @@
     align-items: center;
     justify-content: center;
 
-    &--add-margin {
-      margin-block: 2dvh;
-    }
+    &--add-margin { margin-block: 2dvh; }
   }
 
   &__list-item:nth-child(odd) { background-color: rgb(185, 185, 185); }
@@ -50,18 +49,11 @@
   }
 }
 
-.relationships-search__list-item {
-  text-align: center;
-}
+.relationships-search__list-item { text-align: center; }
 
 .relationships-list {
-  &__title {
-    text-align: center;
-  }
-
-  &__list {
-    padding: 0;
-  }
+  &__title { text-align: center; }
+  &__list { padding: 0; }
 
   &__list-item {
     display: flex;
