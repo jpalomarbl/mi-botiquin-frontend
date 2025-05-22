@@ -1,5 +1,4 @@
 // Angular
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,7 +8,6 @@ import { Observable, take } from 'rxjs';
 
 // Angular material
 import { MatDialog } from '@angular/material/dialog';
-import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 
 // Store
 import { Actions } from '@ngrx/effects';
@@ -73,6 +71,7 @@ export class MedicineKitsListComponent {
   ngOnInit(): void {
     this.loadData(this.userId);
 
+    // Error dialog handling
     this.actions$
       .pipe(
         ofType(
@@ -87,6 +86,8 @@ export class MedicineKitsListComponent {
       });
   }
 
+  // If we specify a user, it loads the medicine kits of that user.
+  // If we don't, it loads all info from logged in user.
   loadData(userId: number, role: string = 'patient'): void {
     this.userId = userId;
 

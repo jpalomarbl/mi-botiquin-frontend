@@ -1,11 +1,10 @@
 @import '/src/assets/variables.scss';
 
+// Main container
 .medicine-kits {
   margin-top: 10dvh;
 
-  &__title {
-    text-align: center;
-  }
+  &__title { text-align: center; }
 
   &__spinner {
     display: none;
@@ -24,21 +23,17 @@
   }
 }
 
-.options {
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.options__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    margin-bottom: 2dvh;
-  }
+  margin-bottom: 2dvh;
 }
 
 .medicine-kits-list {
-  &__viewport {
-    height: 70dvh;
-  }
+  &__viewport { height: 70dvh; }
 
   &__card {
     display: grid;
@@ -91,13 +86,10 @@
 
   &__card-title,
   &__card-note,
-  &__card-owner {
-    display: block;
-  }
+  &__card-owner { display: block; }
 
   &__card-title {
     font-size: 1.1rem;
     font-weight: bold;
   }
-
 }
