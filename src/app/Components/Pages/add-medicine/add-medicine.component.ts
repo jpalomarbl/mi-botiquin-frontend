@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
@@ -83,12 +82,12 @@ export class AddMedicineComponent {
   constructor(
     private route: ActivatedRoute,
     private medicineKitService: MedicineKitService,
-    private store: Store,
     private router: Router,
     private dialogService: DialogService,
     private actions$: Actions,
     public dialog: MatDialog
   ) {
+    // We get the medicine information and medicine kit id from the route
     this.medicine = JSON.parse(
       decodeURIComponent(this.route.snapshot.params['medicine'])
     );
@@ -110,6 +109,7 @@ export class AddMedicineComponent {
       this.isUpdateMode = false;
     }
 
+    // If we are updating an existing medicine, we set the medicine and reminder objects with the existing information.
     if (this.isUpdateMode) {
       this.medicine.expirationDate = new Date(this.medicine.expirationDate);
 
@@ -216,12 +216,14 @@ export class AddMedicineComponent {
   }
 
   ngOnInit(): void {
+    // Get medicine units array from JSON file on /src/assets folder
     this.medicineKitService.getMedicineUnitsArray().subscribe((array) => {
       Object.entries(array).forEach((item) => {
         this.medicineUnitsArray.push(Object.entries(item[1]));
       });
     });
 
+    // Error dialog handling
     this.actions$
       .pipe(
         ofType(
@@ -235,6 +237,8 @@ export class AddMedicineComponent {
       });
   }
 
+  // Dispatches the right actions depeding on whether if it is a medicine update or a new insert,
+  // and if there is a reminder.
   submitForms(): void {
     let medicine = {
       ...this.medicine,
@@ -343,7 +347,6 @@ export class AddMedicineComponent {
   }
 
   deleteReminder(): void {
-    console.log(this.reminder);
     this.dialogService.openConfirmationDialog(
       {
         title: '¿Eliminar recordatorio?',

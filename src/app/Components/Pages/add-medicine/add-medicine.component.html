@@ -89,6 +89,7 @@
         </ng-template>
       </button>
 
+      <!-- Only allow to delete reminders if we are updating a medicine and the medicine already had one -->
       <button
         class="reminder-form__button"
         *ngIf="isUpdateMode && reminder.id !== 0"
@@ -100,6 +101,7 @@
         Eliminar
       </button>
     </div>
+
     <form
       class="reminder-form"
       *ngIf="addReminder"
@@ -116,7 +118,9 @@
         />
       </mat-form-field>
 
-      <div class="reminder-form__medicine-unit reminder-form__field--medicine-unit">
+      <div
+        class="reminder-form__medicine-unit reminder-form__field--medicine-unit"
+      >
         <span class="reminder-form__medicine-unit-text">{{
           unitMedicine.value
         }}</span>
@@ -154,10 +158,12 @@
           [formControl]="startDate"
         />
         <mat-hint>DD/MM/AAAA</mat-hint>
+
         <mat-datepicker-toggle
           matIconSuffix
           [for]="startDatePicker"
         ></mat-datepicker-toggle>
+
         <mat-datepicker touchUi #startDatePicker></mat-datepicker>
       </mat-form-field>
 
@@ -166,6 +172,7 @@
         appearance="fill"
       >
         <mat-label>A las</mat-label>
+
         <input matInput type="time" [formControl]="startTime" />
       </mat-form-field>
 
@@ -179,11 +186,14 @@
           [matDatepicker]="finishDatePicker"
           [formControl]="finishDate"
         />
+
         <mat-hint>DD/MM/AAAA</mat-hint>
+
         <mat-datepicker-toggle
           matIconSuffix
           [for]="finishDatePicker"
         ></mat-datepicker-toggle>
+
         <mat-datepicker touchUi #finishDatePicker></mat-datepicker>
       </mat-form-field>
 
@@ -192,6 +202,7 @@
         appearance="fill"
       >
         <mat-label>A las</mat-label>
+        
         <input matInput type="time" [formControl]="finishTime" />
       </mat-form-field>
     </form>

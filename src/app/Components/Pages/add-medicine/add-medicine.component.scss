@@ -1,3 +1,4 @@
+// Main container
 .add-medicine {
   display: flex;
   flex-direction: column;
@@ -20,9 +21,7 @@
 }
 
 .medicine-form > *,
-.reminder-form > * {
-  display: inline-block;
-}
+.reminder-form > * { display: inline-block; }
 
 .medicine-form {
   margin-bottom: 0;
@@ -54,13 +53,8 @@
 
   margin-bottom: 2dvh;
 
-  &__title {
-    margin-bottom: 1dvh;
-  }
-
-  &__title > * {
-    display: inline;
-  }
+  &__title { margin-bottom: 1dvh; }
+  &__title > * { display: inline; }
 
   &__title-text {
     margin-right: 2vw;
@@ -73,6 +67,7 @@
       grid-column-end:  span 2;
     }
 
+    // This is NOT a form field, but a div with a span which we need to center.
     &--medicine-unit {
       grid-column-start: 3;
       grid-column-end: span 2;
@@ -83,7 +78,6 @@
       display: flex !important;
       align-items: center;
       justify-content: center;
-
     }
 
     &--frequency {
@@ -145,7 +139,5 @@
   }
 
   &__button,
-  &__submit-button {
-    margin-inline: auto;
-  }
+  &__submit-button { margin-inline: auto; }
 }
