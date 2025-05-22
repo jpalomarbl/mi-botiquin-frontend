@@ -1,9 +1,12 @@
 @import '/src/assets/variables.scss';
 
 .header {
+  // Centering elements
   display: flex;
-  align-items: center; /* Centra verticalmente los elementos */
-  position: relative; /* Necesario para el posicionamiento absoluto opcional */
+  align-items: center;
+
+  // Keeps header fixed
+  position: relative;
 
   padding: 10px 20px;
 
@@ -11,12 +14,13 @@
   border-bottom: 1px solid $borders;
 
   &__title {
-    position: absolute; /* Opcional: Centrado exacto */
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0; /* Elimina márgenes por defecto del h1 */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
   }
 
+  // Nav menu is hidden in smaller screen sizes
   &__nav {
     display: none;
   }
@@ -25,13 +29,18 @@
     margin-right: auto;
   }
 
+  // Notification icon shakes when there are unread notifications
   &__notifications-button--active {
     animation-name: earthquake;
     animation-duration: 1s;
     animation-delay: 1s;
     animation-iteration-count: infinite;
+  }
 
-
+  @keyframes earthquake {
+    75% { transform: rotate(-5deg) translateX(-1px); }
+    85% { transform: translateY(-1px); }
+    100% { transform: rotate(7deg) translateY(1px); }
   }
 }
 
@@ -53,10 +62,4 @@
 
     font-size: .9rem;
   }
-}
-
-@keyframes earthquake {
-  75% { transform: rotate(-5deg) translateX(-1px); }
-  85% { transform: translateY(-1px); }
-  100% { transform: rotate(7deg) translateY(1px); }
 }

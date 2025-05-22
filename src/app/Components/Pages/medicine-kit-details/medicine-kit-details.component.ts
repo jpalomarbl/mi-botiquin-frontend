@@ -22,16 +22,13 @@ import { DialogService } from 'src/app/Services/dialog.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Pipes
 import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-medicine-kit-details',
   standalone: true,
-  imports: [FooterComponent, AsyncPipe, AngularMaterialModule, CommonModule],
+  imports: [AsyncPipe, AngularMaterialModule, CommonModule],
   templateUrl: './medicine-kit-details.component.html',
   styleUrls: ['./medicine-kit-details.component.scss'],
 })

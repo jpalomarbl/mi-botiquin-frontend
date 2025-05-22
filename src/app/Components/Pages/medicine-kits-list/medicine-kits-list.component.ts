@@ -24,9 +24,6 @@ import {
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-//Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Data models
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
@@ -35,7 +32,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-medicine-kits-list',
   standalone: true,
-  imports: [FooterComponent, CommonModule, AngularMaterialModule],
+  imports: [CommonModule, AngularMaterialModule],
   templateUrl: './medicine-kits-list.component.html',
   styleUrls: ['./medicine-kits-list.component.scss'],
 })

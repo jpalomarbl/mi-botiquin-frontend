@@ -11,9 +11,6 @@ import * as  notificationActions from 'src/app/Store/auth/actions/notification.a
 import * as userRelationshipsActions from 'src/app/Store/auth/actions/userRelationships.actions';
 import * as authSelectors from 'src/app/Store/auth/selectors/auth.selectors';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Services
 import { DialogService } from 'src/app/Services/dialog.service';
 
@@ -34,7 +31,6 @@ import { UserDTO } from 'src/app/Models/user.dto';
   selector: 'app-relationships',
   standalone: true,
   imports: [
-    FooterComponent,
     FormsModule,
     AngularMaterialModule,
     CensorEmailPipe,

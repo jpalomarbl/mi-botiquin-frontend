@@ -15,9 +15,6 @@ import { take } from 'rxjs';
 import * as authActions from 'src/app/Store/auth/actions/auth.actions';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Services
 import { DialogService } from 'src/app/Services/dialog.service';
 
@@ -28,7 +25,7 @@ import { UserDTO } from 'src/app/Models/user.dto';
 @Component({
   selector: 'app-user-config',
   standalone: true,
-  imports: [FormsModule, FooterComponent, AngularMaterialModule],
+  imports: [FormsModule, AngularMaterialModule],
   templateUrl: './user-config.component.html',
   styleUrls: ['./user-config.component.scss'],
 })

@@ -1,5 +1,5 @@
 <div class="login">
-  <!-- Spinner shows only when data is loading to store -->
+  <!-- Spinner shows only when data is loading -->
   <mat-progress-spinner
     class="login__spinner"
     [ngClass]="{ 'login__spinner--not-hidden': loading$ | async }"
@@ -9,7 +9,7 @@
   >
   </mat-progress-spinner>
 
-  <!-- Form disapears when page is loading info to store -->
+  <!-- Form disapears when page is loading info -->
   <form
     *ngIf="!(loading$ | async)"
     class="login-form"
@@ -40,7 +40,7 @@
 
     <button class="login-form__button" mat-raised-button color="primary">Login</button>
 
-    <!-- OAuth -->
+    <!-- OAuth Button -->
     <button class="gsi-material-button" (click)="submitLoginGoogle()">
       <div class="gsi-material-button-state"></div>
       <div class="gsi-material-button-content-wrapper">
@@ -76,6 +76,7 @@
       </div>
     </button>
 
+    <!-- Register link -->
     <a class="register-link" routerLink="/register">No tengo cuenta</a>
   </form>
 </div>

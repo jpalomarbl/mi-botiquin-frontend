@@ -41,14 +41,10 @@ import { DatePipe } from '@angular/common';
 import { DateFormatPipe } from 'src/app/Pipes/date-format.pipe';
 import { ShortenTextPipe } from 'src/app/Pipes/shorten-text.pipe';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 @Component({
   selector: 'app-reminders-list',
   standalone: true,
   imports: [
-    FooterComponent,
     FormsModule,
     AngularMaterialModule,
     DateFormatPipe,

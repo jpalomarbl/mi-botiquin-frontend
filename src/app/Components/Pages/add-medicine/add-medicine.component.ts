@@ -8,9 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -42,7 +39,6 @@ import { deleteReminder } from 'src/app/Store/medicine/actions/reminder.actions'
   selector: 'app-add-medicine',
   standalone: true,
   imports: [
-    FooterComponent,
     FormsModule,
     AngularMaterialModule,
     ShortenTextPipe,

@@ -23,9 +23,6 @@ import * as medicineSelectors from 'src/app/Store/medicine/selectors/medicine.se
 // Pipes
 import { NextDosePipe } from 'src/app/Pipes/next-dose.pipe';
 
-// Components
-import { FooterComponent } from '../../Common/footer/footer.component';
-
 // Custom modules
 import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
@@ -36,7 +33,6 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
   imports: [
     CommonModule,
     AsyncPipe,
-    FooterComponent,
     AngularMaterialModule,
     NextDosePipe,
     RouterLink,

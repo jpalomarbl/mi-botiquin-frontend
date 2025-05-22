@@ -25,7 +25,7 @@ import { AngularMaterialModule } from './Modules/angular-material.module';
 import { AsyncPipe } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent, HeaderComponent],
+  declarations: [AppComponent, OAuthSuccessComponent, OauthErrorComponent, HeaderComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,6 +44,7 @@ import { AsyncPipe } from '@angular/common';
     BrowserAnimationsModule,
     CommonModule,
     AngularMaterialModule,
+    AsyncPipe
   ],
   providers: [],
   bootstrap: [AppComponent],
