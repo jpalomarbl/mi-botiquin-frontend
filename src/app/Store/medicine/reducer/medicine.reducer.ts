@@ -84,21 +84,23 @@ export const medicineReducer = createReducer(
   on(
     reminderActions.changeReminderState,
     (state, { index, reminderId, time, status }) => {
-      // Validación de índice
-      if (index < 0 || index >= state.organizedReminders.length) {
-        return state;
-      }
-
-      // Copia inmutable del array
-      const updatedReminders = state.organizedReminders.map((pair, i) => {
-        if (i !== index) return pair; // Mantener los demás elementos
-
-        // Modificar solo el elemento en el índice dado
-        return [
-          pair![0], // Conservar la Date
-          [[pair![1][0][0], !status]] as [ReminderDTO, boolean][], // Actualizar el booleano
-        ] as [Date, [ReminderDTO, boolean][]];
-      });
+      const updatedReminders: Array<[Date, [ReminderDTO, boolean][]] | null> =
+        state.organizedReminders.map(
+          (pair: [Date, [ReminderDTO, boolean][]] | null, i) => {
+            if (pair![0].getTime() === time.getTime()) {
+              return [
+                pair![0],
+                pair![1].map((reminderPair: [ReminderDTO, boolean]) => {
+                  if (reminderPair[0].id === reminderId) {
+                    return [reminderPair[0], !status];
+                  } else {
+                    return reminderPair;
+                  }
+                }),
+              ];
+            } else return pair;
+          }
+        );
 
       return {
         ...state,

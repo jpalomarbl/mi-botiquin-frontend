@@ -105,7 +105,6 @@ export class RelationshipsComponent {
         }
 
         this.userRelationships$.subscribe((relationships) => {
-          console.log('User relationships:', relationships);
           this.userRelationships = relationships;
         });
       }
@@ -134,8 +133,6 @@ export class RelationshipsComponent {
     );
 
     this.userSearchResults$.subscribe((results) => {
-      console.log('Search results:', results);
-
       this.userSearchResults = results;
     });
   }
@@ -174,7 +171,6 @@ export class RelationshipsComponent {
     const censorEmailPipe = new CensorEmailPipe();
     const censoredEmail = censorEmailPipe.transform(relationship.email);
 
-    console.log(relationship, this.userId);
 
     if (this.userRole === 'patient') {
       this.dialogService.openConfirmationDialog(

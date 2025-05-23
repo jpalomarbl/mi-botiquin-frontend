@@ -32,23 +32,17 @@ export class ReminderService {
   }
 
   fetchAllUserReminders(userId: number): Observable<ReminderDTO[]> {
-    return this.http.get<ReminderDTO[]>(
-      `${this.apiUrlReminder}/user`,
-      {
-        withCredentials: true,
-        params: { userId: userId.toString() },
-      }
-    );
+    return this.http.get<ReminderDTO[]>(`${this.apiUrlReminder}/user`, {
+      withCredentials: true,
+      params: { userId: userId.toString() },
+    });
   }
 
   fetchAllUserConsumptions(userId: number): Observable<ConsumptionDTO[]> {
-    return this.http.get<ConsumptionDTO[]>(
-      `${this.apiUrlConsumption}/user`,
-      {
-        withCredentials: true,
-        params: { userId: userId.toString() },
-      }
-    );
+    return this.http.get<ConsumptionDTO[]>(`${this.apiUrlConsumption}/user`, {
+      withCredentials: true,
+      params: { userId: userId.toString() },
+    });
   }
 
   changeReminderState(
@@ -92,7 +86,10 @@ export class ReminderService {
     body.set('frequency', reminder.frequency.toString());
     body.set('frequencyUnit', reminder.frequencyUnit);
     body.set('start', reminder.start.toString());
-    body.set('finish', reminder.finish ? reminder.finish.toString() : String(null));
+    body.set(
+      'finish',
+      reminder.finish ? reminder.finish.toString() : String(null)
+    );
     body.set('amount', reminder.amount.toString());
     body.set('medicineId', medicineId.toString());
 
@@ -178,7 +175,6 @@ export class ReminderService {
     frequency: number,
     frequencyUnit: string
   ): Date {
-
     // Calcular la diferencia total en milisegundos
     const diffMs = currentTime.getTime() - startTime.getTime();
 
@@ -258,32 +254,53 @@ export class ReminderService {
       })
       .filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
 
-    // Agrupamiento eficiente por hora
-    const grouped = new Map<number, [ReminderDTO, boolean][]>();
+    const ungrouped: Array<[Date, [ReminderDTO, boolean]]> = [];
 
-    allDoses.forEach(({ time, reminder }) => {
-      // Usamos el timestamp como clave para agrupar
-      const timeKey = time.getTime();
+    allDoses.forEach((dose) => {
+      let item: [Date, [ReminderDTO, boolean]];
 
-      const consumptionFound = consumptions.find(
-        (consumption) =>
-          consumption.consumptionDate.getTime() === timeKey &&
-          consumption.reminderId === reminder.id
-      );
+      consumptions.forEach((consumption, index) => {
+        if (
+          consumption.consumptionDate.getTime() === dose.time.getTime() &&
+          dose.reminder.id === consumption.reminderId
+        ) {
+          item = [dose.time, [dose.reminder, true]];
+        }
 
-      if (grouped.has(timeKey)) {
-        grouped.get(timeKey)!.push([reminder, consumptionFound ? true : false]);
-      } else {
-        grouped.set(timeKey, [[reminder, consumptionFound ? true : false]]);
-      }
+        if (item && index === consumptions.length - 1) {
+          ungrouped.push(item);
+        } else if (!item && index === consumptions.length - 1) {
+          item = [dose.time, [dose.reminder, false]];
+
+          ungrouped.push(item);
+        }
+      });
     });
 
-    // Conversión a array y ordenación
-    return Array.from(grouped.entries())
-      .map(
-        ([timestamp, reminders]) =>
-          [new Date(timestamp), reminders] as [Date, [ReminderDTO, boolean][]]
-      )
-      .sort(([timeA], [timeB]) => timeA.getTime() - timeB.getTime());
+    const grouped: Array<[Date, Array<[ReminderDTO, boolean]>] | null> = [];
+    const indexArray: Array<number> = [];
+
+    for (let i = 0; i < ungrouped.length; i++) {
+      if (!indexArray.includes(i)) {
+        const group: [Date, Array<[ReminderDTO, boolean]>] = [
+          ungrouped[i][0],
+          [ungrouped[i][1]],
+        ];
+
+        for (let j = i + 1; j < ungrouped.length; j++) {
+          if (ungrouped[j][0].getTime() === ungrouped[i][0].getTime()) {
+            group[1].push(ungrouped[j][1]);
+
+            indexArray.push(j);
+          }
+
+          if (j === ungrouped.length - 1) {
+            grouped.push(group);
+          }
+        }
+      }
+    }
+
+    return grouped;
   }
 }

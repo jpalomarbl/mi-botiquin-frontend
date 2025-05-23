@@ -389,7 +389,6 @@ export class AuthEffects {
           .removePatientCaretakerRelationship(patientId, caretakerId)
           .pipe(
             map((response: UserDTO) => {
-              console.log(response);
               return userRelationshipActions.removePatientCaretakerRelationshipSuccess(
                 {
                   caretakerId: caretakerId,
@@ -417,7 +416,6 @@ export class AuthEffects {
           .removePatientFamilyMemberRelationship(patientId, familyMemberId)
           .pipe(
             map((response: UserDTO) => {
-              console.log(response);
               return userRelationshipActions.removePatientFamilyMemberRelationshipSuccess(
                 {
                   familyMemberId: familyMemberId,

@@ -114,13 +114,9 @@ export class HeaderComponent {
   }
 
   clickExpirationNotification(notification: expirationNotificationDTO): void {
-    console.log(notification);
-
     this.medicineKitService
       .fetchMedicineById(notification.id1)
       .subscribe((medicine) => {
-        console.log(medicine);
-
         const medicineItem: MedicineDTO = {
           id: medicine.id,
           name: medicine.name,
