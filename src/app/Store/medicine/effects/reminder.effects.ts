@@ -5,6 +5,7 @@ import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
 import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
 import { ReminderService } from '../../../Services/reminder.service';
 
@@ -107,7 +108,9 @@ export class ReminderEffects {
                   medicineId: row.medicineId,
                   medicineUnit: row.medicineUnit,
                   medicineName: row.medicineName,
+                  medicineAmount: row.medicineAmount,
                   medicineKitName: row.medicineKitName,
+                  medicineKitId: row.medicineKitId,
                 };
               });
 
@@ -171,19 +174,29 @@ export class ReminderEffects {
     this.actions$.pipe(
       ofType(reminderActions.changeReminderState),
       debounceTime(300),
-      mergeMap(({ reminderId, time, status }) =>
-        this.reminderService.changeReminderState(reminderId, time, status).pipe(
-          map((response) => {
-            return reminderActions.changeReminderStateSuccess();
-          }),
-          catchError((error) =>
-            of(
-              reminderActions.fetchAllUserRemindersError({
-                error: error.error || 'Get all user consumptions failed',
-              })
+      mergeMap(({ reminder, time, status, increase }) => {
+        console.log("REMINDER", reminder)
+
+        return this.reminderService
+          .changeReminderState(reminder.id!, time, status)
+          .pipe(
+            map((response) => {
+              return medicineKitActions.updateMedicineAmount({
+                reminder: reminder,
+                time: time,
+                increase: increase,
+              });
+            }),
+            catchError((error) =>
+              of(
+                reminderActions.fetchAllUserRemindersError({
+                  error: error.error || 'Get all user consumptions failed',
+                })
+              )
             )
           )
-        )
+      }
+
       )
     )
   );

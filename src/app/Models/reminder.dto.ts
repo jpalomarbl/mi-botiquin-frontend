@@ -8,7 +8,9 @@ export interface ReminderDTO {
   medicineId?: number;
   medicineUnit: string;
   medicineName?: string;
+  medicineAmount?: number;
   medicineKitName?: string;
+  medicineKitId?: number;
   ownerId?: number | null;
   ownerFirstName?: string | null;
   ownerLastName?: string | null;

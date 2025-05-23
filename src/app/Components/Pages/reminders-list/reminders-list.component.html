@@ -127,7 +127,7 @@
                 color="primary"
                 *ngIf="!reminder[1]; else toBeConsumed"
                 (click)="
-                  changeReminderState(i, reminder[0].id, pair[0], reminder[1])
+                  changeReminderState(reminder[0], pair[0], reminder[1], false)
                 "
               >
                 Consumir
@@ -138,7 +138,7 @@
                   mat-button
                   color="primary"
                   (click)="
-                    changeReminderState(i, reminder[0].id, pair[0], reminder[1])
+                    changeReminderState(reminder[0], pair[0], reminder[1], true)
                   "
                 >
                   Dejar de consumir

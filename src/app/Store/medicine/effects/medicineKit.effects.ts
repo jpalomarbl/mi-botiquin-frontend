@@ -257,4 +257,42 @@ export class MedicineKitEffects {
       )
     )
   );
+
+  updateMedicineAmount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.updateMedicineAmount),
+      mergeMap(({ reminder, time, increase }) =>
+        this.medicineKitService.updateMedicineAmount(reminder.medicineId!, increase).pipe(
+          map((response: MedicineDTO) => {
+              return medicineKitActions.updateMedicineAmountSuccess({
+                reminder: reminder,
+                time: time,
+                increase: increase,
+              });
+          }),
+          catchError((error) =>
+            of(
+              medicineKitActions.updateMedicineAmountError({
+                error: error.error.error || 'Fetch user medicine kits failed',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  updateMedicineAmountSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(medicineKitActions.updateMedicineAmountSuccess),
+      map(({ reminder, time, increase }) => {
+        return reminderKitActions.changeReminderStateSuccess({
+          reminder: reminder,
+          time: time
+        });
+      }
+
+      )
+    )
+  );
 }

@@ -41,11 +41,13 @@ export const fetchAllUserConsumptions = createAction(
 
 export const changeReminderState = createAction(
   '[Medicine] Mark Reminder As Consumed/To Be Consumed',
-  props<{ index: number, reminderId: number, time: Date, status: boolean }>()
+  props<{ reminder: ReminderDTO, time: Date, status: boolean, increase: boolean }>()
 );
 
 export const changeReminderStateSuccess = createAction(
   '[Medicine] Mark Reminder As Consumed Success',
+  props<{ reminder: ReminderDTO, time: Date }>()
+
 );
 
 export const changeReminderStateError = createAction(

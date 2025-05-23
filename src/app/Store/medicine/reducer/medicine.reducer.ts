@@ -83,7 +83,18 @@ export const medicineReducer = createReducer(
   // Mark reminder as consumed
   on(
     reminderActions.changeReminderState,
-    (state, { index, reminderId, time, status }) => {
+    (state, { reminder, time, status }) => {
+      return {
+        ...state,
+        loading: true,
+        loaded: false,
+        error: null,
+      };
+    }
+  ),
+  on(
+    reminderActions.changeReminderStateSuccess,
+    (state, { reminder, time }) => {
       const updatedReminders: Array<[Date, [ReminderDTO, boolean][]] | null> =
         state.organizedReminders.map(
           (pair: [Date, [ReminderDTO, boolean][]] | null, i) => {
@@ -91,8 +102,8 @@ export const medicineReducer = createReducer(
               return [
                 pair![0],
                 pair![1].map((reminderPair: [ReminderDTO, boolean]) => {
-                  if (reminderPair[0].id === reminderId) {
-                    return [reminderPair[0], !status];
+                  if (reminderPair[0].id === reminder.id) {
+                    return [reminderPair[0], !reminderPair[1]];
                   } else {
                     return reminderPair;
                   }
@@ -105,18 +116,12 @@ export const medicineReducer = createReducer(
       return {
         ...state,
         organizedReminders: updatedReminders,
-        loading: true,
-        loaded: false,
+        loading: false,
+        loaded: true,
         error: null,
       };
     }
   ),
-  on(reminderActions.changeReminderStateSuccess, (state) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    error: null,
-  })),
   on(reminderActions.changeReminderStateError, (state, { error }) => ({
     ...state,
     loading: false,
@@ -589,6 +594,91 @@ export const medicineReducer = createReducer(
                 ),
               }
         ),
+        loading: false,
+        loaded: true,
+        error: null,
+      };
+    }
+  ),
+  on(medicineKitActions.updateMedicineError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: error,
+  })),
+
+  // Change medicine amount on medicineKit
+  on(
+    medicineKitActions.updateMedicineAmount,
+    (state, { reminder, increase }) => ({
+      ...state,
+      loading: true,
+      loaded: false,
+      error: null,
+    })
+  ),
+  on(
+    medicineKitActions.updateMedicineAmountSuccess,
+    (state, { reminder, increase }) => {
+      return {
+        ...state,
+        medicineKits: state.medicineKits
+          ? state.medicineKits.map((medicineKit) => {
+              if (medicineKit.id === reminder.medicineKitId) {
+                return {
+                  ...medicineKit,
+                  medicines: medicineKit.medicines.map((medicine) => {
+                    if (medicine.id === reminder.medicineId) {
+                      return {
+                        ...medicine,
+                        amount: medicine.amount + (increase ? 1 : -1),
+                      };
+                    }
+                    return medicine;
+                  }),
+                };
+              }
+              return medicineKit;
+            })
+          : state.medicineKits,
+        reminders: state.reminders
+          ? state.reminders.map((stateReminder) => {
+              if (stateReminder.id === reminder.id) {
+                return {
+                  ...stateReminder,
+                  medicineAmount: stateReminder.medicineAmount! + (increase ? 1 : -1),
+                };
+              }
+              return stateReminder;
+            })
+          : state.reminders,
+        organizedReminders: state.organizedReminders
+          ? state.organizedReminders.map((pair) => {
+              if (!pair) return null;
+
+              const [date, reminderPairs] = pair;
+
+              const updatedReminderPairs = reminderPairs.map(
+                ([reminderItem, status]) => {
+                  if (reminderItem.id === reminder.id) {
+                    return [
+                      {
+                        ...reminderItem,
+                        medicineAmount: reminderItem.medicineAmount! + (increase ? 1 : -1),
+                      },
+                      status,
+                    ] as [ReminderDTO, boolean];
+                  }
+                  return [reminderItem, status] as [ReminderDTO, boolean];
+                }
+              );
+
+              return [date, updatedReminderPairs] as [
+                Date,
+                [ReminderDTO, boolean][]
+              ];
+            })
+          : state.organizedReminders,
         loading: false,
         loaded: true,
         error: null,

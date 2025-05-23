@@ -194,6 +194,25 @@ export class MedicineKitService {
     });
   }
 
+  updateMedicineAmount(
+    medicineId: number,
+    increase: boolean
+  ): Observable<MedicineDTO> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('medicineId', medicineId.toString());
+    body.set('increase', increase.toString());
+
+    return this.http.put<any>(`${this.apiUrlMedicine}/amount`, body.toString(), {
+      withCredentials: true,
+      headers: headers,
+    });
+  }
+
   getMedicineUnit(
     viaAdmininstracion: string,
     formaFarmaceuticaSimplificada: string

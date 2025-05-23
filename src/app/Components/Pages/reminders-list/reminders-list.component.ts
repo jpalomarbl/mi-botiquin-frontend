@@ -83,7 +83,7 @@ export class RemindersListComponent {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private actions$: Actions,
-    public errorDialog: MatDialog
+    public dialog: MatDialog
   ) {
     this.user$ = this.store.select(authSelectors.selectUser);
     this.userRelationships$ = this.store.select(
@@ -178,7 +178,7 @@ export class RemindersListComponent {
         take(1)
       )
       .subscribe((error) => {
-        this.dialogService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog(error.error, this.dialog);
       });
   }
 
@@ -243,18 +243,42 @@ export class RemindersListComponent {
   }
 
   changeReminderState(
-    index: number,
-    reminderId: number,
+    reminder: ReminderDTO,
     time: Date,
-    status: boolean
+    status: boolean,
+    increase: boolean
   ) {
-    this.store.dispatch(
-      reminderActions.changeReminderState({
-        index: index,
-        reminderId: reminderId,
-        time: time,
-        status: status,
-      })
+    if (!increase && reminder.medicineAmount! <= 0) {
+      this.dialogService.openErrorDialog(
+        'No te quedan unidades de este medicamento.',
+        this.dialog
+      );
+
+      return;
+    }
+
+    // this.store.dispatch(
+    //   reminderActions.changeReminderState({
+    //     reminder: reminder,
+    //     time: time,
+    //     status: status,
+    //     increase: increase,
+    //   })
+    // );
+
+    this.dialogService.openConfirmationDialog(
+      {
+        title: '¿Consumir medicamento?',
+        message: '¿Deseas consumir este medicamento?',
+        action: reminderActions.changeReminderState({
+          reminder: reminder,
+          time: time,
+          status: status,
+          increase: increase,
+        }),
+        route: 'remindersList',
+      },
+      this.dialog
     );
   }
 

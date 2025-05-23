@@ -139,3 +139,27 @@ export const updateMedicineError = createAction(
   '[Medicine] Update medicine from DB Error',
   props<{ error: string }>()
 );
+
+export const updateMedicineAmount = createAction(
+  '[Medicine] Update medicine Amount from DB',
+  props<{
+    reminder: ReminderDTO;
+    time: Date;
+    increase: boolean;
+  }>()
+);
+
+export const updateMedicineAmountSuccess = createAction(
+  '[Medicine] Update medicine Amount from DB Success',
+  props<{
+    reminder: ReminderDTO;
+    time: Date;
+    increase: boolean;
+  }>()
+);
+
+export const updateMedicineAmountError = createAction(
+  '[Medicine] Update medicine Amount from DB Error',
+  props<{ error: string }>()
+);
+
