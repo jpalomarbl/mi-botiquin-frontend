@@ -257,15 +257,6 @@ export class RemindersListComponent {
       return;
     }
 
-    // this.store.dispatch(
-    //   reminderActions.changeReminderState({
-    //     reminder: reminder,
-    //     time: time,
-    //     status: status,
-    //     increase: increase,
-    //   })
-    // );
-
     this.dialogService.openConfirmationDialog(
       {
         title: '¿Consumir medicamento?',
@@ -276,7 +267,7 @@ export class RemindersListComponent {
           status: status,
           increase: increase,
         }),
-        route: 'remindersList',
+        route: this.route.snapshot.url.join('/'),
       },
       this.dialog
     );
