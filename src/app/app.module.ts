@@ -59,7 +59,7 @@ import { UserConfigComponent } from './Components/Pages/user-config/user-config.
     RelationshipsComponent,
     RemindersListComponent,
     SearchMedicineComponent,
-    UserConfigComponent
+    UserConfigComponent,
   ],
   imports: [
     BrowserModule,

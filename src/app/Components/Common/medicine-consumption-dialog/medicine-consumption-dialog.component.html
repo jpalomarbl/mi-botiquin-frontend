@@ -1,0 +1,34 @@
+<h1 class="medicine-consumption-dialog__title" mat-dialog-title>
+  ¿Confirmar consumición?
+</h1>
+<div class="medicine-consumption-dialog__content" mat-dialog-content>
+  Puedes marcar el medicamento como consumido, restando las unidades consumidas
+  a tu cantidad total de unidades del medicamento. También puedes marcarlo como
+  no consumido, si no quieres restar las unidades consumidas a tu cantidad total
+  de unidades del medicamento. sin restar las unidades si así lo deseas.
+</div>
+<div mat-dialog-actions>
+  <button
+    class="medicine-consumption-dialog__button"
+    color="primary"
+    mat-button
+    mat-dialog-close
+    (click)="fullConsumption()"
+  >
+    Consumir y restar unidades
+  </button>
+
+  <button
+    class="medicine-consumption-dialog__button"
+    color="accent"
+    mat-button
+    mat-dialog-close
+    (click)="halfConsumption()"
+  >
+    Consumir sin restar unidades
+  </button>
+
+  <button class="medicine-consumption-dialog__button" mat-button mat-dialog-close>
+    Cancelar
+  </button>
+</div>

@@ -1,0 +1,9 @@
+.medicine-consumption-dialog {
+  &__title, &__content {
+    text-align: center;
+  }
+
+  &__button {
+    margin-inline: auto;
+  }
+}
