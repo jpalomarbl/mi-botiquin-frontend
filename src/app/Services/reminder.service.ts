@@ -255,20 +255,14 @@ export class ReminderService {
       })
       .filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
 
-    console.log('ALL DOSES', allDoses);
-
     const ungrouped: Array<[Date, [ReminderDTO, organizedRemindersObject]]> =
       [];
 
-    console.log('CONSUMPTIONS', consumptions);
-
     allDoses.forEach((dose) => {
       let item: [Date, [ReminderDTO, organizedRemindersObject]];
-      // console.log('DOSE', dose);
 
       if (consumptions.length > 0) {
         consumptions.forEach((consumption, index) => {
-          console.log('CONSUMPTION', consumption);
           if (
             consumption.consumptionDate.getTime() === dose.time.getTime() &&
             dose.reminder.id === consumption.reminderId
@@ -303,8 +297,6 @@ export class ReminderService {
       }
     });
 
-    console.log('UNGROUPED,', ungrouped);
-
     const grouped: Array<
       [Date, Array<[ReminderDTO, organizedRemindersObject]>] | null
     > = [];
@@ -330,8 +322,6 @@ export class ReminderService {
         }
       }
     }
-
-    console.log('GROUPED', grouped);
 
     return grouped;
   }

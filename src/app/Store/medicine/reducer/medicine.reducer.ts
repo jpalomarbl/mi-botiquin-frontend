@@ -97,7 +97,7 @@ export const medicineReducer = createReducer(
   ),
   on(
     reminderActions.changeReminderStateSuccess,
-    (state, { reminder, time }) => {
+    (state, { reminder, time, halfConsumption }) => {
       const updatedReminders: Array<
         [Date, [ReminderDTO, organizedRemindersObject][]] | null
       > = state.organizedReminders.map(
@@ -108,14 +108,42 @@ export const medicineReducer = createReducer(
               pair![1].map(
                 (reminderPair: [ReminderDTO, organizedRemindersObject]) => {
                   if (reminderPair[0].id === reminder.id) {
-                    return [
-                      reminderPair[0],
-                      {
-                        consumed: !reminderPair[1].consumed,
-                        subtracted:
-                          reminderPair[1].consumed === false ? true : false,
-                      },
-                    ];
+                    if (
+                      !reminderPair[1].consumed &&
+                      !reminderPair[1].subtracted
+                    ) {
+                      return [
+                        reminderPair[0],
+                        {
+                          consumed: true,
+                          subtracted: halfConsumption ? false : true,
+                        },
+                      ];
+                    } else if (
+                      !reminderPair[1].consumed &&
+                      reminderPair[1].subtracted
+                    ) {
+                      return reminderPair;
+                    } else if (
+                      reminderPair[1].consumed &&
+                      !reminderPair[1].subtracted
+                    ) {
+                      return [
+                        reminderPair[0],
+                        {
+                          consumed: false,
+                          subtracted: false,
+                        },
+                      ];
+                    } else {
+                      return [
+                        reminderPair[0],
+                        {
+                          consumed: false,
+                          subtracted: false,
+                        },
+                      ];
+                    }
                   } else {
                     return reminderPair;
                   }
@@ -683,10 +711,7 @@ export const medicineReducer = createReducer(
                         medicineAmount:
                           reminderItem.medicineAmount! + (increase ? 1 : -1),
                       },
-                      {
-                        consumed: status.consumed,
-                        subtracted: true,
-                      },
+                      status,
                     ] as [ReminderDTO, organizedRemindersObject];
                   }
                   return [reminderItem, status] as [

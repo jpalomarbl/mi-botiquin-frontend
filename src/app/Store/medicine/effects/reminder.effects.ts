@@ -139,7 +139,6 @@ export class ReminderEffects {
       mergeMap(({ userId, reminders, day }) =>
         this.reminderService.fetchAllUserConsumptions(userId).pipe(
           map((response: ConsumptionDTO[]) => {
-            console.log('CONSUMPTINOS RESPONSE', response);
             const consumptions: ConsumptionDTO[] = response.map(
               (consumption) => ({
                 reminderId: consumption.reminderId,
@@ -184,6 +183,7 @@ export class ReminderEffects {
             reminderActions.changeReminderStateSuccess({
               reminder: reminder,
               time: time,
+              halfConsumption: halfConsumption
             })
           );
         } else {

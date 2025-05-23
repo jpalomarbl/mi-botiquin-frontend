@@ -22,6 +22,7 @@ interface MedicineConsumptionDialogConfig {
   status: boolean;
   increase: boolean;
   halfConsumption?: boolean;
+  consumed: boolean;
 }
 
 @Injectable({

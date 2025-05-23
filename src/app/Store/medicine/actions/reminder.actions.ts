@@ -53,7 +53,7 @@ export const changeReminderState = createAction(
 
 export const changeReminderStateSuccess = createAction(
   '[Medicine] Mark Reminder As Consumed Success',
-  props<{ reminder: ReminderDTO; time: Date }>()
+  props<{ reminder: ReminderDTO; time: Date; halfConsumption?: boolean; }>()
 );
 
 export const changeReminderStateError = createAction(
