@@ -4,7 +4,9 @@ import { Action } from '@ngrx/store';
 
 import { ConfirmationDialogComponent } from '../Components/Common/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../Components/Common/error-dialog/error-dialog.component';
-import { medicineConsumptionDialogComponent} from '../Components/Common/medicine-consumption-dialog/medicine-consumption-dialog.component';
+import { medicineConsumptionDialogComponent } from '../Components/Common/medicine-consumption-dialog/medicine-consumption-dialog.component';
+
+import { ReminderDTO } from '../Models/reminder.dto';
 
 interface ConfirmationDialogConfig {
   title: string;
@@ -12,6 +14,14 @@ interface ConfirmationDialogConfig {
   route: string;
   action?: Action;
   actionArgs?: any;
+}
+
+interface MedicineConsumptionDialogConfig {
+  reminder: ReminderDTO;
+  time: Date;
+  status: boolean;
+  increase: boolean;
+  halfConsumption?: boolean;
 }
 
 @Injectable({
@@ -38,7 +48,7 @@ export class DialogService {
   }
 
   openMedicineConsumptionDialog(
-    config: ConfirmationDialogConfig,
+    config: MedicineConsumptionDialogConfig,
     medicineConsumptionDialog: MatDialog
   ): void {
     medicineConsumptionDialog.open(medicineConsumptionDialogComponent, {

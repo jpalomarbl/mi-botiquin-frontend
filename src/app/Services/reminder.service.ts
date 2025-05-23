@@ -8,6 +8,7 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import { ConsumptionDTO } from '../Models/consumption.dto';
+import { organizedRemindersObject } from '../Models/medicineState.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -224,7 +225,7 @@ export class ReminderService {
     reminders: ReminderDTO[],
     consumptions: ConsumptionDTO[],
     day: Date
-  ): Array<[Date, Array<[ReminderDTO, boolean]>] | null> {
+  ): Array<[Date, Array<[ReminderDTO, organizedRemindersObject]>] | null> {
     if (!reminders || reminders.length === 0) return [];
 
     // Procesamiento paralelo de los recordatorios
@@ -254,35 +255,64 @@ export class ReminderService {
       })
       .filter(Boolean) as { time: Date; reminder: ReminderDTO }[];
 
-    const ungrouped: Array<[Date, [ReminderDTO, boolean]]> = [];
+    console.log('ALL DOSES', allDoses);
+
+    const ungrouped: Array<[Date, [ReminderDTO, organizedRemindersObject]]> =
+      [];
+
+    console.log('CONSUMPTIONS', consumptions);
 
     allDoses.forEach((dose) => {
-      let item: [Date, [ReminderDTO, boolean]];
+      let item: [Date, [ReminderDTO, organizedRemindersObject]];
+      // console.log('DOSE', dose);
 
-      consumptions.forEach((consumption, index) => {
-        if (
-          consumption.consumptionDate.getTime() === dose.time.getTime() &&
-          dose.reminder.id === consumption.reminderId
-        ) {
-          item = [dose.time, [dose.reminder, true]];
-        }
+      if (consumptions.length > 0) {
+        consumptions.forEach((consumption, index) => {
+          console.log('CONSUMPTION', consumption);
+          if (
+            consumption.consumptionDate.getTime() === dose.time.getTime() &&
+            dose.reminder.id === consumption.reminderId
+          ) {
+            item = [
+              dose.time,
+              [
+                dose.reminder,
+                { consumed: true, subtracted: consumption.subtracted },
+              ],
+            ];
+          }
 
-        if (item && index === consumptions.length - 1) {
-          ungrouped.push(item);
-        } else if (!item && index === consumptions.length - 1) {
-          item = [dose.time, [dose.reminder, false]];
+          if (item && index === consumptions.length - 1) {
+            ungrouped.push(item);
+          } else if (!item && index === consumptions.length - 1) {
+            item = [
+              dose.time,
+              [dose.reminder, { consumed: false, subtracted: null }],
+            ];
 
-          ungrouped.push(item);
-        }
-      });
+            ungrouped.push(item);
+          }
+        });
+      } else {
+        item = [
+          dose.time,
+          [dose.reminder, { consumed: false, subtracted: null }],
+        ];
+
+        ungrouped.push(item);
+      }
     });
 
-    const grouped: Array<[Date, Array<[ReminderDTO, boolean]>] | null> = [];
+    console.log('UNGROUPED,', ungrouped);
+
+    const grouped: Array<
+      [Date, Array<[ReminderDTO, organizedRemindersObject]>] | null
+    > = [];
     const indexArray: Array<number> = [];
 
     for (let i = 0; i < ungrouped.length; i++) {
       if (!indexArray.includes(i)) {
-        const group: [Date, Array<[ReminderDTO, boolean]>] = [
+        const group: [Date, Array<[ReminderDTO, organizedRemindersObject]>] = [
           ungrouped[i][0],
           [ungrouped[i][1]],
         ];
@@ -300,6 +330,8 @@ export class ReminderService {
         }
       }
     }
+
+    console.log('GROUPED', grouped);
 
     return grouped;
   }

@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
+import { organizedRemindersObject } from 'src/app/Models/medicineState.dto';
 
 export const fetchUserRemindersForToday = createAction(
   '[Medicine] Fetch User Reminders For Today From API',
@@ -24,7 +25,7 @@ export const fetchAllUserReminders = createAction(
 export const fetchAllUserRemindersSuccess = createAction(
   '[Medicine] Fetch All User Reminders From API Success',
   props<{
-    organizedReminders: Array<[Date, [ReminderDTO, boolean][]] | null>;
+    organizedReminders: Array<[Date, [ReminderDTO, organizedRemindersObject][]] | null>;
     reminders: ReminderDTO[];
   }>()
 );

@@ -88,7 +88,7 @@
             class="reminders-list__card"
             *ngFor="let reminder of pair![1]"
             [ngClass]="{
-              'reminders-list__card--consumed': reminder[1],
+              'reminders-list__card--consumed': reminder[1].consumed,
             }"
           >
             <div class="reminders-list__card-header">
@@ -119,9 +119,9 @@
               <button
                 mat-button
                 color="primary"
-                *ngIf="!reminder[1]; else toBeConsumed"
+                *ngIf="!reminder[1].consumed; else toBeConsumed"
                 (click)="
-                  changeReminderState(reminder[0], pair[0], reminder[1], false)
+                  changeReminderState(reminder, pair[0], reminder[1], false)
                 "
               >
                 Consumir
@@ -132,7 +132,7 @@
                   mat-button
                   color="primary"
                   (click)="
-                    changeReminderState(reminder[0], pair[0], reminder[1], true)
+                    changeReminderState(reminder, pair[0], reminder[1], true)
                   "
                 >
                   Dejar de consumir

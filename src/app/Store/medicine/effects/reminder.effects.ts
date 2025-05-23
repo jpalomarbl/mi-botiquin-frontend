@@ -4,6 +4,7 @@ import { of, take } from 'rxjs';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 
 import { ConsumptionDTO } from 'src/app/Models/consumption.dto';
+import { organizedRemindersObject } from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
@@ -138,15 +139,17 @@ export class ReminderEffects {
       mergeMap(({ userId, reminders, day }) =>
         this.reminderService.fetchAllUserConsumptions(userId).pipe(
           map((response: ConsumptionDTO[]) => {
+            console.log('CONSUMPTINOS RESPONSE', response);
             const consumptions: ConsumptionDTO[] = response.map(
               (consumption) => ({
                 reminderId: consumption.reminderId,
                 consumptionDate: new Date(consumption.consumptionDate),
+                subtracted: consumption.subtracted,
               })
             );
 
             const organizedReminders: Array<
-              [Date, [ReminderDTO, boolean][]] | null
+              [Date, [ReminderDTO, organizedRemindersObject][]] | null
             > = this.reminderService.organizeReminders(
               reminders,
               consumptions,

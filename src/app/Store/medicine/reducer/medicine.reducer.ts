@@ -1,6 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { MedicineStateDTO } from 'src/app/Models/medicineState.dto';
+import {
+  MedicineStateDTO,
+  organizedRemindersObject,
+} from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderActions from 'src/app/Store/medicine/actions/reminder.actions';
@@ -95,23 +98,33 @@ export const medicineReducer = createReducer(
   on(
     reminderActions.changeReminderStateSuccess,
     (state, { reminder, time }) => {
-      const updatedReminders: Array<[Date, [ReminderDTO, boolean][]] | null> =
-        state.organizedReminders.map(
-          (pair: [Date, [ReminderDTO, boolean][]] | null, i) => {
-            if (pair![0].getTime() === time.getTime()) {
-              return [
-                pair![0],
-                pair![1].map((reminderPair: [ReminderDTO, boolean]) => {
+      const updatedReminders: Array<
+        [Date, [ReminderDTO, organizedRemindersObject][]] | null
+      > = state.organizedReminders.map(
+        (pair: [Date, [ReminderDTO, organizedRemindersObject][]] | null, i) => {
+          if (pair![0].getTime() === time.getTime()) {
+            return [
+              pair![0],
+              pair![1].map(
+                (reminderPair: [ReminderDTO, organizedRemindersObject]) => {
                   if (reminderPair[0].id === reminder.id) {
-                    return [reminderPair[0], !reminderPair[1]];
+                    return [
+                      reminderPair[0],
+                      {
+                        consumed: !reminderPair[1].consumed,
+                        subtracted:
+                          reminderPair[1].consumed === false ? true : false,
+                      },
+                    ];
                   } else {
                     return reminderPair;
                   }
-                }),
-              ];
-            } else return pair;
-          }
-        );
+                }
+              ),
+            ];
+          } else return pair;
+        }
+      );
 
       return {
         ...state,
@@ -631,7 +644,9 @@ export const medicineReducer = createReducer(
                     if (medicine.id === reminder.medicineId) {
                       return {
                         ...medicine,
-                        amount: medicine.amount + (increase ? reminder.amount : -reminder.amount),
+                        amount:
+                          medicine.amount +
+                          (increase ? reminder.amount : -reminder.amount),
                       };
                     }
                     return medicine;
@@ -646,7 +661,8 @@ export const medicineReducer = createReducer(
               if (stateReminder.id === reminder.id) {
                 return {
                   ...stateReminder,
-                  medicineAmount: stateReminder.medicineAmount! + (increase ? 1 : -1),
+                  medicineAmount:
+                    stateReminder.medicineAmount! + (increase ? 1 : -1),
                 };
               }
               return stateReminder;
@@ -664,18 +680,25 @@ export const medicineReducer = createReducer(
                     return [
                       {
                         ...reminderItem,
-                        medicineAmount: reminderItem.medicineAmount! + (increase ? 1 : -1),
+                        medicineAmount:
+                          reminderItem.medicineAmount! + (increase ? 1 : -1),
                       },
-                      status,
-                    ] as [ReminderDTO, boolean];
+                      {
+                        consumed: status.consumed,
+                        subtracted: true,
+                      },
+                    ] as [ReminderDTO, organizedRemindersObject];
                   }
-                  return [reminderItem, status] as [ReminderDTO, boolean];
+                  return [reminderItem, status] as [
+                    ReminderDTO,
+                    organizedRemindersObject
+                  ];
                 }
               );
 
               return [date, updatedReminderPairs] as [
                 Date,
-                [ReminderDTO, boolean][]
+                [ReminderDTO, organizedRemindersObject][]
               ];
             })
           : state.organizedReminders,

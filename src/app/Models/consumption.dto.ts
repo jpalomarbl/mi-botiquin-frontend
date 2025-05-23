@@ -1,4 +1,5 @@
 export interface ConsumptionDTO {
-  reminderId: number,
-  consumptionDate: Date
+  reminderId: number;
+  consumptionDate: Date;
+  subtracted: boolean;
 }

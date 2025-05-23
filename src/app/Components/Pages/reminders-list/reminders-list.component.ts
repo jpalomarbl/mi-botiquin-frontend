@@ -29,6 +29,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 // Data types
 import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
+import { organizedRemindersObject } from 'src/app/Models/medicineState.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 
@@ -41,7 +42,7 @@ export class RemindersListComponent {
   user$: Observable<UserDTO | null>;
   userRelationships$: Observable<UserDTO[] | null>;
   organizedReminders$: Observable<
-    Array<[Date, [ReminderDTO, boolean][]] | null>
+    Array<[Date, [ReminderDTO, organizedRemindersObject][]] | null>
   >;
 
   loadingMedicine$: Observable<boolean>;
@@ -243,12 +244,14 @@ export class RemindersListComponent {
   }
 
   changeReminderState(
-    reminder: ReminderDTO,
+    reminder: [ReminderDTO, organizedRemindersObject],
     time: Date,
     status: boolean,
     increase: boolean
   ) {
-    if (!increase && reminder.medicineAmount! <= 0) {
+    console.log(reminder);
+
+    if (!increase && reminder[0].medicineAmount! <= 0) {
       this.dialogService.openErrorDialog(
         'No te quedan unidades de este medicamento.',
         this.dialog
@@ -257,17 +260,26 @@ export class RemindersListComponent {
       return;
     }
 
-    this.dialogService.openConfirmationDialog(
-      {
-        title: '¿Consumir medicamento?',
-        message: '¿Deseas consumir este medicamento?',
-        action: reminderActions.changeReminderState({
-          reminder: reminder,
+    if (reminder[1].consumed && !reminder[1].subtracted) {
+      this.store.dispatch(
+        reminderActions.changeReminderState({
+          reminder: reminder[0],
           time: time,
           status: status,
           increase: increase,
-        }),
-        route: this.route.snapshot.url.join('/'),
+          halfConsumption: true,
+        })
+      );
+
+      return;
+    }
+
+    this.dialogService.openMedicineConsumptionDialog(
+      {
+        reminder: reminder[0],
+        time: time,
+        status: status,
+        increase: increase,
       },
       this.dialog
     );
