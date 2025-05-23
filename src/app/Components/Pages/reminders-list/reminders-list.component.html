@@ -62,15 +62,9 @@
   >
   </mat-progress-spinner>
 
-  <section
-    *ngIf="
-      !isRemindersEmpty &&
-        !(loadingMedicine$ | async) &&
-        !(loadingAuth$ | async);
-      else noReminders
-    "
-  >
+  <section *ngIf="!(loadingMedicine$ | async) && !(loadingAuth$ | async)">
     <cdk-virtual-scroll-viewport
+      *ngIf="!isRemindersEmpty; else noReminders"
       class="reminders-list__viewport"
       appendOnly
       itemSize="50"
@@ -149,16 +143,16 @@
         </div>
       </div>
     </cdk-virtual-scroll-viewport>
-  </section>
 
-  <ng-template #noReminders>
-    <div class="reminders-list__no-reminders-container">
-      <p class="reminders-list__no-reminders-text">
-        Aún no tienes ningún recordatorio.
-      </p>
-      <p class="reminders-list__no-reminders-text">
-        Agrega uno a un medicamento para verlos aquí.
-      </p>
-    </div>
-  </ng-template>
+    <ng-template #noReminders>
+      <div class="reminders-list__no-reminders-container">
+        <p class="reminders-list__no-reminders-text">
+          Aún no tienes ningún recordatorio.
+        </p>
+        <p class="reminders-list__no-reminders-text">
+          Agrega uno a un medicamento para verlos aquí.
+        </p>
+      </div>
+    </ng-template>
+  </section>
 </div>
