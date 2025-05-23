@@ -631,7 +631,7 @@ export const medicineReducer = createReducer(
                     if (medicine.id === reminder.medicineId) {
                       return {
                         ...medicine,
-                        amount: medicine.amount + (increase ? 1 : -1),
+                        amount: medicine.amount + (increase ? reminder.amount : -reminder.amount),
                       };
                     }
                     return medicine;

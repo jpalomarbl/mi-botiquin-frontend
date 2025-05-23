@@ -41,13 +41,18 @@ export const fetchAllUserConsumptions = createAction(
 
 export const changeReminderState = createAction(
   '[Medicine] Mark Reminder As Consumed/To Be Consumed',
-  props<{ reminder: ReminderDTO, time: Date, status: boolean, increase: boolean }>()
+  props<{
+    reminder: ReminderDTO;
+    time: Date;
+    status: boolean;
+    increase: boolean;
+    halfConsumption?: boolean;
+  }>()
 );
 
 export const changeReminderStateSuccess = createAction(
   '[Medicine] Mark Reminder As Consumed Success',
-  props<{ reminder: ReminderDTO, time: Date }>()
-
+  props<{ reminder: ReminderDTO; time: Date }>()
 );
 
 export const changeReminderStateError = createAction(
@@ -57,12 +62,12 @@ export const changeReminderStateError = createAction(
 
 export const addReminder = createAction(
   '[Medicine] Insert reminder into DB',
-  props<{ reminder: ReminderDTO, medicineId: number, medicineKitId: number }>()
+  props<{ reminder: ReminderDTO; medicineId: number; medicineKitId: number }>()
 );
 
 export const addReminderSuccess = createAction(
   '[Medicine] Insert reminder into DB Success',
-  props<{ reminder: ReminderDTO, medicineId: number, medicineKitId: number }>()
+  props<{ reminder: ReminderDTO; medicineId: number; medicineKitId: number }>()
 );
 
 export const addReminderError = createAction(

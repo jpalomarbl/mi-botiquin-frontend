@@ -174,30 +174,36 @@ export class ReminderEffects {
     this.actions$.pipe(
       ofType(reminderActions.changeReminderState),
       debounceTime(300),
-      mergeMap(({ reminder, time, status, increase }) => {
-        console.log("REMINDER", reminder)
-
-        return this.reminderService
-          .changeReminderState(reminder.id!, time, status)
-          .pipe(
-            map((response) => {
-              return medicineKitActions.updateMedicineAmount({
-                reminder: reminder,
-                time: time,
-                increase: increase,
-              });
-            }),
-            catchError((error) =>
-              of(
-                reminderActions.fetchAllUserRemindersError({
-                  error: error.error || 'Get all user consumptions failed',
-                })
+      mergeMap(({ reminder, time, status, increase, halfConsumption }) => {
+        // If halfConsumption flag is true, then it will NOT subtract the amount consumed from the medicine amount.
+        if (halfConsumption) {
+          return of(
+            reminderActions.changeReminderStateSuccess({
+              reminder: reminder,
+              time: time,
+            })
+          );
+        } else {
+          return this.reminderService
+            .changeReminderState(reminder.id!, time, status)
+            .pipe(
+              map((response) => {
+                return medicineKitActions.updateMedicineAmount({
+                  reminder: reminder,
+                  time: time,
+                  increase: increase,
+                });
+              }),
+              catchError((error) =>
+                of(
+                  reminderActions.fetchAllUserRemindersError({
+                    error: error.error || 'Get all user consumptions failed',
+                  })
+                )
               )
-            )
-          )
-      }
-
-      )
+            );
+        }
+      })
     )
   );
 
