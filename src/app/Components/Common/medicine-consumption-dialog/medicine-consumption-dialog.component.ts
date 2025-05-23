@@ -1,6 +1,7 @@
 // Angular
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -14,7 +15,7 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 @Component({
   selector: 'app-medicine-consumption-dialog',
   standalone: true,
-  imports: [AngularMaterialModule],
+  imports: [AngularMaterialModule, CommonModule],
   templateUrl: './medicine-consumption-dialog.component.html',
   styleUrls: ['./medicine-consumption-dialog.component.scss'],
 })
@@ -23,6 +24,7 @@ export class medicineConsumptionDialogComponent {
   reminder: ReminderDTO;
   time: Date;
   status: boolean;
+  consumed: boolean;
 
   constructor(
     private router: Router,
@@ -33,6 +35,7 @@ export class medicineConsumptionDialogComponent {
     this.reminder = this.data.reminder;
     this.time = this.data.time;
     this.status = this.data.status;
+    this.consumed = this.data.consumed;
   }
 
   fullConsumption(): void {

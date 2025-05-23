@@ -3,6 +3,13 @@
     text-align: center;
   }
 
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+  }
+
   &__button {
     margin-inline: auto;
   }

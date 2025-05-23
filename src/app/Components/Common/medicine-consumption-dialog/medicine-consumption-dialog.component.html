@@ -2,10 +2,11 @@
   ¿Confirmar consumición?
 </h1>
 <div class="medicine-consumption-dialog__content" mat-dialog-content>
-  Puedes marcar el medicamento como consumido, restando las unidades consumidas
-  a tu cantidad total de unidades del medicamento. También puedes marcarlo como
-  no consumido, si no quieres restar las unidades consumidas a tu cantidad total
-  de unidades del medicamento. sin restar las unidades si así lo deseas.
+  Puedes marcar el medicamento como
+  <span *ngIf="consumed">"Por consumir", sumando</span>
+  <span *ngIf="!consumed">"Consumido", restando</span>
+  las unidades de la consumición al total de tu botiquín, o sin afectar a este
+  valor.
 </div>
 <div mat-dialog-actions>
   <button
@@ -15,7 +16,9 @@
     mat-dialog-close
     (click)="fullConsumption()"
   >
-    Consumir y restar unidades
+    <span *ngIf="consumed">Dejar de consumir</span>
+    <span *ngIf="!consumed">Consumir</span>
+    y restar unidades
   </button>
 
   <button
@@ -25,10 +28,16 @@
     mat-dialog-close
     (click)="halfConsumption()"
   >
-    Consumir sin restar unidades
+    <span *ngIf="consumed">Dejar de consumir</span>
+    <span *ngIf="!consumed">Consumir</span>
+    sin restar unidades
   </button>
 
-  <button class="medicine-consumption-dialog__button" mat-button mat-dialog-close>
+  <button
+    class="medicine-consumption-dialog__button"
+    mat-button
+    mat-dialog-close
+  >
     Cancelar
   </button>
 </div>
