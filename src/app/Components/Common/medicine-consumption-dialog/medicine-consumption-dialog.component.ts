@@ -18,7 +18,7 @@ import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
   templateUrl: './medicine-consumption-dialog.component.html',
   styleUrls: ['./medicine-consumption-dialog.component.scss'],
 })
-export class ConfirmationDialogComponent {
+export class medicineConsumptionDialogComponent {
   increase: boolean;
   reminder: ReminderDTO;
   time: Date;

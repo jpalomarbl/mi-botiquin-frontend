@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Action } from '@ngrx/store';
 
-import { ErrorDialogComponent } from '../Components/Common/error-dialog/error-dialog.component';
 import { ConfirmationDialogComponent } from '../Components/Common/confirmation-dialog/confirmation-dialog.component';
+import { ErrorDialogComponent } from '../Components/Common/error-dialog/error-dialog.component';
+import { medicineConsumptionDialogComponent} from '../Components/Common/medicine-consumption-dialog/medicine-consumption-dialog.component';
 
 interface ConfirmationDialogConfig {
   title: string;
@@ -27,8 +28,20 @@ export class DialogService {
     });
   }
 
-  openConfirmationDialog(config: ConfirmationDialogConfig, confirmationDialog: MatDialog): void {
+  openConfirmationDialog(
+    config: ConfirmationDialogConfig,
+    confirmationDialog: MatDialog
+  ): void {
     confirmationDialog.open(ConfirmationDialogComponent, {
+      data: config,
+    });
+  }
+
+  openMedicineConsumptionDialog(
+    config: ConfirmationDialogConfig,
+    medicineConsumptionDialog: MatDialog
+  ): void {
+    medicineConsumptionDialog.open(medicineConsumptionDialogComponent, {
       data: config,
     });
   }
