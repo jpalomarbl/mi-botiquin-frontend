@@ -1,3 +1,5 @@
+@import '/src/assets/variables.scss';
+
 // Main container
 .user-config {
   display: flex;
@@ -8,9 +10,21 @@
   &__form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     margin-top: 10dvh;
     margin-bottom: 7dvh;
+  }
+
+  @media only screen and (min-width: $lg) {
+    &__form > &__form-field {
+      width: 30vw;
+    }
+
+    &__form-button {
+      width: 50%;
+    }
   }
 
   &__title {
