@@ -71,6 +71,11 @@ export class MedicineKitsListComponent {
   ngOnInit(): void {
     this.loadData(this.userId);
 
+    this.user$.subscribe((user) => {
+      if (user)
+        this.userId = user.id;
+    })
+
     // Error dialog handling
     this.actions$
       .pipe(

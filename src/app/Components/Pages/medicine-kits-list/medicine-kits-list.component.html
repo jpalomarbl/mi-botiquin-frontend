@@ -73,13 +73,10 @@
 
           <div class="medicine-kits-list__card-text">
             <!-- If user is not a patient and is not the owner of the medicine kit, it shows ownership -->
-            <ng-template *ngIf="!isPatient">
+            <div *ngIf="!isPatient">
               <span
                 class="medicine-kits-list__card-owner"
-                *ngIf="
-                  medicineKit.owner.id === (user$ | async)!.id;
-                  else notOwner
-                "
+                *ngIf="medicineKit.owner.id === userId; else notOwner"
               >
                 Este botiquín es tuyo.
               </span>
@@ -89,7 +86,7 @@
                   {{ medicineKit.owner.lastName }}.
                 </span>
               </ng-template>
-            </ng-template>
+            </div>
 
             <ul
               class="medicine-kits-list__medicine-list"
