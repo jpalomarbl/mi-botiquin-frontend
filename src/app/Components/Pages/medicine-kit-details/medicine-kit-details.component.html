@@ -40,6 +40,7 @@
   <section class="medicines-list" *ngIf="medicineKit">
     <cdk-virtual-scroll-viewport
       class="medicines-list__viewport"
+      *ngIf="sortedMedicines.length > 0; else noMedicines"
       appendOnly
       itemSize="50"
     >
@@ -78,5 +79,11 @@
         </div>
       </div>
     </cdk-virtual-scroll-viewport>
+
+    <ng-template #noMedicines>
+      <div class="medicines-list__no-medicines">
+        <p>Aún no has agregado ningun medicamento.</p>
+      </div>
+    </ng-template>
   </section>
 </div>
