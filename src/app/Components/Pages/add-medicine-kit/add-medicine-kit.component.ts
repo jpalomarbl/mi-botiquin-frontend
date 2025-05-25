@@ -153,6 +153,19 @@ export class AddMedicineKitComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
       });
+
+    // Success dialog handling
+    this.actions$
+      .pipe(ofType(medicineKitActions.addMedicineKitSuccess), take(1))
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Botiquín creado con éxito',
+            message: 'El botiquín ha sido creado con éxito.',
+          },
+          this.dialog
+        );
+      });
   }
 
   submitMedicineKit(): void {
