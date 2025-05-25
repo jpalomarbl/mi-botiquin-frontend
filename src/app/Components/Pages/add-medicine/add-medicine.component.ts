@@ -235,6 +235,41 @@ export class AddMedicineComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
       });
+
+    // Success dialog handling
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.addMedicineSuccess
+        ),
+        take(1)
+      )
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Medicamento agregado',
+            message: 'Se ha agregado el nuevo medicamento al botiquín.',
+          },
+          this.dialog
+        );
+      });
+
+    this.actions$
+      .pipe(
+        ofType(
+          medicineKitActions.updateMedicineSuccess
+        ),
+        take(1)
+      )
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Medicamento actualizado',
+            message: 'Se ha actualizado el medicamento.',
+          },
+          this.dialog
+        );
+      });
   }
 
   // Dispatches the right actions depeding on whether if it is a medicine update or a new insert,
