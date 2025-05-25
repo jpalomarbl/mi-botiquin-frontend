@@ -23,13 +23,26 @@
   }
 }
 
-.options__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.options {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-  margin-bottom: 2dvh;
+    width: 100%;
+    margin-bottom: 2dvh;
+  }
+
+  &__selector {
+    width: 80%;
+  }
+
+  @media only screen and (min-width: $lg) {
+    &__selector {
+      width: 30%;
+    }
+  }
 }
 
 .medicine-kits-list {
