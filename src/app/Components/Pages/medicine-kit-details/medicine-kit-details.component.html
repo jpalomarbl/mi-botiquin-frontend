@@ -47,9 +47,11 @@
       <div
         class="medicines-list__card"
         *cdkVirtualFor="let medicine of sortedMedicines"
-        (click)="navigateEditMedicine(medicine)"
       >
-        <div class="medicines-list__content">
+        <div
+          class="medicines-list__content"
+          (click)="navigateEditMedicine(medicine)"
+        >
           <div class="medicines-list__card-header">
             <span class="medicines-list__card-title">
               {{ medicine.name }}
@@ -70,6 +72,7 @@
         <div class="medicines-list__card-actions">
           <button
             class="medicines-list__button"
+            (click)="deleteMedicine(medicine.id)"
             mat-icon-button
             color="warn"
             aria-label="Delete medicine"

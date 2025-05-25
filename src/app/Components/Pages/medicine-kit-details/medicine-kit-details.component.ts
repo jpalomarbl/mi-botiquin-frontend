@@ -20,7 +20,6 @@ import { DialogService } from 'src/app/Services/dialog.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
 
-
 @Component({
   selector: 'app-medicine-kit-details',
   templateUrl: './medicine-kit-details.component.html',
@@ -81,12 +80,40 @@ export class MedicineKitDetailsComponent {
       .pipe(
         ofType(
           medicineKitActions.fetchMedicineKitByIdError,
-          medicineKitActions.deleteMedicineByIdError
+          medicineKitActions.deleteMedicineByIdError,
+          medicineKitActions.deleteMedicineKitError
         ),
         take(1)
       )
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
+
+    // Success dialog handling
+    this.actions$
+      .pipe(ofType(medicineKitActions.deleteMedicineKitSuccess), take(1))
+      .subscribe(() => {
+        console.log('hola');
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Botiquín eliminado',
+            message: 'Se ha eliminado el botiquín correctamente.',
+          },
+          this.dialog
+        );
+      });
+
+    this.actions$
+      .pipe(ofType(medicineKitActions.deleteMedicineByIdSuccess), take(1))
+      .subscribe(() => {
+        console.log('hola');
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Medicamento eliminado',
+            message: 'Se ha eliminado el medicamento correctamente.',
+          },
+          this.dialog
+        );
       });
   }
 
