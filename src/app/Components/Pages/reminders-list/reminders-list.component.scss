@@ -21,7 +21,7 @@
 }
 
 .patient-selector {
-  width: 80vw;
+  width: 80%;
   margin-inline: auto;
 
   &__container {
@@ -30,6 +30,12 @@
     align-items: center;
 
     width: 100%;
+  }
+}
+
+@media only screen and (min-width: $lg) {
+  .patient-selector {
+    width: 30%;
   }
 }
 
