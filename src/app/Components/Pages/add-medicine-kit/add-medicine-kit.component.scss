@@ -17,6 +17,10 @@
 
   &__field { width: 100%; }
   &__error-message { font-size: .8rem; }
+
+  &__button {
+    margin-top: 1dvh;
+  }
 }
 
 @media only screen and (min-width: $lg) {
