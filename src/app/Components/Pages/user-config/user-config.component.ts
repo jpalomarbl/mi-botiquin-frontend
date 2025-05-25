@@ -89,10 +89,24 @@ export class UserConfigComponent {
       }
     });
 
+    // Error handling
     this.actions$
       .pipe(ofType(authActions.updateUserError), take(1))
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
+
+    // Success handling
+    this.actions$
+      .pipe(ofType(authActions.updateUserSuccess), take(1))
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Información actualizada',
+            message: 'Se ha actualizado tu perfil con éxito.',
+          },
+          this.dialog
+        );
       });
   }
 
