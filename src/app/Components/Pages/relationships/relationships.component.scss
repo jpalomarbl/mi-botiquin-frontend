@@ -9,6 +9,12 @@
 
   margin-top: 10dvh;
 
+  &__title {
+    padding-inline: 10vw;
+
+    text-align: center;
+  }
+
   &__spinner {
     display: none;
 
@@ -83,9 +89,15 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+
+    width: 100%;
 
     margin-block: 2dvh;
-    padding-inline: 5vw;
+    padding-left: 2vw;
+  }
+
+  &__list-item-text {
+    width: 70%;
   }
 }
