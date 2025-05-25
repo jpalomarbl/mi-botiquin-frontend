@@ -34,7 +34,7 @@
     </button>
   </section>
 
-  <section *ngIf="!isPatient">
+  <section class="patient-selector__container" *ngIf="!isPatient">
     <mat-form-field class="patient-selector" appearance="fill">
       <mat-label>Filtra por pacientes</mat-label>
       <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">

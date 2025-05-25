@@ -20,7 +20,18 @@
   }
 }
 
-.patient-selector { width: 100%; }
+.patient-selector {
+  width: 80vw;
+  margin-inline: auto;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+  }
+}
 
 .reminders-list {
   &__viewport {
