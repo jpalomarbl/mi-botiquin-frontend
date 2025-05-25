@@ -63,25 +63,24 @@
       <button mat-button [disabled]="searchForm.invalid" type="submit">Buscar</button>
     </form>
 
-    <mat-list
+    <ul
       class="relationships-search__list"
-      role="list"
       *ngIf="userSearchResults!.length > 0"
     >
       <cdk-virtual-scroll-viewport
         class="relationships-search__viewport"
         itemSize="50"
       >
-        <mat-list-item
+        <li
           class="relationships-search__list-item"
           *cdkVirtualFor="let user of userSearchResults"
           (click)="sendRelationshipRequest(user.id, user.firstName, user.email, user.lastName)"
-          role="listitem"
         >
-          {{ user.firstName }} {{ user.lastName }}
-        </mat-list-item>
+          <span class="relationships-search__list-item-text relationships-search__list-item-text--name">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="relationships-search__list-item-text relationships-search__list-item-text--email">{{ user.email | censorEmail }}</span>
+        </li>
       </cdk-virtual-scroll-viewport>
-    </mat-list>
+    </ul>
   </section>
 
   <section class="relationships-list">

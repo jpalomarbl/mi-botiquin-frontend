@@ -8,8 +8,6 @@
   justify-content: center;
 
   margin-top: 10dvh;
-  padding-inline: 10vw;
-
 
   &__spinner {
     display: none;
@@ -30,7 +28,11 @@
 
 // This is the text that explains how relationships work
 // Under the title.
-.explanation__text { text-align: center; }
+.explanation {
+  padding-inline: 10vw;
+
+  &__text { text-align: center; }
+}
 
 .relationships-search,
 .relationships-list {
@@ -43,10 +45,30 @@
     &--add-margin { margin-block: 2dvh; }
   }
 
+  &__list {
+    padding: 0;
+  }
+
+  &__list-item {
+    width: 60vw;
+    margin-inline: auto;
+    padding-block: 1dvh;
+
+    list-style: none;
+  }
+
   &__list-item:nth-child(odd) { background-color: $backgrounds }
 
+  &__list-item-text {
+    display: block;
+
+    &--name {
+      font-weight: bold;
+    }
+  }
+
   &__viewport {
-    height: 35dvh;
+    height: 20dvh;
     width: 60vw;
   }
 }
