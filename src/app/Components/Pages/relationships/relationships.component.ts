@@ -123,6 +123,38 @@ export class RelationshipsComponent {
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
       });
+
+    // Success dialong handling
+    this.actions$
+      .pipe(ofType(notificationActions.sendRelationshipRequestSuccess), take(1))
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Solicitud enviada',
+            message: 'Se ha enviado la solicitud al usuario.',
+          },
+          this.dialog
+        );
+      });
+
+    // Success dialong handling
+    this.actions$
+      .pipe(
+        ofType(
+          userRelationshipsActions.removePatientCaretakerRelationshipSuccess,
+          userRelationshipsActions.removePatientFamilyMemberRelationshipSuccess
+        ),
+        take(1)
+      )
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Relación eliminada',
+            message: 'Se ha eliminado la relación con el usuario.',
+          },
+          this.dialog
+        );
+      });
   }
 
   searchUsers(): void {
@@ -170,7 +202,6 @@ export class RelationshipsComponent {
   removeRelationship(relationship: UserDTO): void {
     const censorEmailPipe = new CensorEmailPipe();
     const censoredEmail = censorEmailPipe.transform(relationship.email);
-
 
     if (this.userRole === 'patient') {
       this.dialogService.openConfirmationDialog(
