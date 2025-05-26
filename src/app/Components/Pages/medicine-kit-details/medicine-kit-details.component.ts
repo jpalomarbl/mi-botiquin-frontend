@@ -170,6 +170,18 @@ export class MedicineKitDetailsComponent {
     ]);
   }
 
+  navigateTechnicalSheetUrl(medicine: MedicineDTO): void {
+    console.log(medicine.technicalSheetUrl)
+    if (medicine.technicalSheetUrl && medicine.technicalSheetUrl.length > 0) {
+      window.open(medicine.technicalSheetUrl);
+    } else {
+      this.dialogService.openErrorDialog(
+        'No se ha encontrado la URL del prospecto.',
+        this.dialog
+      );
+    }
+  }
+
   private compareDates(medicineA: MedicineDTO, medicineB: MedicineDTO): number {
     if (medicineA.expirationDate.getTime() < medicineB.expirationDate.getTime())
       return -1;

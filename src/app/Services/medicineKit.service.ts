@@ -169,6 +169,7 @@ export class MedicineKitService {
     body.set('unit', medicine.unit);
     body.set('nregistro', medicine.nregistro.toString());
     body.set('dose', medicine.dose.toString());
+    body.set('technicalSheetUrl', medicine.technicalSheetUrl);
 
     return this.http.post<any>(`${this.apiUrlMedicine}`, body.toString(), {
       withCredentials: true,

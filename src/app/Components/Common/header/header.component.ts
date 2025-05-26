@@ -126,6 +126,7 @@ export class HeaderComponent {
           expirationDate: medicine.expirationDate,
           nregistro: medicine.nregistro,
           dose: medicine.dose,
+          technicalSheetUrl: medicine.technicalSheetUrl
         };
 
         const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));

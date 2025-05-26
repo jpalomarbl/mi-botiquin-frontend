@@ -11,4 +11,5 @@ export interface MedicineDTO {
   nregistro: number;
   formaFarmaceuticaSimplificada?: string;
   viaAdmininstracion?: string;
+  technicalSheetUrl: string;
 };

@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -7,7 +8,6 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import * as reminderKitActions from 'src/app/Store/medicine/actions/reminder.actions';
 import { MedicineKitService } from '../../../Services/medicineKit.service';
-import { TitleCasePipe } from '@angular/common';
 
 @Injectable()
 export class MedicineKitEffects {
@@ -114,7 +114,9 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKit }) =>
         this.medicineKitService.addMedicineKit(medicineKit).pipe(
           map((response: any) => {
-            return medicineKitActions.addMedicineKitSuccess({ medicineKit: medicineKit });
+            return medicineKitActions.addMedicineKitSuccess({
+              medicineKit: medicineKit,
+            });
           }),
           catchError((error) =>
             of(
@@ -134,7 +136,9 @@ export class MedicineKitEffects {
       mergeMap(({ medicineKitId }) =>
         this.medicineKitService.deleteMedicineKit(medicineKitId).pipe(
           map((response: any) => {
-            return medicineKitActions.deleteMedicineKitSuccess({ medicineKitId: medicineKitId });
+            return medicineKitActions.deleteMedicineKitSuccess({
+              medicineKitId: medicineKitId,
+            });
           }),
           catchError((error) =>
             of(
@@ -170,6 +174,8 @@ export class MedicineKitEffects {
                   formaFarmaceuticaSimplificada:
                     medicine.formaFarmaceuticaSimplificada.nombre,
                   viaAdmininstracion: medicine.viasAdministracion[0].nombre,
+                  technicalSheetUrl:
+                    medicine.docs[0].urlHtml || medicine.docs[0].url,
                 };
               }
             );
@@ -237,7 +243,7 @@ export class MedicineKitEffects {
               return reminderKitActions.updateReminder({
                 reminder: reminder,
                 medicineId: response.id!,
-                medicineKitId: medicineKitId
+                medicineKitId: medicineKitId,
               });
             } else
               return medicineKitActions.updateMedicineSuccess({
@@ -262,22 +268,24 @@ export class MedicineKitEffects {
     this.actions$.pipe(
       ofType(medicineKitActions.updateMedicineAmount),
       mergeMap(({ reminder, time, increase }) =>
-        this.medicineKitService.updateMedicineAmount(reminder.medicineId!, increase).pipe(
-          map((response: MedicineDTO) => {
+        this.medicineKitService
+          .updateMedicineAmount(reminder.medicineId!, increase)
+          .pipe(
+            map((response: MedicineDTO) => {
               return medicineKitActions.updateMedicineAmountSuccess({
                 reminder: reminder,
                 time: time,
                 increase: increase,
               });
-          }),
-          catchError((error) =>
-            of(
-              medicineKitActions.updateMedicineAmountError({
-                error: error.error.error || 'Fetch user medicine kits failed',
-              })
+            }),
+            catchError((error) =>
+              of(
+                medicineKitActions.updateMedicineAmountError({
+                  error: error.error.error || 'Fetch user medicine kits failed',
+                })
+              )
             )
           )
-        )
       )
     )
   );
@@ -288,11 +296,9 @@ export class MedicineKitEffects {
       map(({ reminder, time, increase }) => {
         return reminderKitActions.changeReminderStateSuccess({
           reminder: reminder,
-          time: time
+          time: time,
         });
-      }
-
-      )
+      })
     )
   );
 }
