@@ -27,6 +27,7 @@ import { GlobalStateDTO } from 'src/app/Models/globalState.dto';
 // Custom modules
 import { AngularMaterialModule } from 'src/app/Modules/angular-material.module';
 import { FormsModule } from 'src/app/Modules/forms.module';
+import { Validators } from '@angular/forms';
 
 // Services
 import { DialogService } from 'src/app/Services/dialog.service';
@@ -61,8 +62,8 @@ export class LoginComponent {
       password: '',
     };
 
-    this.email = new FormControl(this.credentials.email);
-    this.password = new FormControl(this.credentials.password);
+    this.email = new FormControl(this.credentials.email, [Validators.required, Validators.email]);
+    this.password = new FormControl(this.credentials.password, Validators.required);
     this.loginForm = new FormGroup({
       email: this.email,
       password: this.password,

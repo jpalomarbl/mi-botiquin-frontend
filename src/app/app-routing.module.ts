@@ -55,11 +55,6 @@ const routes: Routes = [
     component: RemindersListComponent,
     canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'remindersList/:userId/forwards/:daysDisplaced',
-  //   component: RemindersListComponent,
-  //   canActivate: [AuthGuard]
-  // },
   {
     path: 'remindersList/:userId/backwards/:daysDisplaced',
     component: RemindersListComponent,

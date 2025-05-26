@@ -26,6 +26,14 @@
         matInput
         placeholder="email@email.com"
       />
+      <div
+        class="form__errors"
+        *ngIf="email.errors && email.dirty && email.touched"
+      >
+        <mat-error class="form__error-message" *ngIf="email.errors?.['email']"
+          >El email no es válido.</mat-error
+        >
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -38,7 +46,14 @@
       />
     </mat-form-field>
 
-    <button class="login-form__button" mat-raised-button color="primary">Login</button>
+    <button
+      class="login-form__button"
+      [disabled]="loginForm.invalid"
+      mat-raised-button
+      color="primary"
+    >
+      Login
+    </button>
 
     <!-- OAuth Button -->
     <button class="gsi-material-button" (click)="submitLoginGoogle()">
