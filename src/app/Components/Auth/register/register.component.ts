@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
+import { take } from 'rxjs';
 
+import { environment } from 'src/app/environment/environment';
 import { RegisterDTO } from 'src/app/Models/auth.dto';
 import { FormsModule } from 'src/app/Modules/forms.module';
-import { loginOAuth, register } from 'src/app/Store/auth/actions/auth.actions';
-import { environment } from 'src/app/environment/environment';
+import { DialogService } from 'src/app/Services/dialog.service';
+import { loginOAuth, register, registerError, registerSuccess } from 'src/app/Store/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -25,8 +29,12 @@ export class RegisterComponent {
   role: FormControl;
   registerForm: FormGroup;
 
-
-  constructor(private store: Store, private router: Router) {
+  constructor(
+    private store: Store,
+    private dialogService: DialogService,
+    private actions$: Actions,
+    public dialog: MatDialog
+  ) {
     this.userData = {
       email: '',
       password: '',
@@ -35,11 +43,11 @@ export class RegisterComponent {
       role: '',
     };
 
-    this.email = new FormControl(this.userData.email);
-    this.password = new FormControl(this.userData.password);
-    this.firstName = new FormControl(this.userData.firstName);
+    this.email = new FormControl(this.userData.email, [Validators.required, Validators.email]);
+    this.password = new FormControl(this.userData.password, Validators.required);
+    this.firstName = new FormControl(this.userData.firstName, Validators.required);
     this.lastName = new FormControl(this.userData.lastName);
-    this.role = new FormControl(this.userData.role);
+    this.role = new FormControl(this.userData.role, Validators.required);
     this.registerForm = new FormGroup({
       email: this.email,
       password: this.password,
@@ -47,6 +55,33 @@ export class RegisterComponent {
       lastName: this.lastName,
       role: this.role,
     });
+  }
+
+  ngOnInit(): void {
+    // Error dialog handling
+    this.actions$
+      .pipe(
+        ofType(
+          registerError
+        ),
+        take(1)
+      )
+      .subscribe((error) => {
+        this.dialogService.openErrorDialog(error.error, this.dialog);
+      });
+
+    // Success dialog handling
+    this.actions$
+      .pipe(ofType(registerSuccess), take(1))
+      .subscribe(() => {
+        this.dialogService.openSuccessDialog(
+          {
+            title: 'Registro completado',
+            message: 'Te has registrado correctamente.',
+          },
+          this.dialog
+        );
+      });
   }
 
   submitRegister(): void {
@@ -58,9 +93,16 @@ export class RegisterComponent {
       role: this.role.value,
     };
 
-    this.store.dispatch(register({ userData: this.userData }));
-
-    this.router.navigate(['/']);
+    this.dialogService.openConfirmationDialog(
+      {
+        title: 'Consentimiento informado',
+        message:
+          'Al registrarte en "Mi Botiquín", consientes explícitamente el tratamiento de tus datos personales. Estos datos se usarán exclusivamente para gestionar tu cuenta, ofrecer las funcionalidades de la aplicación, como la gestión de botiquines y recordatorios de medicamentos, y mejorar tu experiencia de usuario.',
+        action: register({ userData: this.userData }),
+        route: '',
+      },
+      this.dialog
+    );
   }
 
   submitRegisterGoogle(): void {

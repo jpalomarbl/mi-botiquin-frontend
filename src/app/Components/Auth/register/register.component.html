@@ -1,56 +1,95 @@
 <div class="register">
-  <h1>Register</h1>
-
   <form
     class="register-form"
     [formGroup]="registerForm"
     (ngSubmit)="submitRegister()"
   >
+    <h1 class="register-form__title">Registro</h1>
+
     <mat-form-field appearance="fill">
-      <mat-label>First name: </mat-label>
+      <mat-label>Nombre</mat-label>
       <input
         type="text"
         [formControl]="firstName"
         matInput
         placeholder="John"
       />
+
+      <div
+        class="form__errors"
+        *ngIf="firstName.errors && firstName.dirty && firstName.touched"
+      >
+        <mat-error
+          class="form__error-message"
+          *ngIf="firstName.errors?.['required']"
+          >Debes especificar un nombre.</mat-error
+        >
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Last name: </mat-label>
+      <mat-label>Apellidos</mat-label>
       <input type="text" [formControl]="lastName" matInput placeholder="Doe" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Email: </mat-label>
+      <mat-label>Email</mat-label>
       <input
         type="text"
         [formControl]="email"
         matInput
         placeholder="email@email.com"
       />
+
+      <div
+        class="form__errors"
+        *ngIf="email.errors && email.dirty && email.touched"
+      >
+        <mat-error
+          class="form__error-message"
+          *ngIf="email.errors?.['required']"
+          >Debes especificar un email.</mat-error
+        >
+
+        <mat-error class="form__error-message" *ngIf="email.errors?.['email']"
+          >El email no es válido.</mat-error
+        >
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Password: </mat-label>
+      <mat-label>Contraseña</mat-label>
       <input
         type="password"
         [formControl]="password"
         matInput
         placeholder="*********"
       />
+
+      <div
+        class="form__errors"
+        *ngIf="password.errors && password.dirty && password.touched"
+      >
+        <mat-error
+          class="form__error-message"
+          *ngIf="password.errors?.['required']"
+          >Debes especificar una contraseña.</mat-error
+        >
+      </div>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Choose an option</mat-label>
+      <mat-label>Elige tu rol</mat-label>
       <mat-select [formControl]="role">
-        <mat-option value="patient">Patient</mat-option>
-        <!-- <mat-option value="caretaker">Caretaker</mat-option>
-        <mat-option value="family member">Family member</mat-option> -->
+        <mat-option value="patient">Paciente</mat-option>
+        <mat-option value="caretaker">Cuidador</mat-option>
+        <mat-option value="family member">Familiar</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <button class="register-form__button" mat-raised-button color="primary">Register</button>
+    <button class="register-form__button" [disabled]="registerForm.invalid" mat-raised-button color="primary">
+      Registro
+    </button>
 
     <!-- Google OAuth Button -->
     <button class="gsi-material-button" (click)="submitRegisterGoogle()">
