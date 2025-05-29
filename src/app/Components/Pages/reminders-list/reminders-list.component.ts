@@ -249,15 +249,6 @@ export class RemindersListComponent {
     status: boolean,
     increase: boolean
   ) {
-    if (!increase && reminder[0].medicineAmount! <= 0) {
-      this.dialogService.openErrorDialog(
-        'No te quedan unidades de este medicamento.',
-        this.dialog
-      );
-
-      return;
-    }
-
     if (reminder[1].consumed && !reminder[1].subtracted) {
       this.store.dispatch(
         reminderActions.changeReminderState({
