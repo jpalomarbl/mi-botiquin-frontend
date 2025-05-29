@@ -179,13 +179,24 @@ export class ReminderEffects {
       mergeMap(({ reminder, time, status, increase, halfConsumption }) => {
         // If halfConsumption flag is true, then it will NOT subtract the amount consumed from the medicine amount.
         if (halfConsumption) {
-          return of(
-            reminderActions.changeReminderStateSuccess({
-              reminder: reminder,
-              time: time,
-              halfConsumption: halfConsumption
-            })
-          );
+          return this.reminderService
+            .changeReminderState(reminder.id!, time, status)
+            .pipe(
+              map((response) => {
+                return reminderActions.changeReminderStateSuccess({
+                  reminder: reminder,
+                  time: time,
+                  halfConsumption: halfConsumption,
+                });
+              }),
+              catchError((error) =>
+                of(
+                  reminderActions.fetchAllUserRemindersError({
+                    error: error.error || 'Get all user consumptions failed',
+                  })
+                )
+              )
+            );
         } else {
           return this.reminderService
             .changeReminderState(reminder.id!, time, status)

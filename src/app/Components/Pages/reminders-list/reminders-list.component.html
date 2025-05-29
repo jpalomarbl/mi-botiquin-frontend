@@ -106,7 +106,7 @@
 
             <div class="reminders-list__card-content">
               <span class="reminders-list__card-title"
-                >{{ reminder[0].medicineName }}
+                >{{ reminder[0].medicineName }} {{ reminder[0].medicineId }}
               </span>
 
               <span class="reminders-list__card-info">
@@ -121,7 +121,7 @@
                 color="primary"
                 *ngIf="!reminder[1].consumed; else toBeConsumed"
                 (click)="
-                  changeReminderState(reminder, pair[0], reminder[1], false)
+                  changeReminderState(reminder, pair[0], reminder[1].consumed, false)
                 "
               >
                 Consumir
@@ -132,7 +132,7 @@
                   mat-button
                   color="primary"
                   (click)="
-                    changeReminderState(reminder, pair[0], reminder[1], true)
+                    changeReminderState(reminder, pair[0], reminder[1].consumed, true)
                   "
                 >
                   Dejar de consumir
