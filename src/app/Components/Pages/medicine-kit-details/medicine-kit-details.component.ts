@@ -93,7 +93,6 @@ export class MedicineKitDetailsComponent {
     this.actions$
       .pipe(ofType(medicineKitActions.deleteMedicineKitSuccess), take(1))
       .subscribe(() => {
-        console.log('hola');
         this.dialogService.openSuccessDialog(
           {
             title: 'Botiquín eliminado',
@@ -106,7 +105,6 @@ export class MedicineKitDetailsComponent {
     this.actions$
       .pipe(ofType(medicineKitActions.deleteMedicineByIdSuccess), take(1))
       .subscribe(() => {
-        console.log('hola');
         this.dialogService.openSuccessDialog(
           {
             title: 'Medicamento eliminado',
@@ -171,7 +169,6 @@ export class MedicineKitDetailsComponent {
   }
 
   navigateTechnicalSheetUrl(medicine: MedicineDTO): void {
-    console.log(medicine.technicalSheetUrl)
     if (medicine.technicalSheetUrl && medicine.technicalSheetUrl.length > 0) {
       window.open(medicine.technicalSheetUrl);
     } else {

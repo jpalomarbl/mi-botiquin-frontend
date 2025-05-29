@@ -18,9 +18,4 @@ export class ErrorDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public errorMsg: any) {
     this.errorMessage = errorMsg.errorMsg;
   }
-
-  ngOnInit(): void {
-    console.log(this.errorMessage)
-  }
-
 }
