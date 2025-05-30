@@ -30,7 +30,7 @@ export class OAuthRedirectGuard implements CanActivate {
     | UrlTree {
     const id = new URLSearchParams(window.location.search).get('id');
 
-    console.log('id', id);
+    // console.log('id', id);
 
     if (id) {
       this.store.dispatch(loginOAuthGetUserInfo({ id: +id }));
