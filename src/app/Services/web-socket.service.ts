@@ -1,6 +1,6 @@
 // Angular
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 
 // Env
 import { environment } from '../environment/environment';
@@ -14,11 +14,7 @@ import { selectUser } from '../Store/auth/selectors/auth.selectors';
 import { AuthService } from './auth.service';
 
 // Models
-import {
-  expirationNotificationDTO,
-  NotificationDTO,
-  relationshipRequestNotificationDTO,
-} from 'src/app/Models/notification.dto';
+import { NotificationDTO } from 'src/app/Models/notification.dto';
 import { GlobalStateDTO } from '../Models/globalState.dto';
 import { UserDTO } from '../Models/user.dto';
 
@@ -33,7 +29,9 @@ export class WebSocketService {
     private store: Store<GlobalStateDTO>
   ) {
     this.socket$ = null;
+  }
 
+  openConnection(): void {
     this.store
       .select(selectUser)
       .pipe(take(2))
@@ -59,7 +57,7 @@ export class WebSocketService {
                     medicineName: rawMessage.medicineName,
                     id2: rawMessage.medicineKitId,
                     medicineKitName: rawMessage.medicineKitName,
-                    medicineKitId: rawMessage.medicineKitId
+                    medicineKitId: rawMessage.medicineKitId,
                   };
 
                   this.store.dispatch(

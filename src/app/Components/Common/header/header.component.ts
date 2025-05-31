@@ -20,7 +20,6 @@ import {
 // Services
 import { DialogService } from 'src/app/Services/dialog.service';
 import { MedicineKitService } from 'src/app/Services/medicineKit.service';
-import { WebSocketService } from 'src/app/Services/web-socket.service';
 
 // Pipes
 import { CensorEmailPipe } from 'src/app/Pipes/censor-email.pipe';
@@ -59,7 +58,6 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private store: Store<GlobalStateDTO>,
-    public webSocketService: WebSocketService,
     private dialogService: DialogService,
     private medicineKitService: MedicineKitService,
     private dialog: MatDialog,
