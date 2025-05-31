@@ -49,62 +49,62 @@ const routes: Routes = [
   {
     path: 'remindersList/backwards/:daysDisplaced',
     component: RemindersListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'remindersList',
     component: RemindersListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'remindersList/:userId/backwards/:daysDisplaced',
     component: RemindersListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'remindersList/:userId',
     component: RemindersListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'medicineKitsList',
     component: MedicineKitsListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'medicineKitDetails/:medicineKitId',
     component: MedicineKitDetailsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'addMedicineKit',
     component: AddMedicineKitComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'searchMedicine/:medicineKitId',
     component: SearchMedicineComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'addMedicine/:medicineKitId/:medicine',
     component: AddMedicineComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'addMedicine/update/:medicineKitId/:medicine',
     component: AddMedicineComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'userConfig',
     component: UserConfigComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'relationships',
     component: RelationshipsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: '**',
