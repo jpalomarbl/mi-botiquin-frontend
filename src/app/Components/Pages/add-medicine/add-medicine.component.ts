@@ -14,42 +14,12 @@ import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.
 // Models
 import { MedicineDTO } from 'src/app/Models/medicine.dto';
 import { ReminderDTO } from 'src/app/Models/reminder.dto';
-
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
-import 'moment/locale/es';
 import { deleteReminder } from 'src/app/Store/medicine/actions/reminder.actions';
 
 @Component({
   selector: 'app-add-medicine',
   templateUrl: './add-medicine.component.html',
   styleUrls: ['./add-medicine.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-    {
-      provide: MAT_DATE_FORMATS,
-      useValue: {
-        display: {
-          dateInput: 'MM/yyyy',
-          monthYearLabel: 'MMM yyyy',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM yyyy',
-        },
-      },
-    },
-  ],
 })
 export class AddMedicineComponent {
   medicine: MedicineDTO;
@@ -395,16 +365,5 @@ export class AddMedicineComponent {
       },
       this.dialog
     );
-  }
-
-  openDatePicker(dp: any) {
-    dp.open();
-  }
-
-  closeDatePicker(eventData: any, dp?: any) {
-    // Get month and year from eventData and close datepicker, thus not allowing user to select date
-    this.expirationDate.setValue(eventData._d);
-
-    dp.close();
   }
 }
