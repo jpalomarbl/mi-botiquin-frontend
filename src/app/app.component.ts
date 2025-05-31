@@ -37,9 +37,7 @@ export class AppComponent {
       });
 
     this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
-      if (user) {
-        this.store.dispatch(fetchUserUnreadNotifications({ userId: user.id }));
-      }
+      this.store.dispatch(fetchUserUnreadNotifications({ userId: user!.id }));
     });
   }
 }
