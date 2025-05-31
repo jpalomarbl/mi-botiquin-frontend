@@ -278,6 +278,8 @@ export class AuthEffects {
               expirationNotificationDTO | relationshipRequestNotificationDTO
             > = [];
 
+            console.log(response)
+
             response.forEach((notification: any) => {
               if (notification.type === 'relationship request') {
                 notifications.push({
