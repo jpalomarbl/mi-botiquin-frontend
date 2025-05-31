@@ -162,6 +162,11 @@ export class RelationshipsComponent {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
   searchUsers(): void {
     this.store.dispatch(
       userRelationshipsActions.searchUsers({
