@@ -42,7 +42,7 @@ import { deleteReminder } from 'src/app/Store/medicine/actions/reminder.actions'
       provide: MAT_DATE_FORMATS,
       useValue: {
         display: {
-          dateInput: 'dd/MM/yyyy',
+          dateInput: 'DD/MM/yyyy',
           monthYearLabel: 'MMM yyyy',
           dateA11yLabel: 'LL',
           monthYearA11yLabel: 'MMMM yyyy',
