@@ -24,7 +24,6 @@
           [formControl]="expirationDate"
           [matDatepicker]="dp2"
           placeholder="Select a Date"
-          (click)="openDatePicker(dp2)"
         />
         <mat-hint>MM/AAAA</mat-hint>
 
@@ -34,7 +33,6 @@
           touchUi
           #dp2
           startView="multi-year"
-          (monthSelected)="closeDatePicker($event, dp2)"
         ></mat-datepicker>
       </mat-form-field>
 
