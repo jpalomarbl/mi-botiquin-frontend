@@ -44,6 +44,8 @@ export class MedicineKitsListComponent {
 
   isPatient: boolean;
 
+  userRole: string;
+
   constructor(
     private store: Store<GlobalStateDTO>,
     private router: Router,
@@ -66,15 +68,16 @@ export class MedicineKitsListComponent {
     this.userId = 0;
 
     this.isPatient = false;
+
+    this.userRole = '';
   }
 
   ngOnInit(): void {
     this.loadData(this.userId);
 
     this.user$.subscribe((user) => {
-      if (user)
-        this.userId = user.id;
-    })
+      if (user) this.userId = user.id;
+    });
 
     // Error dialog handling
     this.actions$
@@ -112,6 +115,8 @@ export class MedicineKitsListComponent {
               role: user.role,
             })
           );
+
+          this.userRole = user.role;
 
           if (user.role === 'caretaker') {
             this.store.dispatch(

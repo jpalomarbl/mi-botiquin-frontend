@@ -19,7 +19,7 @@
       class="options__selector"
       appearance="fill"
       *ngIf="
-        !isPatient && !(loadingMedicine$ | async) && !(loadingAuth$ | async)
+        userRole !== 'patient' && !(loadingMedicine$ | async) && !(loadingAuth$ | async)
       "
     >
       <mat-label>Filtra por pacientes</mat-label>
@@ -37,6 +37,7 @@
     <button
       mat-button
       class="options__button"
+      *ngIf="userRole !== 'family member'"
       (click)="navigateAddMedicineKit()"
       color="accent"
     >
@@ -73,7 +74,7 @@
 
           <div class="medicine-kits-list__card-text">
             <!-- If user is not a patient and is not the owner of the medicine kit, it shows ownership -->
-            <div *ngIf="!isPatient">
+            <div *ngIf="userRole !== 'patient'">
               <span
                 class="medicine-kits-list__card-owner"
                 *ngIf="medicineKit.owner.id === userId; else notOwner"
