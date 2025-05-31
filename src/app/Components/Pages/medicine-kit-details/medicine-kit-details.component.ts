@@ -19,6 +19,8 @@ import { Store } from '@ngrx/store';
 import { DialogService } from 'src/app/Services/dialog.service';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
+import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
+import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-medicine-kit-details',
@@ -29,12 +31,16 @@ export class MedicineKitDetailsComponent {
   medicineKit$: Observable<MedicineKitDTO | undefined>;
   medicineKit: MedicineKitDTO | null;
 
+  user$: Observable<UserDTO | null>;
+
   medicineKitId: number | undefined;
 
   medicines: Array<MedicineDTO>;
   sortedMedicines: Array<MedicineDTO>;
 
   lastClickTime: number;
+
+  userRole: string;
 
   constructor(
     private store: Store<GlobalStateDTO>,
@@ -50,11 +56,15 @@ export class MedicineKitDetailsComponent {
       selectMedicineKitById(+this.medicineKitId)
     );
 
+    this.user$ = this.store.select(selectUser);
+
     this.medicineKit = null;
 
     this.medicines = [];
     this.sortedMedicines = [];
     this.lastClickTime = 0;
+
+    this.userRole = '';
   }
 
   ngOnInit(): void {
@@ -74,6 +84,12 @@ export class MedicineKitDetailsComponent {
         }
       });
     }
+
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.userRole = user.role;
+      }
+    });
 
     // Error dialog handling
     this.actions$

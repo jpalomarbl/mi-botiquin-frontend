@@ -10,6 +10,7 @@
       (click)="deleteMedicineKit()"
       mat-button
       color="warn"
+      [disabled]="userRole === 'family member'"
     >
       <mat-icon>delete</mat-icon>
       Eliminar botiquín
@@ -31,6 +32,7 @@
       mat-fab
       extended
       color="primary"
+      [disabled]="userRole === 'family member'"
     >
       <mat-icon>add</mat-icon>
       Añadir medicina
@@ -69,7 +71,13 @@
           </div>
         </div>
 
-        <button mat-button color="primary" (click)="navigateTechnicalSheetUrl(medicine)">Ver prospecto</button>
+        <button
+          mat-button
+          color="primary"
+          (click)="navigateTechnicalSheetUrl(medicine)"
+        >
+          Ver prospecto
+        </button>
 
         <div class="medicines-list__card-actions">
           <button
@@ -78,6 +86,7 @@
             mat-icon-button
             color="warn"
             aria-label="Delete medicine"
+            [disabled]="userRole === 'family member'"
           >
             <mat-icon>delete</mat-icon>
           </button>
