@@ -16,12 +16,13 @@ import { AddMedicineComponent } from './Components/Pages/add-medicine/add-medici
 import { UserConfigComponent } from './Components/Pages/user-config/user-config.component';
 import { RelationshipsComponent } from './Components/Pages/relationships/relationships.component';
 import { AuthGuard } from './Guards/auth.guard';
+import { VerifiedGuard } from './Guards/verified.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'login',

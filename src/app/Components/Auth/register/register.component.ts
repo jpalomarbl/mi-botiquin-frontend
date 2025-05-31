@@ -97,7 +97,7 @@ export class RegisterComponent {
       {
         title: 'Consentimiento informado',
         message:
-          'Al registrarte en "Mi Botiquín", consientes explícitamente el tratamiento de tus datos personales. Estos datos se usarán exclusivamente para gestionar tu cuenta, ofrecer las funcionalidades de la aplicación, como la gestión de botiquines y recordatorios de medicamentos, y mejorar tu experiencia de usuario.',
+          `Te hemos enviado un email de confirmación a ${this.email.value}. Al registrarte en "Mi Botiquín" consientes explícitamente el tratamiento de tus datos personales. Estos datos se usarán exclusivamente para gestionar tu cuenta, ofrecer las funcionalidades de la aplicación, como la gestión de botiquines y recordatorios de medicamentos, y mejorar tu experiencia de usuario.`,
         action: register({ userData: this.userData }),
         route: '',
       },
