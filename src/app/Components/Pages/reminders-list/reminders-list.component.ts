@@ -291,7 +291,7 @@ export class RemindersListComponent {
     // we just fetch that user's reminders.
     // Otherwise, we fetch the logged in user's reminders, and their relationships.
     if (this.userId !== userId) {
-      this.userId = +userId;
+      // this.userId = +userId;
 
       this.store.dispatch(
         reminderActions.fetchAllUserReminders({
