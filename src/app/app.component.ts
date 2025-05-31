@@ -35,7 +35,7 @@ export class AppComponent {
       .subscribe(() => {
         this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
           if (user) {
-            interval(5000).subscribe(() => {
+            interval(30000).subscribe(() => {
               this.store.dispatch(
                 fetchUserUnreadNotifications({ userId: user.id })
               );
