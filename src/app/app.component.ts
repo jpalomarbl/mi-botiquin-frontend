@@ -33,11 +33,13 @@ export class AppComponent {
     this.actions$
       .pipe(ofType(AuthActions.checkSessionSuccess))
       .subscribe(() => {
-        this.webSocketService.openConnection();
+        this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
+          if (user) {
+            this.store.dispatch(
+              fetchUserUnreadNotifications({ userId: user.id })
+            );
+          }
+        });
       });
-
-    this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
-      this.store.dispatch(fetchUserUnreadNotifications({ userId: user!.id }));
-    });
   }
 }
