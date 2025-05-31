@@ -31,7 +31,7 @@ export class AppComponent {
     this.store.dispatch(AuthActions.checkSession());
 
     this.actions$
-      .pipe(ofType(AuthActions.checkSessionSuccess))
+      .pipe(ofType(AuthActions.checkSessionSuccess), take(1))
       .subscribe(() => {
         this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
           if (user) {
