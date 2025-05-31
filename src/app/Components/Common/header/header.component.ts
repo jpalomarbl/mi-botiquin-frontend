@@ -3,14 +3,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 // Rxjs
-import { filter, Observable, Subject, take } from 'rxjs';
+import { filter, Observable, Subject } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
-import {
-  fetchUserUnreadNotifications,
-  removeNotification,
-} from 'src/app/Store/auth/actions/notification.actions';
+import { removeNotification } from 'src/app/Store/auth/actions/notification.actions';
 import { acceptRelationshipRequest } from 'src/app/Store/auth/actions/userRelationships.actions';
 import {
   selectUser,
@@ -70,23 +67,17 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
-      if (user) {
-        this.store.dispatch(fetchUserUnreadNotifications({ userId: user.id }));
-      }
-
-      this.notifications$.subscribe(
-        (
-          notifications: Array<
-            expirationNotificationDTO | relationshipRequestNotificationDTO
-          > | null
-        ) => {
-          if (notifications) {
-            this.notifications = notifications;
-          }
+    this.notifications$.subscribe(
+      (
+        notifications: Array<
+          expirationNotificationDTO | relationshipRequestNotificationDTO
+        > | null
+      ) => {
+        if (notifications) {
+          this.notifications = notifications;
         }
-      );
-    });
+      }
+    );
 
     // Escuchar cambios de ruta
     this.router.events
@@ -124,7 +115,7 @@ export class HeaderComponent {
           expirationDate: medicine.expirationDate,
           nregistro: medicine.nregistro,
           dose: medicine.dose,
-          technicalSheetUrl: medicine.technicalSheetUrl
+          technicalSheetUrl: medicine.technicalSheetUrl,
         };
 
         const medicineJSON = encodeURIComponent(JSON.stringify(medicineItem));
