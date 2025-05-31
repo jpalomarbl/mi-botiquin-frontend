@@ -60,6 +60,7 @@ export class RemindersListComponent {
   day: Date;
 
   userId: number;
+  userIdSelect: number;
 
   // These control whether the user sees "Ayer", "Hoy" or "Mañana" on the date picker section
   isYesterday: boolean;
@@ -114,6 +115,7 @@ export class RemindersListComponent {
     this.daysDisplaced = 0;
 
     this.userId = 0;
+    this.userIdSelect = 0;
 
     this.organizedReminders = [];
 

@@ -37,7 +37,7 @@
   <section class="patient-selector__container" *ngIf="!isPatient">
     <mat-form-field class="patient-selector" appearance="fill">
       <mat-label>Filtra por pacientes</mat-label>
-      <mat-select (selectionChange)="loadData($event.value)" [(value)]="userId">
+      <mat-select (selectionChange)="loadData($event.value)" [(value)]="userIdSelect">
         <mat-option
           *ngFor="let user of userRelationships$ | async; index as i"
           [value]="user.id"
