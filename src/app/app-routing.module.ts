@@ -99,7 +99,7 @@ const routes: Routes = [
   {
     path: 'userConfig',
     component: UserConfigComponent,
-    canActivate: [VerifiedGuard, AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'relationships',
