@@ -16,11 +16,11 @@ import { MedicineKitDTO } from 'src/app/Models/medicineKit.dto';
 // Store
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { UserDTO } from 'src/app/Models/user.dto';
 import { DialogService } from 'src/app/Services/dialog.service';
+import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
 import * as medicineKitActions from 'src/app/Store/medicine/actions/medicineKit.actions';
 import { selectMedicineKitById } from 'src/app/Store/medicine/selectors/medicine.selectors';
-import { selectUser } from 'src/app/Store/auth/selectors/auth.selectors';
-import { UserDTO } from 'src/app/Models/user.dto';
 
 @Component({
   selector: 'app-medicine-kit-details',
@@ -177,11 +177,13 @@ export class MedicineKitDetailsComponent {
   }
 
   navigateEditMedicine(medicine: MedicineDTO): void {
-    const medicineJSON = encodeURIComponent(JSON.stringify(medicine));
+    if (this.userRole !== 'family member') {
+      const medicineJSON = encodeURIComponent(JSON.stringify(medicine));
 
-    this.router.navigate([
-      `/addMedicine/update/${this.medicineKitId}/${medicineJSON}`,
-    ]);
+      this.router.navigate([
+        `/addMedicine/update/${this.medicineKitId}/${medicineJSON}`,
+      ]);
+    }
   }
 
   navigateTechnicalSheetUrl(medicine: MedicineDTO): void {
