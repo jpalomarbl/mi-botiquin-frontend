@@ -125,9 +125,7 @@ export class UserRelationshipsService {
     );
   }
 
-  sendRelationshipRequest(
-    request: NotificationDTO
-  ): Observable<void> {
+  sendRelationshipRequest(request: NotificationDTO): Observable<void> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
@@ -137,9 +135,13 @@ export class UserRelationshipsService {
     body.set('requesterId', request.id1.toString());
     body.set('receiverId', request.id2.toString());
 
-    return this.http.post<void>(this.apiUrlNotifications, body.toString(), {
-      withCredentials: true,
-      headers: headers,
-    });
+    return this.http.post<void>(
+      this.apiUrlNotifications + '/relationship-request',
+      body.toString(),
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
   }
 }
