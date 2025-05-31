@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 
 // RxJS
-import { Observable, take } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
@@ -45,6 +45,8 @@ export class RelationshipsComponent {
 
   patientSearch: FormControl;
   searchForm: FormGroup;
+
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private store: Store<GlobalStateDTO>,
@@ -118,7 +120,7 @@ export class RelationshipsComponent {
           userRelationshipsActions.removePatientCaretakerRelationshipError,
           userRelationshipsActions.removePatientFamilyMemberRelationshipError
         ),
-        take(1)
+        takeUntil(this.destroyed$)
       )
       .subscribe((error) => {
         this.dialogService.openErrorDialog(error.error, this.dialog);
@@ -126,7 +128,10 @@ export class RelationshipsComponent {
 
     // Success dialong handling
     this.actions$
-      .pipe(ofType(notificationActions.sendRelationshipRequestSuccess), take(1))
+      .pipe(
+        ofType(notificationActions.sendRelationshipRequestSuccess),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(() => {
         this.dialogService.openSuccessDialog(
           {
@@ -144,7 +149,7 @@ export class RelationshipsComponent {
           userRelationshipsActions.removePatientCaretakerRelationshipSuccess,
           userRelationshipsActions.removePatientFamilyMemberRelationshipSuccess
         ),
-        take(1)
+        takeUntil(this.destroyed$)
       )
       .subscribe(() => {
         this.dialogService.openSuccessDialog(
