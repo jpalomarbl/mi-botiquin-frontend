@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [VerifiedGuard, AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -44,7 +44,7 @@ const routes: Routes = [
   {
     path: 'remindersList/forwards/:daysDisplaced',
     component: RemindersListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [VerifiedGuard, AuthGuard]
   },
   {
     path: 'remindersList/backwards/:daysDisplaced',
