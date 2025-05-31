@@ -28,11 +28,11 @@ export const sendRelationshipRequest = createAction(
 );
 
 export const sendRelationshipRequestSuccess = createAction(
-  '[Auth] Fetch Users Unread Notifications From API Success'
+  '[Auth] Send User Relationship Request to API Success'
 );
 
 export const sendRelationshipRequestError = createAction(
-  '[Auth] Fetch Users Unread Notifications From API Error',
+  '[Auth] Send User Relationship Request to API Error',
   props<{ error: string }>()
 );
 
