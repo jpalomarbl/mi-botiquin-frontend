@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { interval, Observable, take } from 'rxjs';
 import { GlobalStateDTO } from './Models/globalState.dto';
 import { UserDTO } from './Models/user.dto';
 import { WebSocketService } from './Services/web-socket.service';
@@ -35,9 +35,11 @@ export class AppComponent {
       .subscribe(() => {
         this.user$.pipe(take(1)).subscribe((user: UserDTO | null) => {
           if (user) {
-            this.store.dispatch(
-              fetchUserUnreadNotifications({ userId: user.id })
-            );
+            interval(5000).subscribe(() => {
+              this.store.dispatch(
+                fetchUserUnreadNotifications({ userId: user.id })
+              );
+            });
           }
         });
       });
