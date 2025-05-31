@@ -5,5 +5,5 @@
 
 export const environment = {
   api_url: 'https://mi-botiquin-api.onrender.com/api',
-  websocket_url: 'wss://mi-botiquin-api.onrender.com'
+  websocket_url: 'wss://mi-botiquin-api.onrender.com:8080'
 }
