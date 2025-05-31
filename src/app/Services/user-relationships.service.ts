@@ -137,7 +137,7 @@ export class UserRelationshipsService {
     body.set('requesterId', request.id1.toString());
     body.set('receiverId', request.id2.toString());
 
-    return this.http.post<void>(this.apiUrlRelationships, body.toString(), {
+    return this.http.post<void>(this.apiUrlNotifications, body.toString(), {
       withCredentials: true,
       headers: headers,
     });
