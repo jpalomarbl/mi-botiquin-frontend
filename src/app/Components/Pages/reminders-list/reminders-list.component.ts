@@ -287,11 +287,14 @@ export class RemindersListComponent {
   }
 
   loadData(userId: number = 0, role?: string): void {
+    console.log("loadData UserId", userId)
+    console.log("app UserId", this.userId)
+
     // If we're looking for any user other than the logged in user's reminders
     // we just fetch that user's reminders.
     // Otherwise, we fetch the logged in user's reminders, and their relationships.
     if (this.userId !== userId) {
-      // this.userId = +userId;
+      this.userId = +userId;
 
       this.store.dispatch(
         reminderActions.fetchAllUserReminders({
