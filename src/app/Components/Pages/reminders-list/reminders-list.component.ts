@@ -161,7 +161,7 @@ export class RemindersListComponent {
       });
 
     this.actions$
-      .pipe(ofType(reminderActions.fetchAllUserRemindersSuccess), take(1))
+      .pipe(ofType(reminderActions.fetchAllUserRemindersSuccess))
       .subscribe((reminders) => {
         if (reminders.reminders.length === 0) {
           this.isRemindersEmpty = true;
