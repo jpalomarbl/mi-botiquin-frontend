@@ -4,40 +4,44 @@ import { Observable, of } from 'rxjs';
 
 import { environment } from '../environment/environment';
 
-import { relationshipRequestNotificationDTO } from '../Models/notification.dto';
+import { NotificationDTO } from '../Models/notification.dto';
 import { UserDTO } from '../Models/user.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserRelationshipsService {
-  private apiUrl = environment.api_url + '/user/relationship';
+  private apiUrlRelationships = environment.api_url + '/user/relationship';
+  private apiUrlNotifications = environment.api_url + '/notification';
 
   constructor(private http: HttpClient) {}
 
   fetchPatientRelationships(userId: number): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(`${this.apiUrl}/patient`, {
+    return this.http.get<UserDTO[]>(`${this.apiUrlRelationships}/patient`, {
       withCredentials: true,
       params: { patientId: userId.toString() },
     });
   }
 
   fetchCaretakerRelationships(userId: number): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(`${this.apiUrl}/caretaker`, {
+    return this.http.get<UserDTO[]>(`${this.apiUrlRelationships}/caretaker`, {
       withCredentials: true,
       params: { caretakerId: userId.toString() },
     });
   }
 
   fetchFamilyMemberRelationships(userId: number): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(`${this.apiUrl}/familyMember`, {
-      withCredentials: true,
-      params: { familyMemberId: userId.toString() },
-    });
+    return this.http.get<UserDTO[]>(
+      `${this.apiUrlRelationships}/familyMember`,
+      {
+        withCredentials: true,
+        params: { familyMemberId: userId.toString() },
+      }
+    );
   }
 
   searchUsers(searchTerm: string): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(`${this.apiUrl}/search`, {
+    return this.http.get<UserDTO[]>(`${this.apiUrlRelationships}/search`, {
       withCredentials: true,
       params: { searchTerm: searchTerm },
     });
@@ -68,13 +72,20 @@ export class UserRelationshipsService {
       route = '/patient-familyMember';
     } else return of(null);
 
-    return this.http.post<UserDTO>(this.apiUrl + route, body.toString(), {
-      withCredentials: true,
-      headers: headers,
-    });
+    return this.http.post<UserDTO>(
+      this.apiUrlRelationships + route,
+      body.toString(),
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
   }
 
-  removePatientCaretakerRelationship(patientId: number, caretakerId: number): Observable<any> {
+  removePatientCaretakerRelationship(
+    patientId: number,
+    caretakerId: number
+  ): Observable<any> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
@@ -84,14 +95,17 @@ export class UserRelationshipsService {
     body.set('patientId', patientId.toString());
     body.set('caretakerId', caretakerId.toString());
 
-    return this.http.delete(`${this.apiUrl}/patient-caretaker`, {
+    return this.http.delete(`${this.apiUrlRelationships}/patient-caretaker`, {
       body: body.toString(),
       withCredentials: true,
       headers: headers,
     });
   }
 
-  removePatientFamilyMemberRelationship(patientId: number, familyMemberId: number): Observable<any> {
+  removePatientFamilyMemberRelationship(
+    patientId: number,
+    familyMemberId: number
+  ): Observable<any> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/x-www-form-urlencoded'
@@ -101,8 +115,29 @@ export class UserRelationshipsService {
     body.set('patientId', patientId.toString());
     body.set('familyMemberId', familyMemberId.toString());
 
-    return this.http.delete(`${this.apiUrl}/patient-familyMember`, {
-      body: body.toString(),
+    return this.http.delete(
+      `${this.apiUrlRelationships}/patient-familyMember`,
+      {
+        body: body.toString(),
+        withCredentials: true,
+        headers: headers,
+      }
+    );
+  }
+
+  sendRelationshipRequest(
+    request: NotificationDTO
+  ): Observable<void> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    const body = new URLSearchParams();
+    body.set('requesterId', request.id1.toString());
+    body.set('receiverId', request.id2.toString());
+
+    return this.http.post<void>(this.apiUrlRelationships, body.toString(), {
       withCredentials: true,
       headers: headers,
     });

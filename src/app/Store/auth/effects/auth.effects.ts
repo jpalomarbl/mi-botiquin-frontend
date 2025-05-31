@@ -296,7 +296,7 @@ export class AuthEffects {
                   id2: notification.receiverId,
                   medicineName: notification.medicineName,
                   medicineKitName: notification.medicineKitName,
-                  medicineKitId: notification.medicineKitId
+                  medicineKitId: notification.medicineKitId,
                 });
               }
             });
@@ -321,26 +321,20 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(notificationActions.sendRelationshipRequest),
       mergeMap(({ requesterId, receiverId }) =>
-        this.webSocketService
+        this.userRelationshipService
           .sendRelationshipRequest({
             type: 'relationship request',
             id1: requesterId,
             id2: receiverId,
           })
           .pipe(
-            map((result: boolean) => {
-              if (result) {
-                return notificationActions.sendRelationshipRequestSuccess();
-              } else {
-                return notificationActions.sendRelationshipRequestError({
-                  error: 'WebSocket is not connected. Cannot send message.',
-                });
-              }
+            map(() => {
+              return notificationActions.sendRelationshipRequestSuccess();
             }),
             catchError((error) =>
               of(
                 notificationActions.sendRelationshipRequestError({
-                  error: error.error || 'Fetch relationships failed',
+                  error: error.error || 'Send relationship request failed',
                 })
               )
             )
