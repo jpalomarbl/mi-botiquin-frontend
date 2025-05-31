@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 
 // RxJS
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, switchMap, tap, filter, of } from 'rxjs';
 
 // Store
 import { Actions, ofType } from '@ngrx/effects';
@@ -81,36 +81,38 @@ export class RelationshipsComponent {
   }
 
   ngOnInit(): void {
-    this.user$.subscribe((user: UserDTO | null) => {
-      if (user) {
-        this.userRole = user.role;
-        this.userId = user.id;
-
-        if (user.role === 'caretaker') {
-          this.store.dispatch(
-            userRelationshipsActions.fetchCaretakerRelationships({
-              userId: user.id,
-            })
-          );
-        } else if (user.role === 'family member') {
-          this.store.dispatch(
-            userRelationshipsActions.fetchFamilyMemberRelationships({
-              userId: user.id,
-            })
-          );
-        } else {
-          this.store.dispatch(
-            userRelationshipsActions.fetchPatientRelationships({
-              userId: user.id,
-            })
-          );
-        }
-
-        this.userRelationships$.subscribe((relationships) => {
-          this.userRelationships = relationships;
-        });
-      }
-    });
+    this.user$
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((user): user is UserDTO => !!user), // Asegura que user no sea null
+        tap((user) => {
+          this.userRole = user.role;
+          this.userId = user.id;
+        }),
+        switchMap((user) => {
+          if (user.role === 'caretaker') {
+            this.store.dispatch(
+              userRelationshipsActions.fetchCaretakerRelationships({
+                userId: user.id,
+              })
+            );
+          } else if (user.role === 'family member') {
+            this.store.dispatch(
+              userRelationshipsActions.fetchFamilyMemberRelationships({
+                userId: user.id,
+              })
+            );
+          } else {
+            this.store.dispatch(
+              userRelationshipsActions.fetchPatientRelationships({
+                userId: user.id,
+              })
+            );
+          }
+          return of(null); // Retorna un Observable para que switchMap funcione
+        })
+      )
+      .subscribe();
 
     // Error dialong handling
     this.actions$
