@@ -61,7 +61,7 @@ export class AuthGuard implements CanActivate {
         map(() => false)
       )
     ).pipe(
-      timeout(5000), // Timeout por si no hay respuesta
+      timeout(5000), // Timeout in case there is no response
       catchError(() => {
         this.router.navigate(['/login']);
         return of(false);

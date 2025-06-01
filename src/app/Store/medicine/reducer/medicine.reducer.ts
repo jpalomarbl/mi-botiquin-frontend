@@ -399,12 +399,10 @@ export const medicineReducer = createReducer(
         };
       }
 
-      // Copia inmutable del array
       const updatedMedicineKits = state.medicineKits.map(
         (medicineKitItem, i) => {
-          if (i !== newIndex) return medicineKitItem; // Mantener los demás elementos
+          if (i !== newIndex) return medicineKitItem;
 
-          // Actualiza solo el elemento en el índice dado
           return medicineKit;
         }
       );

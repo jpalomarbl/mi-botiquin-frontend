@@ -11,14 +11,14 @@ export class NextDosePipe implements PipeTransform {
     frequency: number,
     frequencyUnit: string): Date {
       if (!startDateTime || !endDateTime || !frequency) {
-        return new Date(); // Devuelve la hora actual si falta algún dato
+        return new Date();
       }
 
       const startTime = new Date(startDateTime).getTime();
       const endTime = new Date(endDateTime).getTime();
       const now = new Date().getTime();
 
-      // Calcula el tiempo entre dosis en milisegundos
+      // Gets time between doses in ms
       let frequencyInMs: number;
       switch (frequencyUnit) {
         case 'minutes':
@@ -31,21 +31,24 @@ export class NextDosePipe implements PipeTransform {
           frequencyInMs = frequency * 24 * 60 * 60 * 1000;
           break;
         default:
-          frequencyInMs = 0; // Frecuencia no válida
+          frequencyInMs = 0;
       }
 
       if (frequencyInMs <= 0) {
-        return new Date(); // Si la frecuencia no es válida, devuelve ahora
+        return new Date();
       }
 
-      // Calcula cuántas dosis han ocurrido desde el inicio hasta ahora
+      // Calculates how many doses have been since the start date
+      if (now < startTime) {
+        return new Date();
+      }
       const elapsedTime = now - startTime;
       const dosesTaken = Math.floor(elapsedTime / frequencyInMs);
 
-      // La próxima dosis es la siguiente después de la última tomada
+      // The next dose is the one after the last consumed
       const nextDoseTime = startTime + (dosesTaken + 1) * frequencyInMs;
 
-      // Asegura que la próxima dosis sea hoy (misma fecha que 'now')
+      // Makes sure that the next dose is today (same date as 'now')
       const nextDoseDate = new Date(nextDoseTime);
       const today = new Date();
       if (
@@ -53,11 +56,11 @@ export class NextDosePipe implements PipeTransform {
         nextDoseDate.getMonth() !== today.getMonth() ||
         nextDoseDate.getFullYear() !== today.getFullYear()
       ) {
-        // Si no es hoy, ajusta a la primera dosis del día siguiente (opcional)
+        // If dose is not today, adjust to the first dose of the next day
         return new Date(
           today.getFullYear(),
           today.getMonth(),
-          today.getDate() + 1, // Día siguiente
+          today.getDate() + 1,
           new Date(startTime).getHours(),
           new Date(startTime).getMinutes(),
           0
@@ -65,6 +68,6 @@ export class NextDosePipe implements PipeTransform {
       }
 
       return nextDoseDate;
-  }
+    }
 
 }

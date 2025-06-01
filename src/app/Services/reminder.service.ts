@@ -176,10 +176,8 @@ export class ReminderService {
     frequency: number,
     frequencyUnit: string
   ): Date {
-    // Calcular la diferencia total en milisegundos
     const diffMs = currentTime.getTime() - startTime.getTime();
 
-    // Convertir a la unidad de frecuencia correspondiente
     let diffUnits: number;
     switch (frequencyUnit) {
       case 'minutes':
@@ -195,14 +193,15 @@ export class ReminderService {
         throw new Error('Unidad de frecuencia no válida');
     }
 
-    // Calcular cuántos periodos completos han pasado
+    // Calculates the number of complete periods that have passed
+    // since the last dose to the current time.
     const completePeriods = Math.floor(diffUnits / frequency);
 
-    // Calcular milisegundos desde la última toma
+    // ms since last dose
     const msSinceLastDose = completePeriods * frequency;
     let lastDoseMs: number;
 
-    // Convertir de vuelta a milisegundos según la unidad
+    // Converts back to ms according to the frequency unit.
     switch (frequencyUnit) {
       case 'minutes':
         lastDoseMs = msSinceLastDose * 1000 * 60;
@@ -215,7 +214,6 @@ export class ReminderService {
         break;
     }
 
-    // Calcular la fecha/hora exacta de la última toma
     const lastDoseTime = new Date(startTime.getTime() + lastDoseMs);
 
     return lastDoseTime;
