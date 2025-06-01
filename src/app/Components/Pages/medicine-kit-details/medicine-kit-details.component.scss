@@ -29,7 +29,10 @@
   &__patient-selector { width: 45%; }
 }
 
-.buttons__remove { width: 50vw; }
+.buttons__remove {
+  margin-inline: auto;
+  width: 50vw;
+}
 
 @media only screen and (min-width: $lg) {
   .buttons__remove { width: 15vw; }
