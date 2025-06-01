@@ -22,6 +22,7 @@ export class VerifiedGuard implements CanActivate {
     return this.store.select(selectUserVerified).pipe(
       take(1),
       map((isVerified) => {
+        console.log('IsVerified: ', isVerified);
         if (isVerified) {
           return true;
         } else {
@@ -29,7 +30,7 @@ export class VerifiedGuard implements CanActivate {
             'Para utilizar las funcionalidades de la aplicación, debes haber verificado tu email. Por favor, verifica tu correo electrónico y vuelve a intentarlo.',
             this.dialog
           );
-          
+
           return this.router.createUrlTree(['/']);
         }
       })
