@@ -158,6 +158,8 @@ export class MedicineKitEffects {
       mergeMap(({ medicineName }) =>
         this.medicineKitService.fetchMedicinesCIMA(medicineName).pipe(
           map((response) => {
+            console.log(response);
+
             const medicines: MedicineDTO[] = response.resultados.map(
               (medicine: any) => {
                 const titleCasePipe = new TitleCasePipe();
