@@ -94,7 +94,7 @@
             <div class="reminders-list__card-header">
               <span
                 class="reminders-list__card-state"
-                *ngIf="reminder[1]; else notConsumed"
+                *ngIf="reminder[1].consumed; else notConsumed"
               >
                 Consumido
               </span>
