@@ -22,7 +22,7 @@ export const selectUser = createSelector(
 
 export const selectUserVerified = createSelector(
   selectAuthState,
-  (state: AuthStateDTO) => state.user!.verified
+  (state: AuthStateDTO) => state.user ? state.user.verified : false
 );
 
 export const selectUserRelationships = createSelector(
