@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, map, take } from 'rxjs';
+import { Observable, map, take, of } from 'rxjs';
 import { GlobalStateDTO } from '../Models/globalState.dto';
 import { DialogService } from '../Services/dialog.service';
 import { selectUserVerified } from '../Store/auth/selectors/auth.selectors';
@@ -19,21 +19,23 @@ export class VerifiedGuard implements CanActivate {
   ) {}
 
   canActivate(): Observable<boolean | UrlTree> {
-    return this.store.select(selectUserVerified).pipe(
-      take(1),
-      map((isVerified) => {
-        console.log('IsVerified: ', isVerified);
-        if (isVerified) {
-          return true;
-        } else {
-          this.dialogService.openErrorDialog(
-            'Para utilizar las funcionalidades de la aplicación, debes haber verificado tu email. Por favor, verifica tu correo electrónico y vuelve a intentarlo.',
-            this.dialog
-          );
+    // return this.store.select(selectUserVerified).pipe(
+    //   take(1),
+    //   map((isVerified) => {
+    //     console.log('IsVerified: ', isVerified);
+    //     if (isVerified) {
+    //       return true;
+    //     } else {
+    //       this.dialogService.openErrorDialog(
+    //         'Para utilizar las funcionalidades de la aplicación, debes haber verificado tu email. Por favor, verifica tu correo electrónico y vuelve a intentarlo.',
+    //         this.dialog
+    //       );
 
-          return this.router.createUrlTree(['/']);
-        }
-      })
-    );
+    //       return this.router.createUrlTree(['/']);
+    //     }
+    //   })
+    // );
+
+    return of(true);
   }
 }
