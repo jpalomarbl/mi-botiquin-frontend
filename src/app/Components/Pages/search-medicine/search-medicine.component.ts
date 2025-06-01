@@ -93,7 +93,7 @@ export class SearchMedicineComponent {
     this.actions$
       .pipe(ofType(medicineKitActions.fetchMedicinesCIMAError), take(1))
       .subscribe((error) => {
-        this.dialogService.openErrorDialog(error.error, this.errorDialog);
+        this.dialogService.openErrorDialog('No se han podido obtener los medicamentos', this.errorDialog);
       });
   }
 
